@@ -56,7 +56,7 @@ def astree(
 def convert_tree(tree):
     """Low level conversion of tree object to an abstracttree.Tree.
 
-    The default implementation ducktypes on tree.parent and tree.children
+    The default implementation ducktypes on `tree.parent` and `tree.children`.
     """
     if hasattr(tree, "children"):
         if hasattr(tree, "parent"):
@@ -84,8 +84,6 @@ def _(tree: pathlib.PurePath):
 
 @convert_tree.register
 def _(tree: Sequence):
-    if isinstance(tree, BaseString):
-        return NotImplemented
     return SequenceStoredParent(tree)
 
 
@@ -94,7 +92,7 @@ def _(tree: Sequence):
 @convert_tree.register(bytearray)
 def _(_: BaseString):
     raise NotImplementedError("astree(x: str | bytes | bytearray) is unsafe, "
-                              "because it is an infinite sequence.")
+                              "because x is infinitely recursively iterable.")
 
 
 @convert_tree.register
@@ -110,7 +108,7 @@ def _(node: ast.AST):
 
 
 class TreeView(Tree):
-    __slots__ = "value", "_parent"
+    __slots__ = "value"
     child_func: Callable[[TWrap], Iterable[TWrap]] = operator.attrgetter("children")
     parent_func: Callable[[TWrap], TWrap] = operator.attrgetter("parent")
 
@@ -138,6 +136,8 @@ class TreeView(Tree):
 
 
 class PathTreeView(TreeView):
+    __slots__ = ()
+
     @staticmethod
     def child_func(p):
         return p.iterdir() if p.is_dir() else (),
@@ -170,8 +170,14 @@ class StoredParent(Tree):
     def parent(self):
         return self._parent
 
+    # parent is not always consistent for this class, therefore prefer DownTree
+    has_child = DownTree.has_child
+    has_descendant = DownTree.has_descendant
+
 
 class SequenceStoredParent(StoredParent):
+    __slots__ = ()
+
     @staticmethod
     def child_func(seq):
         if isinstance(seq, Sequence) and not isinstance(seq, BaseString):
@@ -188,6 +194,8 @@ class SequenceStoredParent(StoredParent):
 
 
 class TypeStoredParent(StoredParent):
+    __slots__ = ()
+
     @staticmethod
     def child_func(cls):
         return cls.__subclasses__()
@@ -197,33 +205,44 @@ class TypeStoredParent(StoredParent):
 
 
 class InvertedTypeStoredParent(TypeStoredParent):
+    __slots__ = ()
+
     @staticmethod
     def child_func(cls):
         return cls.__bases__
 
 
 class AstStoredParent(StoredParent):
+    __slots__ = ()
     CONT = '↓'
+    SINGLETON = Union[ast.expr_context, ast.boolop, ast.operator, ast.unaryop, ast.cmpop]
 
-    @staticmethod
-    def child_func(node):
-        return tuple(ast.iter_child_nodes(node))
+    @classmethod
+    def child_func(cls, node):
+        return tuple(node for node in ast.iter_child_nodes(node) if cls.is_child(node))
+
+    @classmethod
+    def is_child(cls, node):
+        return isinstance(node, ast.AST) and not isinstance(node, cls.SINGLETON)
 
     def __str__(self):
-        cont = self.CONT
         if self.is_leaf:
             return ast.dump(self.value)
         else:
-            args = []
-            for name, field in ast.iter_fields(self.value):
-                if isinstance(field, Sequence):
-                    field = [cont if isinstance(f, ast.AST) else repr(f) for f in field]
-                    field_str = "[" + ", ".join(field) + "]"
-                    args.append(f"{name}={field_str}")
-                elif isinstance(field, ast.AST):
-                    args.append(f"{name}={cont}")
-                else:
-                    args.append(f"{name}={field!r}")
-
+            format_value = self.format_value
+            args = [f"{name}={format_value(field)}" for name, field in ast.iter_fields(self.value)]
             joined_args = ", ".join(args)
             return f"{type(self.value).__name__}({joined_args})"
+
+    @classmethod
+    def format_value(cls, field):
+        if cls.is_child(field):
+            field_str = cls.CONT
+        elif isinstance(field, ast.AST):
+            field_str = ast.dump(field)
+        elif isinstance(field, Sequence) and not isinstance(field, BaseString):
+            field = [cls.format_value(f) for f in field]
+            field_str = "[" + ", ".join(field) + "]"
+        else:
+            field_str = repr(field)
+        return field_str

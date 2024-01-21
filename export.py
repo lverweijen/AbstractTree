@@ -15,6 +15,7 @@ __all__ = [
     "to_dot",
     "to_mermaid",
     "to_image",
+    "to_pillow",
     "LiteralText",
 ]
 
@@ -172,10 +173,8 @@ def to_image(
     """Export to image. Uses graphviz(dot) or mermaid."""
     if how == "dot":
         if file is None:
-            from PIL import Image
-
             img = _image_dot(tree, file=subprocess.PIPE, file_format="png", *args, **kwargs)
-            return Image.open(io.BytesIO(img))
+            return io.BytesIO(img)
         elif hasattr(file, "write"):
             _image_dot(tree, file, file_format="png", *args, **kwargs)
         else:
@@ -184,6 +183,11 @@ def to_image(
                 _image_dot(tree, file, file_format=filepath.suffix[1:], *args, **kwargs)
     elif how == "mermaid":
         _image_mermaid(tree, Path(file), *args, **kwargs)
+
+
+def to_pillow(tree: Tree, **kwargs):
+    from PIL import Image
+    return Image.open(to_image(tree, file=None, how="dot", **kwargs))
 
 
 def _image_dot(
@@ -256,7 +260,7 @@ def to_dot(
     edge_static, edge_dynamic = _split_attributes(edge_attributes)
 
     arrow = "->"
-    file.write("digraph tree {\n")
+    file.write("strict digraph tree {\n")
 
     if graph_attributes:
         attrs = _handle_attributes(graph_attributes, tree)

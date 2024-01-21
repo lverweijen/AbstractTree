@@ -11,7 +11,26 @@ NodeItem = namedtuple("NodeItem", ["index", "depth"])
 NodePredicate = Callable[[TNode, NodeItem], bool]
 
 
-class UpTree(metaclass=ABCMeta):
+class AbstractTree(metaclass=ABCMeta):
+    """Most abstract baseclass for everything."""
+    __slots__ = ()
+
+    @abstractmethod
+    def has_child(self, node: TNode) -> bool:
+        """Return whether node is a direct child of self."""
+        raise NotImplementedError
+
+    @abstractmethod
+    def has_descendant(self, node: TNode) -> bool:
+        """Return whether node is a descendant of self."""
+        raise NotImplementedError
+
+    def has_ancestor(self, node: TNode) -> bool:
+        """Return whether node is an ancestor of self."""
+        return node.has_descendant(self)
+
+
+class UpTree(AbstractTree, metaclass=ABCMeta):
     """Abstract class for tree classes with parent but no children."""
     __slots__ = ()
 
@@ -34,6 +53,12 @@ class UpTree(metaclass=ABCMeta):
             p, p2 = p2, p2.parent
         return p
 
+    def has_child(self, node: TNode) -> bool:
+        return self is node.parent
+
+    def has_descendant(self, node: TNode) -> bool:
+        return any(self is ancestor for ancestor in node.iter_ancestors())
+
     def count_ancestors(self) -> int:
         """Count the number of ancestors.
 
@@ -49,7 +74,7 @@ class UpTree(metaclass=ABCMeta):
             p = p.parent
 
 
-class DownTree(metaclass=ABCMeta):
+class DownTree(AbstractTree, metaclass=ABCMeta):
     """Abstract class for tree classes with children but no parent."""
     __slots__ = ()
 
@@ -63,6 +88,12 @@ class DownTree(metaclass=ABCMeta):
     def is_leaf(self) -> bool:
         """Return whether this node is a leaf (does not have children)."""
         return not self.children
+
+    def has_child(self, node: TNode) -> bool:
+        return any(node is child for child in self.children)
+
+    def has_descendant(self, node: TNode) -> bool:
+        return any(self is descendant for descendant in self.iter_descendants())
 
     def transform(self: TNode, f: Callable[[TNode], TMutDownNode]) -> TMutDownNode:
         """Return new tree where each node is transformed by f."""
