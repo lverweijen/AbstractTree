@@ -15,18 +15,15 @@ class AbstractTree(metaclass=ABCMeta):
     """Most abstract baseclass for everything."""
     __slots__ = ()
 
-    def __init__(self):
-        pass
-
     @property
     def nid(self) -> int:
         """Unique number that represents this node."""
         return id(self)
 
     def eqv(self, other):
-        """Check if both object represent the same node.
+        """Check if both objects represent the same node.
 
-        Should normally be operator.is, but useful for delegates and lazy trees.
+        Should normally be operator.is, but can be overridden by delegates.
         """
         return self is other
 

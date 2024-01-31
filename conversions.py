@@ -43,7 +43,7 @@ def astree(
         return convert_tree(obj)
     else:
         if parent:
-            class CustomTree(TreeView):
+            class CustomTree(TreeAdapter):
                 child_func = staticmethod(children)
                 parent_func = staticmethod(parent)
         else:
@@ -60,7 +60,7 @@ def convert_tree(tree):
     """
     if hasattr(tree, "children"):
         if hasattr(tree, "parent"):
-            return TreeView(tree)
+            return TreeAdapter(tree)
         else:
             return StoredParent(tree)
     else:
@@ -107,7 +107,7 @@ def _(node: ast.AST):
     return AstTree(node)
 
 
-class TreeView(Tree):
+class TreeAdapter(Tree):
     __slots__ = "value"
     child_func: Callable[[TWrap], Iterable[TWrap]] = operator.attrgetter("children")
     parent_func: Callable[[TWrap], TWrap] = operator.attrgetter("parent")
@@ -146,7 +146,7 @@ class TreeView(Tree):
             return None
 
 
-class PathTree(TreeView):
+class PathTree(TreeAdapter):
     __slots__ = "__dict__"
 
     @functools.cached_property
