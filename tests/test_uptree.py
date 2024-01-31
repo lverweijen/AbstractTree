@@ -2,7 +2,7 @@ from pathlib import Path
 from unittest import TestCase
 
 import tree_instances as trees
-from conversions import astree
+from abstracttree import astree
 
 
 class TestUpTree(TestCase):

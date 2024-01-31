@@ -5,7 +5,7 @@ import pathlib
 from collections.abc import Sequence
 from typing import TypeVar, Callable, Iterable, overload, Collection, Union, Optional
 
-from treeclasses import Tree, DownTree
+from .treeclasses import Tree, DownTree
 
 TWrap = TypeVar("TWrap")
 BaseString = Union[str, bytes, bytearray]  # Why did they ever remove this type?

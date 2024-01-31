@@ -6,8 +6,8 @@ import sys
 from pathlib import Path
 from typing import Union, Callable, TypedDict, Tuple, Mapping, Any, TypeVar
 
-from predicates import PreventCycles, MaxDepth
-from treeclasses import DownTree, Tree
+from .predicates import PreventCycles, MaxDepth
+from .treeclasses import DownTree, Tree
 
 __all__ = [
     "print_tree",
@@ -20,7 +20,7 @@ __all__ = [
     "LiteralText",
 ]
 
-from conversions import astree
+from .conversions import astree
 
 
 class Style(TypedDict):

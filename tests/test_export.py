@@ -1,7 +1,7 @@
 from unittest import TestCase
 
-from export import to_string, to_mermaid, to_dot
-from tests.tree_instances import INFINITE_TREE, BINARY_TREE
+from abstracttree import to_string, to_mermaid, to_dot
+from tree_instances import INFINITE_TREE, BINARY_TREE
 
 
 class TestExport(TestCase):

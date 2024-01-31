@@ -1,7 +1,6 @@
 from pathlib import Path
 
-from conversions import astree
-from treeclasses import MutableDownTree, Tree
+from abstracttree import MutableDownTree, Tree, astree
 
 
 class BinaryNode(MutableDownTree):
@@ -32,15 +31,6 @@ class BinaryNode(MutableDownTree):
             self.right = None
         else:
             raise Exception("Not my child")
-
-    def to_string(self):
-        output = []
-        for node, it in self.iter_nodes(with_item=True):
-            output.append(it.depth * "> " + repr(node.value))
-        return "\n".join(output)
-
-    def show(self):
-        print(self.to_string())
 
 
 class InfiniteSingleton(Tree):
