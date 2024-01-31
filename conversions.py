@@ -3,7 +3,7 @@ import functools
 import operator
 import pathlib
 from collections.abc import Sequence
-from typing import TypeVar, Callable, Iterable, overload, Collection, Union
+from typing import TypeVar, Callable, Iterable, overload, Collection, Union, Optional
 
 from treeclasses import Tree, DownTree
 
@@ -79,12 +79,12 @@ def _(tree: DownTree):
 
 @convert_tree.register
 def _(tree: pathlib.PurePath):
-    return PathTreeView(tree)
+    return PathTree(tree)
 
 
 @convert_tree.register
 def _(tree: Sequence):
-    return SequenceStoredParent(tree)
+    return SequenceTree(tree)
 
 
 @convert_tree.register(str)
@@ -98,13 +98,13 @@ def _(_: BaseString):
 @convert_tree.register
 def _(cls: type, invert=False):
     if invert:
-        return InvertedTypeStoredParent(cls)
-    return TypeStoredParent(cls)
+        return InvertedTypeTree(cls)
+    return TypeTree(cls)
 
 
 @convert_tree.register
 def _(node: ast.AST):
-    return AstStoredParent(node)
+    return AstTree(node)
 
 
 class TreeView(Tree):
@@ -122,7 +122,14 @@ class TreeView(Tree):
         return str(self.value)
 
     def __eq__(self, other):
-        return self.value == other.value
+        return isinstance(other, type(self)) and self.value == other.value
+
+    @property
+    def nid(self):
+        return id(self.value)
+
+    def eqv(self, other):
+        return isinstance(other, type(self)) and self.value is other.value
 
     @property
     def children(self):
@@ -132,15 +139,44 @@ class TreeView(Tree):
 
     @property
     def parent(self):
-        return self.__class__(self.parent_func)
+        parent = self.parent_func(self.value)
+        if parent is not None:
+            return self.__class__(parent)
+        else:
+            return None
 
 
-class PathTreeView(TreeView):
-    __slots__ = ()
+class PathTree(TreeView):
+    __slots__ = "__dict__"
+
+    @functools.cached_property
+    def nid(self):
+        try:
+            st = self.value.lstat()
+        except FileNotFoundError:
+            return -id(self.value)
+        else:
+            return st.st_ino
+
+    def eqv(self, other):
+        return self.value == other.value
+
+    @staticmethod
+    def parent_func(path):
+        # pathlib makes parent an infinite, but we want None
+        parent = path.parent
+        if path != parent:
+            return parent
+        else:
+            return None
 
     @staticmethod
     def child_func(p):
-        return p.iterdir() if p.is_dir() else (),
+        return p.iterdir() if p.is_dir() else ()
+
+    @property
+    def root(self):
+        return type(self)(type(self.value)(self.value.anchor))
 
 
 class StoredParent(Tree):
@@ -158,7 +194,14 @@ class StoredParent(Tree):
         return str(self.value)
 
     def __eq__(self, other):
-        return self.value == other.value
+        return isinstance(other, type(self)) and self.value == other.value
+
+    @property
+    def nid(self):
+        return id(self.value)
+
+    def eqv(self, other):
+        return isinstance(other, type(self)) and self.value is other.value
 
     @property
     def children(self):
@@ -170,12 +213,8 @@ class StoredParent(Tree):
     def parent(self):
         return self._parent
 
-    # parent is not always consistent for this class, therefore prefer DownTree
-    has_child = DownTree.has_child
-    has_descendant = DownTree.has_descendant
 
-
-class SequenceStoredParent(StoredParent):
+class SequenceTree(StoredParent):
     __slots__ = ()
 
     @staticmethod
@@ -193,7 +232,7 @@ class SequenceStoredParent(StoredParent):
             return f"{cls_name}[{len(self.value)}]"
 
 
-class TypeStoredParent(StoredParent):
+class TypeTree(StoredParent):
     __slots__ = ()
 
     @staticmethod
@@ -204,7 +243,7 @@ class TypeStoredParent(StoredParent):
         return self.value.__qualname__
 
 
-class InvertedTypeStoredParent(TypeStoredParent):
+class InvertedTypeTree(TypeTree):
     __slots__ = ()
 
     @staticmethod
@@ -212,7 +251,7 @@ class InvertedTypeStoredParent(TypeStoredParent):
         return cls.__bases__
 
 
-class AstStoredParent(StoredParent):
+class AstTree(StoredParent):
     __slots__ = ()
     CONT = '↓'
     SINGLETON = Union[ast.expr_context, ast.boolop, ast.operator, ast.unaryop, ast.cmpop]

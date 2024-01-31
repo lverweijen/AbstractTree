@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 from typing import Union, Callable, TypedDict, Tuple, Mapping, Any, TypeVar
 
+from predicates import PreventCycles, MaxDepth
 from treeclasses import DownTree, Tree
 
 __all__ = [
@@ -19,7 +20,7 @@ __all__ = [
     "LiteralText",
 ]
 
-from conversions import astree, StoredParent
+from conversions import astree
 
 
 class Style(TypedDict):
@@ -74,12 +75,14 @@ def print_tree(tree, formatter=str, style=None, keep=None):
 
 @_wrap_file
 def to_string(
-    tree: DownTree, formatter=str, *, file=None, style: Union[str, Style] = "boxed", keep=None
+    tree: DownTree, formatter=str, *, file=None, style: Union[str, Style] = "square", keep=None
 ):
     """Converts tree to a string in a pretty format."""
     tree = astree(tree)
     if isinstance(style, str):
         style = DEFAULT_STYLES[style]
+    if keep is None:
+        keep = PreventCycles()
     empty_style = len(style["last"]) * " "
     lookup1 = [empty_style, style["vertical"]]
     lookup2 = [style["last"], style["branch"]]
@@ -101,7 +104,7 @@ def _iterate_patterns(tree, keep):
     # The continuation indicator tells us whether the branch at a certain level is continued.
     pattern = []
     yield pattern, tree
-    for node, item in tree.iter_descendants(keep=keep, with_item=True):
+    for node, item in tree.descendants.preorder(keep=keep):
         del pattern[item.depth - 1 :]
         is_continued = item.index < len(node.parent.children) - 1
         pattern.append(is_continued)
@@ -117,7 +120,7 @@ def _write_indent(file, pattern, lookup1, lookup2):
         file.write(lookup2[pattern[-1]])
 
 
-def plot_tree(tree: Tree, ax=None, formatter=str, annotate_args=None):
+def plot_tree(tree: Tree, ax=None, formatter=str, maxdepth=5, annotate_args=None):
     """Plot the tree using matplotlib (if installed)."""
     # Roughly based on sklearn.tree.plot_tree()
     import matplotlib.pyplot as plt
@@ -140,8 +143,11 @@ def plot_tree(tree: Tree, ax=None, formatter=str, annotate_args=None):
         kwargs.update(annotate_args)
 
     nodes_xy = {}
-    tree_height = tree.count_levels() - 1
-    for depth, level in enumerate(tree.iter_levels()):
+
+    keep = MaxDepth(maxdepth) if maxdepth else PreventCycles()
+    tree_height = max(it.depth for _, it in tree.descendants.preorder(keep=keep))
+
+    for depth, level in zip(range(tree_height), tree.levels):
         level = list(level)
         for i, node in enumerate(level):
             x = (i + 1) / (len(level) + 1)
@@ -150,9 +156,9 @@ def plot_tree(tree: Tree, ax=None, formatter=str, annotate_args=None):
             if node is tree:
                 ax.annotate(formatter(node), (x, y), **kwargs)
             else:
-                parent = nodes_xy[id(node.parent)]
+                parent = nodes_xy[node.parent.nid]
                 ax.annotate(formatter(node), parent, (x, y), **kwargs)
-            nodes_xy[id(node)] = x, y
+            nodes_xy[node.nid] = x, y
     return ax
 
 
@@ -241,7 +247,10 @@ def to_dot(
     """
     tree = astree(tree)
     if node_name is None:
-        node_name = _get_node_name_default(tree)
+        node_name = _node_name_default
+
+    if keep is None:
+        keep = PreventCycles()
 
     if node_attributes is None:
         node_attributes = dict()
@@ -273,7 +282,7 @@ def to_dot(
         file.write(f"edge{attrs};\n")
 
     nodes = []
-    for node in tree.iter_nodes(keep=keep):
+    for node, _ in tree.nodes.preorder(keep=keep):
         nodes.append(node)
         name = _escape_string(node_name(node), "dot")
         attrs = _handle_attributes(node_dynamic, node)
@@ -343,17 +352,20 @@ def to_mermaid(
     """
     tree = astree(tree)
     if node_name is None:
-        node_name = _get_node_name_default(tree)
+        node_name = _node_name_default
 
     if isinstance(node_shape, str):
         node_shape = DEFAULT_SHAPES[node_shape]
+
+    if keep is None:
+        keep = PreventCycles()
 
     # Output header
     file.write(f"graph {graph_direction};\n")
 
     # Output nodes
     nodes = []  # Stop automatic garbage collecting
-    for node in tree.iter_nodes(keep=keep):
+    for node, _ in tree.nodes.preorder(keep=keep):
         left, right = _get_shape(node_shape, node)
         name = node_name(node)
         if node_label:
@@ -373,20 +385,8 @@ def to_mermaid(
         file.write(f"{parent}{arrow}{child};\n")
 
 
-def _get_node_name_default(node: DownTree):
-    if isinstance(node, StoredParent):
-        return _node_name_sp
-    else:
-        return _node_name_default
-
-
 def _node_name_default(node: DownTree):
-    return str(hex(id(node)))
-
-
-def _node_name_sp(node: StoredParent):
-    """Handle multiple parents."""
-    return str(hex(id(node.value)))
+    return hex(node.nid)
 
 
 def _get_shape(shape_factory, node):
