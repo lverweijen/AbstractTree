@@ -41,6 +41,9 @@ DEFAULT_STYLES = {
     "list": Style(branch="-", last="-", vertical=" "),
 }
 
+# By default, all exporters are limited to a depth of 5.
+DEFAULT_PREDICATE = MaxDepth(5)
+
 
 def _wrap_file(f):
     """Make sure file can be used in 3 ways:
@@ -64,7 +67,7 @@ def _wrap_file(f):
     return new_f
 
 
-def print_tree(tree, formatter=str, style=None, keep=None):
+def print_tree(tree, formatter=str, style=None, keep=DEFAULT_PREDICATE):
     """Print this tree. Shortcut for print(to_string(tree))."""
     if sys.stdout:
         if not style:
@@ -75,7 +78,12 @@ def print_tree(tree, formatter=str, style=None, keep=None):
 
 @_wrap_file
 def to_string(
-    tree: DownTree, formatter=str, *, file=None, style: Union[str, Style] = "square", keep=None
+    tree: DownTree,
+    formatter=str,
+    *,
+    file=None,
+    style: Union[str, Style] = "square",
+    keep=DEFAULT_PREDICATE
 ):
     """Converts tree to a string in a pretty format."""
     tree = astree(tree)
@@ -120,7 +128,7 @@ def _write_indent(file, pattern, lookup1, lookup2):
         file.write(lookup2[pattern[-1]])
 
 
-def plot_tree(tree: Tree, ax=None, formatter=str, maxdepth=5, annotate_args=None):
+def plot_tree(tree: Tree, ax=None, formatter=str, keep=DEFAULT_PREDICATE, annotate_args=None):
     """Plot the tree using matplotlib (if installed)."""
     # Roughly based on sklearn.tree.plot_tree()
     import matplotlib.pyplot as plt
@@ -144,10 +152,8 @@ def plot_tree(tree: Tree, ax=None, formatter=str, maxdepth=5, annotate_args=None
 
     nodes_xy = {}
 
-    keep = MaxDepth(maxdepth) if maxdepth else PreventCycles()
     tree_height = max(it.depth for _, it in tree.descendants.preorder(keep=keep))
-
-    for depth, level in zip(range(tree_height), tree.levels):
+    for depth, level in zip(range(tree_height + 1), tree.levels):
         level = list(level)
         for i, node in enumerate(level):
             x = (i + 1) / (len(level) + 1)
@@ -233,7 +239,7 @@ def _image_mermaid(
 def to_dot(
     tree: Tree,
     file=None,
-    keep=None,
+    keep=DEFAULT_PREDICATE,
     node_name: Union[str, Callable[[TNode], str], None] = None,
     node_label: Union[str, Callable[[TNode], str], None] = str,
     node_shape: TShape = None,
@@ -248,9 +254,6 @@ def to_dot(
     tree = astree(tree)
     if node_name is None:
         node_name = _node_name_default
-
-    if keep is None:
-        keep = PreventCycles()
 
     if node_attributes is None:
         node_attributes = dict()
@@ -282,7 +285,7 @@ def to_dot(
         file.write(f"edge{attrs};\n")
 
     nodes = []
-    for node, _ in tree.nodes.preorder(keep=keep):
+    for node, _ in tree.nodes.preorder(keep=PreventCycles() & keep):
         nodes.append(node)
         name = _escape_string(node_name(node), "dot")
         attrs = _handle_attributes(node_dynamic, node)
@@ -339,7 +342,7 @@ DEFAULT_SHAPES = {
 def to_mermaid(
     tree: Tree,
     file=None,
-    keep=None,
+    keep=DEFAULT_PREDICATE,
     node_name: Union[str, Callable[[TNode], str], None] = None,
     node_label: Union[str, Callable[[TNode], str], None] = str,
     node_shape: TShape = "box",
@@ -357,15 +360,12 @@ def to_mermaid(
     if isinstance(node_shape, str):
         node_shape = DEFAULT_SHAPES[node_shape]
 
-    if keep is None:
-        keep = PreventCycles()
-
     # Output header
     file.write(f"graph {graph_direction};\n")
 
     # Output nodes
     nodes = []  # Stop automatic garbage collecting
-    for node, _ in tree.nodes.preorder(keep=keep):
+    for node, _ in tree.nodes.preorder(keep=PreventCycles() & keep):
         left, right = _get_shape(node_shape, node)
         name = node_name(node)
         if node_label:

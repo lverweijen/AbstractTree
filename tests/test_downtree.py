@@ -64,7 +64,13 @@ class TestDownTree(TestCase):
         self.assertEqual(5, trees.COUNTDOWN.root.descendants.count())
         self.assertEqual(5, trees.SEQTREE.descendants.count())
 
-    def test_levels(self):
+    def test_levels_iter(self):
+        tree = trees.BINARY_TREE
+        values = [[node.value for node in level] for level in tree.levels]
+        expected = [[1], [2, 3], [4], [5]]
+        self.assertEqual(expected, values)
+
+    def test_levels_count(self):
         self.assertEqual(1, trees.SINGLETON.levels.count())
         self.assertEqual(1, trees.NONEXISTENTPATH.levels.count())
         self.assertEqual(4, trees.BINARY_TREE.levels.count())

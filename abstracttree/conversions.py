@@ -2,8 +2,9 @@ import ast
 import functools
 import operator
 import pathlib
+import zipfile
 from collections.abc import Sequence
-from typing import TypeVar, Callable, Iterable, overload, Collection, Union, Optional
+from typing import TypeVar, Callable, Iterable, overload, Collection, Union
 
 from .treeclasses import Tree, DownTree
 
@@ -83,6 +84,11 @@ def _(tree: pathlib.PurePath):
 
 
 @convert_tree.register
+def _(file: zipfile.ZipFile):
+    return PathTree(zipfile.Path(file))
+
+
+@convert_tree.register
 def _(tree: Sequence):
     return SequenceTree(tree)
 
@@ -147,13 +153,13 @@ class TreeAdapter(Tree):
 
 
 class PathTree(TreeAdapter):
-    __slots__ = "__dict__"
+    __slots__ = ()
 
-    @functools.cached_property
     def nid(self):
         try:
+            # Not implemented on zipfile.Path
             st = self.value.lstat()
-        except FileNotFoundError:
+        except (FileNotFoundError, AttributeError):
             return -id(self.value)
         else:
             return st.st_ino
@@ -172,7 +178,11 @@ class PathTree(TreeAdapter):
 
     @staticmethod
     def child_func(p):
-        return p.iterdir() if p.is_dir() else ()
+        try:
+            return p.iterdir() if p.is_dir() else ()
+        except PermissionError:
+            # Ignore
+            return ()
 
     @property
     def root(self):

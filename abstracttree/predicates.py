@@ -8,10 +8,16 @@ class Predicate(Callable[[AbstractTree, NodeItem], bool]):
     __slots__ = ()
 
     def __or__(self, other):
-        return PredicateUnion(self, other)
+        if other is None:
+            return None
+        else:
+            return PredicateUnion(self, other)
 
     def __and__(self, other):
-        return PredicateIntersection(self, other)
+        if other is None:
+            return self
+        else:
+            return PredicateIntersection(self, other)
 
 
 class PredicateUnion(Predicate):

@@ -261,12 +261,10 @@ class LevelsView:
         return True
 
     def __iter__(self):
-        level = iter([self.tree])
-        level, output, test = itertools.tee(level, 3)
-        while next(test, None):
-            yield output
-            level = (child for node in level for child in node.children)
-            level, output, test = itertools.tee(level, 3)
+        level = [self.tree]
+        while level:
+            yield iter(level)
+            level = [child for node in level for child in node.children]
 
     def count(self):
         return 1 + max(it.depth for (_, it) in self.tree.nodes.preorder())

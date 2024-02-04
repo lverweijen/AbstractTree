@@ -1,12 +1,12 @@
 from unittest import TestCase
 
-from abstracttree import to_string, to_mermaid, to_dot
+from abstracttree import to_string, to_mermaid, to_dot, MaxDepth
 from tree_instances import INFINITE_TREE, BINARY_TREE
 
 
 class TestExport(TestCase):
     def test_to_string(self):
-        result = to_string(INFINITE_TREE)
+        result = to_string(INFINITE_TREE, keep=MaxDepth(2))
         expected = 3 * 'Infinite singleton!\n'
         self.assertEqual(expected, result)
 
