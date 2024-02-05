@@ -84,8 +84,13 @@ def _(tree: pathlib.PurePath):
 
 
 @convert_tree.register
-def _(file: zipfile.ZipFile):
-    return PathTree(zipfile.Path(file))
+def _(zf: zipfile.ZipFile):
+    return PathTree(zipfile.Path(zf))
+
+
+@convert_tree.register
+def _(path: zipfile.Path):
+    return PathTree(path)
 
 
 @convert_tree.register
@@ -154,15 +159,16 @@ class TreeAdapter(Tree):
 
 class PathTree(TreeAdapter):
     __slots__ = ()
+    _custom_nids = {}
 
+    @property
     def nid(self):
-        try:
-            # Not implemented on zipfile.Path
+        try:  # Doesn't work on zipfile
             st = self.value.lstat()
         except (FileNotFoundError, AttributeError):
-            return -id(self.value)
+            return self._custom_nids.setdefault(str(self.value), len(self._custom_nids))
         else:
-            return st.st_ino
+            return -st.st_ino
 
     def eqv(self, other):
         return self.value == other.value
