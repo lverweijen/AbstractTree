@@ -24,4 +24,4 @@ from .heaptree import HeapTree
 from .predicates import RemoveDuplicates, PreventCycles, MaxDepth
 from .treeclasses import Tree, DownTree, UpTree, MutableDownTree, MutableTree
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
