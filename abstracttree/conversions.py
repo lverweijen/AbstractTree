@@ -182,13 +182,16 @@ class PathTree(TreeAdapter):
         else:
             return None
 
+    @property
+    def children(self):
+        try:
+            return list(map(type(self), self.child_func(self.value)))
+        except PermissionError:
+            return []
+
     @staticmethod
     def child_func(p):
-        try:
-            return p.iterdir() if p.is_dir() else ()
-        except PermissionError:
-            # Ignore
-            return ()
+        return p.iterdir() if p.is_dir() else ()
 
     @property
     def root(self):
