@@ -11,17 +11,17 @@ class TestUpTree(TestCase):
         self.assertEqual(None, trees.SINGLETON.parent)
         self.assertEqual(path_parent, trees.NONEXISTENTPATH.parent)
         self.assertEqual(None, trees.INFINITE_BINARY_TREE.parent)
-        self.assertEqual(2, trees.INFINITE_BINARY_TREE_SUBTREE.parent.value)
-        self.assertEqual(4, trees.COUNTDOWN.parent.value)
+        self.assertEqual(2, trees.INFINITE_BINARY_TREE_SUBTREE.parent.node)
+        self.assertEqual(4, trees.COUNTDOWN.parent.node)
         self.assertEqual(trees.INFINITE_TREE, trees.INFINITE_TREE)
 
     def test_root(self):
         path_root = astree(Path(""))
         self.assertEqual(trees.SINGLETON, trees.SINGLETON.root)
         self.assertEqual(path_root, trees.NONEXISTENTPATH.root)
-        self.assertEqual(0, trees.INFINITE_BINARY_TREE.root.value)
-        self.assertEqual(0, trees.INFINITE_BINARY_TREE_SUBTREE.root.value)
-        self.assertEqual(0, trees.COUNTDOWN.root.value)
+        self.assertEqual(0, trees.INFINITE_BINARY_TREE.root.node)
+        self.assertEqual(0, trees.INFINITE_BINARY_TREE_SUBTREE.root.node)
+        self.assertEqual(0, trees.COUNTDOWN.root.node)
 
     def test_is_root(self):
         self.assertTrue(trees.SINGLETON.is_root)

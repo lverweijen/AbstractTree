@@ -75,7 +75,7 @@ def _(tree: Tree):
 
 @convert_tree.register
 def _(tree: DownTree):
-    return StoredParent(tree)
+    return UpgradedTree(tree)
 
 
 @convert_tree.register
@@ -118,39 +118,49 @@ def _(node: ast.AST):
     return AstTree(node)
 
 
+@convert_tree.register
+def _(element: ET.Element):
+    return XmlTree(element)
+
+
+@convert_tree.register
+def _(tree: ET.ElementTree):
+    return XmlTree(tree.getroot())
+
+
 class TreeAdapter(Tree):
-    __slots__ = "value"
+    __slots__ = "node"
     child_func: Callable[[TWrap], Iterable[TWrap]] = operator.attrgetter("children")
     parent_func: Callable[[TWrap], TWrap] = operator.attrgetter("parent")
 
-    def __init__(self, value):
-        self.value = value
+    def __init__(self, node):
+        self.node = node
 
     def __repr__(self):
-        return f"{type(self).__name__}({self.value})"
+        return f"{type(self).__name__}({self.node})"
 
     def __str__(self):
-        return str(self.value)
+        return str(self.node)
 
     def __eq__(self, other):
-        return isinstance(other, type(self)) and self.value == other.value
+        return isinstance(other, type(self)) and self.node == other.node
 
     @property
     def nid(self):
-        return id(self.value)
+        return id(self.node)
 
     def eqv(self, other):
-        return isinstance(other, type(self)) and self.value is other.value
+        return isinstance(other, type(self)) and self.node is other.node
 
     @property
     def children(self):
         cls = self.__class__
         child_func = self.child_func
-        return [cls(c) for c in child_func(self.value)]
+        return [cls(c) for c in child_func(self.node)]
 
     @property
     def parent(self):
-        parent = self.parent_func(self.value)
+        parent = self.parent_func(self.node)
         if parent is not None:
             return self.__class__(parent)
         else:
@@ -164,14 +174,14 @@ class PathTree(TreeAdapter):
     @property
     def nid(self):
         try:  # Doesn't work on zipfile
-            st = self.value.lstat()
+            st = self.node.lstat()
         except (FileNotFoundError, AttributeError):
-            return self._custom_nids.setdefault(str(self.value), len(self._custom_nids))
+            return self._custom_nids.setdefault(str(self.node), len(self._custom_nids))
         else:
             return -st.st_ino
 
     def eqv(self, other):
-        return self.value == other.value
+        return self.node == other.node
 
     @staticmethod
     def parent_func(path):
@@ -185,7 +195,7 @@ class PathTree(TreeAdapter):
     @property
     def children(self):
         try:
-            return list(map(type(self), self.child_func(self.value)))
+            return list(map(type(self), self.child_func(self.node)))
         except PermissionError:
             return []
 
@@ -195,42 +205,53 @@ class PathTree(TreeAdapter):
 
     @property
     def root(self):
-        return type(self)(type(self.value)(self.value.anchor))
+        return type(self)(type(self.node)(self.node.anchor))
 
 
 class StoredParent(Tree):
-    __slots__ = "value", "_parent"
+    __slots__ = "node", "_parent"
     child_func: Callable[[TWrap], Iterable[TWrap]] = operator.attrgetter("children")
 
-    def __init__(self, value, parent=None):
-        self.value = value
+    def __init__(self, node, parent=None):
+        self.node = node
         self._parent = parent
 
     def __repr__(self):
-        return f"{type(self).__name__}({self.value})"
+        return f"{type(self).__name__}({self.node})"
 
     def __str__(self):
-        return str(self.value)
+        return str(self.node)
 
     def __eq__(self, other):
-        return isinstance(other, type(self)) and self.value == other.value
+        return isinstance(other, type(self)) and self.node == other.node
 
     @property
     def nid(self):
-        return id(self.value)
+        return id(self.node)
 
     def eqv(self, other):
-        return isinstance(other, type(self)) and self.value is other.value
+        return isinstance(other, type(self)) and self.node is other.node
 
     @property
     def children(self):
         cls = type(self)
         child_func = self.child_func
-        return [cls(c, self) for c in child_func(self.value)]
+        return [cls(c, self) for c in child_func(self.node)]
 
     @property
     def parent(self):
         return self._parent
+
+
+class UpgradedTree(StoredParent):
+    __slots__ = ()
+
+    @property
+    def nid(self):
+        return self.node.nid
+
+    def eqv(self, other):
+        return isinstance(other, type(self)) and self.node.eqv(other.node)
 
 
 class SequenceTree(StoredParent):
@@ -245,21 +266,31 @@ class SequenceTree(StoredParent):
 
     def __str__(self):
         if self.is_leaf:
-            return str(self.value)
+            return str(self.node)
         else:
-            cls_name = type(self.value).__name__
-            return f"{cls_name}[{len(self.value)}]"
+            cls_name = type(self.node).__name__
+            return f"{cls_name}[{len(self.node)}]"
+
+
 
 
 class TypeTree(StoredParent):
     __slots__ = ()
 
+    @property
+    def nid(self):
+        return id(self.node)
+
     @staticmethod
     def child_func(cls):
         return cls.__subclasses__()
 
+    @property
+    def parents(self):
+        return list(map(type(self), self.node.__bases__))
+
     def __str__(self):
-        return self.value.__qualname__
+        return self.node.__qualname__
 
 
 class InvertedTypeTree(TypeTree):
@@ -285,12 +316,12 @@ class AstTree(StoredParent):
 
     def __str__(self):
         if self.is_leaf:
-            return ast.dump(self.value)
+            return ast.dump(self.node)
         else:
             format_value = self.format_value
-            args = [f"{name}={format_value(field)}" for name, field in ast.iter_fields(self.value)]
+            args = [f"{name}={format_value(field)}" for name, field in ast.iter_fields(self.node)]
             joined_args = ", ".join(args)
-            return f"{type(self.value).__name__}({joined_args})"
+            return f"{type(self.node).__name__}({joined_args})"
 
     @classmethod
     def format_value(cls, field):
