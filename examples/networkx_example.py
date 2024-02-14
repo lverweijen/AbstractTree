@@ -23,27 +23,27 @@ class NetworkXTree(TreeAdapter):
 
     @property
     def identifier(self):
-        (graph, identifier) = self.node
+        (_, identifier) = self.node
         return identifier
 
     @property
     def data(self):
-        (graph, label) = self.node
-        return graph.nodes[label]
+        (graph, identifier) = self.node
+        return graph.nodes[identifier]
 
     def __str__(self):
         return f"{self.identifier}"
 
     @staticmethod
     def child_func(node):
-        (graph, label) = node
-        for child in graph.successors(label):
+        (graph, identifier) = node
+        for child in graph.successors(identifier):
             yield graph, child
 
     @staticmethod
     def parent_func(node):
-        (graph, label) = node
-        parents = list(graph.predecessors(label))
+        (graph, identifier) = node
+        parents = list(graph.predecessors(identifier))
         if len(parents) > 1:
             raise nx.NotATree("Node has multiple parents.")
         elif not parents:
@@ -66,7 +66,6 @@ def graph_to_tree(graph: nx.Graph, node=None, check=True):
 
 
 def main():
-    import networkx as nx
     graph = nx.DiGraph()
     graph.add_node(1)
     graph.add_edge(1, 2)
@@ -78,4 +77,6 @@ def main():
 
     # graph can still be edited using networkx and changes will be reflected on tree
 
-main()
+
+if __name__ == '__main__':
+    main()

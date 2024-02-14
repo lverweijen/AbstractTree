@@ -73,6 +73,6 @@ if __name__ == '__main__':
     from PrettyPrint import PrettyPrintTree
     tree = convert_decisiontree(model)
     print_tree(tree)
-    to_image(tree, '../images/sklearn_example.png')
+    to_image(tree, 'sklearn_example.png')
     pprint_tree = PrettyPrintTree(get_val=str)
     pprint_tree(astree(tree), get_children=operator.attrgetter("children"))
