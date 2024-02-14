@@ -1,6 +1,7 @@
 from unittest import TestCase
 
-from tree_instances import BinaryNode
+from abstracttree import MaxDepth
+from tree_instances import BinaryNode, INFINITE_BINARY_TREE
 
 
 class TestMutableDownTree(TestCase):
@@ -33,4 +34,17 @@ class TestMutableDownTree(TestCase):
         double_tree = self.tree.transform(double)
         values = [node.value for node, _ in double_tree.nodes.preorder()]
         expected = [2, 4, 6, 8, 10]
+        self.assertEqual(expected, values)
+
+    def test_transform_II(self):
+        """Test keep attribute on infinite tree.
+
+        This is a pretty cool way to convert an infinite tree to a finite one.
+        """
+        def double(node):
+            return BinaryNode(value=2 * node.node)
+
+        double_tree = INFINITE_BINARY_TREE.transform(double, keep=MaxDepth(2))
+        values = [node.value for node, _ in double_tree.nodes.preorder()]
+        expected = [0, 2, 6, 8, 4, 10, 12]
         self.assertEqual(expected, values)

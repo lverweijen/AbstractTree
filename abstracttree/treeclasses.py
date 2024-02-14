@@ -91,10 +91,10 @@ class DownTree(AbstractTree, metaclass=ABCMeta):
         """Return whether this node is a leaf (does not have children)."""
         return not self.children
 
-    def transform(self: TNode, f: Callable[[TNode], TMutDownNode]) -> TMutDownNode:
+    def transform(self: TNode, f: Callable[[TNode], TMutDownNode], keep=None) -> TMutDownNode:
         """Return new tree where each node is transformed by f."""
         stack = []
-        for node, item in self.descendants.postorder():
+        for node, item in self.descendants.postorder(keep=keep):
             depth = item.depth
             while len(stack) < depth:
                 stack.append(list())
@@ -107,6 +107,26 @@ class DownTree(AbstractTree, metaclass=ABCMeta):
         return new
 
 
+class MutableDownTree(DownTree, metaclass=ABCMeta):
+    """Abstract class for mutable tree with children."""
+    __slots__ = ()
+
+    @abstractmethod
+    def add_child(self, node: TNode):
+        """Add node to children."""
+        raise NotImplementedError
+
+    @abstractmethod
+    def remove_child(self, node: TNode):
+        """Remove node from children."""
+        raise NotImplementedError
+
+    def add_children(self, children: Iterable[TNode]):
+        """Add multiple nodes to children."""
+        for child in children:
+            self.add_child(child)
+
+
 class Tree(UpTree, DownTree, metaclass=ABCMeta):
     """Abstract class for tree classes with access to children and parents."""
     __slots__ = ()
@@ -114,6 +134,17 @@ class Tree(UpTree, DownTree, metaclass=ABCMeta):
     @property
     def siblings(self):
         return SiblingsView(self)
+
+
+class MutableTree(Tree, MutableDownTree, metaclass=ABCMeta):
+    """Abstract class for mutable tree with children and parent."""
+    __slots__ = ()
+
+    def detach(self) -> TNode:
+        """Remove parent if any and return self."""
+        if p := self.parent:
+            p.remove_child(self)
+        return self
 
 
 class TreeView(Iterable[TNode], metaclass=ABCMeta):
@@ -293,34 +324,3 @@ class SiblingsView(TreeView):
         return 0
 
     count = __len__
-
-
-class MutableDownTree(DownTree, metaclass=ABCMeta):
-    """Abstract class for mutable tree with children."""
-    __slots__ = ()
-
-    @abstractmethod
-    def add_child(self, node: TNode):
-        """Add node to children."""
-        raise NotImplementedError
-
-    @abstractmethod
-    def remove_child(self, node: TNode):
-        """Remove node from children."""
-        raise NotImplementedError
-
-    def add_children(self, children: Iterable[TNode]):
-        """Add multiple nodes to children."""
-        for child in children:
-            self.add_child(child)
-
-
-class MutableTree(Tree, MutableDownTree, metaclass=ABCMeta):
-    """Abstract class for mutable tree with children and parent."""
-    __slots__ = ()
-
-    def detach(self) -> TNode:
-        """Remove parent if any and return self."""
-        if p := self.parent:
-            p.remove_child(self)
-        return self
