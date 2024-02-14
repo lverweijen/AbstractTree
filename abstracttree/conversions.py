@@ -2,8 +2,9 @@ import ast
 import functools
 import operator
 import pathlib
+import xml.etree.ElementTree as ET
 import zipfile
-from collections.abc import Sequence
+from collections.abc import Sequence, Mapping
 from typing import TypeVar, Callable, Iterable, overload, Collection, Union
 
 from .treeclasses import Tree, DownTree
@@ -104,6 +105,11 @@ def _(tree: Sequence):
 def _(_: BaseString):
     raise NotImplementedError("astree(x: str | bytes | bytearray) is unsafe, "
                               "because x is infinitely recursively iterable.")
+
+
+@convert_tree.register
+def _(tree: Mapping):
+    return MappingTree((None, tree))
 
 
 @convert_tree.register
@@ -272,6 +278,36 @@ class SequenceTree(StoredParent):
             return f"{cls_name}[{len(self.node)}]"
 
 
+class MappingTree(StoredParent):
+    __slots__ = ()
+
+    @staticmethod
+    def child_func(item):
+        _, value = item
+        if isinstance(value, Mapping):
+            return value.items()
+        elif value is not None:
+            return [(value, None)]
+        else:
+            return []
+
+    @property
+    def key(self):
+        key, _ = self.node
+        return key
+
+    @property
+    def mapping(self):
+        _, mapping = self.node
+        return mapping
+
+    def __str__(self):
+        key, mapping = self.node
+        if self.is_root:
+            cls_name = type(mapping).__name__
+            return f"{cls_name}[{len(mapping)}]"
+        else:
+            return str(key)
 
 
 class TypeTree(StoredParent):
@@ -335,3 +371,25 @@ class AstTree(StoredParent):
         else:
             field_str = repr(field)
         return field_str
+
+
+class XmlTree(StoredParent):
+    @staticmethod
+    def child_func(element):
+        return element
+
+    def __str__(self):
+        element = self.node
+        output = [f"<{element.tag}"]
+
+        for k, v in element.items():
+            output.append(f" {k}={v!r}")
+        output.append(">")
+
+        if text := element.text and str(element.text).strip():
+            output.append(text)
+            output.append(f"</{element.tag}>")
+        if tail := element.tail and str(element.tail).strip():
+            output.append(tail)
+
+        return "".join(output)
