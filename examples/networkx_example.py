@@ -16,20 +16,10 @@ class NetworkXTree(TreeAdapter):
     def nid(self):
         return id(self.identifier)
 
-    @property
-    def graph(self):
-        (graph, _) = self.node
-        return graph
-
-    @property
-    def identifier(self):
-        (_, identifier) = self.node
-        return identifier
-
-    @property
-    def data(self):
-        (graph, identifier) = self.node
-        return graph.nodes[identifier]
+    def eqv(self, other):
+        if not isinstance(other, type(self)):
+            return False
+        return self.graph is other.graph and self.identifier == other.identifier
 
     def __str__(self):
         return f"{self.identifier}"
@@ -51,18 +41,32 @@ class NetworkXTree(TreeAdapter):
         else:
             return graph, parents[0]
 
+    @property
+    def graph(self):
+        (graph, _) = self.node
+        return graph
+
+    @property
+    def identifier(self):
+        (_, identifier) = self.node
+        return identifier
+
+    @property
+    def data(self):
+        (graph, identifier) = self.node
+        return graph.nodes[identifier]
+
 
 def graph_to_tree(graph: nx.Graph, node=None, check=True):
     if check and not nx.is_arborescence(graph):
         raise nx.NotATree("An arborescence is expected.")
 
-    if not node:
-        for node in graph.nodes:
-            break
-        else:
-            raise ValueError("graph needs at least one node")
+    resolve_root = node is None
+    tree = NetworkXTree((graph, node or any(graph.nodes)))
+    if resolve_root:
+        tree = tree.root
 
-    return NetworkXTree((graph, node)).root
+    return tree
 
 
 def main():
@@ -74,6 +78,11 @@ def main():
 
     tree = graph_to_tree(graph)
     print_tree(tree)
+
+    # Find sibling of node 2
+    node_2 = graph_to_tree(graph, node=2)
+    for sibling in node_2.siblings:
+        print("sibling of node 2 = {!r}".format(sibling.identifier))
 
     # graph can still be edited using networkx and changes will be reflected on tree
 
