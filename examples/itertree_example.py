@@ -15,6 +15,8 @@ from abstracttree import print_tree
 
 
 class MyTree(itertree.iTree, abstracttree.Tree):
+    __slots__ = ()
+
     @property
     def children(self):
         return self

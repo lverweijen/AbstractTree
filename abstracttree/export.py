@@ -87,10 +87,10 @@ def to_string(
 ):
     """Converts tree to a string in a pretty format."""
     tree = astree(tree)
-    if isinstance(style, str):
-        style = DEFAULT_STYLES[style]
     if keep is None:
         keep = PreventCycles()
+    if isinstance(style, str):
+        style = DEFAULT_STYLES[style]
     empty_style = len(style["last"]) * " "
     lookup1 = [empty_style, style["vertical"]]
     lookup2 = [style["last"], style["branch"]]
