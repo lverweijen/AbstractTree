@@ -1,10 +1,12 @@
 import functools
 import io
+import itertools
 import operator
 import subprocess
 import sys
+from collections.abc import Iterable, Mapping
 from pathlib import Path
-from typing import Union, Callable, TypedDict, Tuple, Mapping, Any, TypeVar
+from typing import Union, Callable, TypedDict, Tuple, Any, TypeVar, Optional
 
 from .predicates import PreventCycles, MaxDepth
 from .treeclasses import DownTree, Tree
@@ -17,6 +19,7 @@ __all__ = [
     "to_mermaid",
     "to_image",
     "to_pillow",
+    "to_latex",
     "LiteralText",
 ]
 
@@ -67,7 +70,7 @@ def _wrap_file(f):
     return new_f
 
 
-def print_tree(tree, formatter=str, style=None, keep=DEFAULT_PREDICATE):
+def print_tree(tree, formatter=str, style=None, keep=None):
     """Print this tree. Shortcut for print(to_string(tree))."""
     if sys.stdout:
         if not style:
@@ -83,12 +86,10 @@ def to_string(
     *,
     file=None,
     style: Union[str, Style] = "square",
-    keep=DEFAULT_PREDICATE
+    keep=None,
 ):
     """Converts tree to a string in a pretty format."""
     tree = astree(tree)
-    if keep is None:
-        keep = PreventCycles()
     if isinstance(style, str):
         style = DEFAULT_STYLES[style]
     empty_style = len(style["last"]) * " "
@@ -198,6 +199,7 @@ def to_image(
 
 
 def to_pillow(tree: Tree, **kwargs):
+    """Convert tree to pillow-format (uses graphviz on the background)."""
     from PIL import Image
     return Image.open(to_image(tree, file=None, how="dot", **kwargs))
 
@@ -247,10 +249,7 @@ def to_dot(
     edge_attributes: EdgeAttributes = None,
     graph_attributes: GraphAttributes = None,
 ):
-    """Export to graphviz.
-
-    See https://graphviz.org/
-    """
+    """Export to `graphviz <https://graphviz.org/>`_."""
     tree = astree(tree)
     if node_name is None:
         node_name = _node_name_default
@@ -349,10 +348,7 @@ def to_mermaid(
     edge_arrow: Union[str, Callable[[TNode, TNode], str]] = "-->",
     graph_direction: str = "TD",
 ):
-    """Export to mermaid diagram.
-
-    See https://mermaid.js.org/
-    """
+    """Export to `mermaid <https://mermaid.js.org/>`_."""
     tree = astree(tree)
     if node_name is None:
         node_name = _node_name_default
@@ -383,6 +379,112 @@ def to_mermaid(
         parent = node_name(node.parent)
         child = node_name(node)
         file.write(f"{parent}{arrow}{child};\n")
+
+
+@_wrap_file
+def to_latex(
+    tree,
+    file=None,
+    keep=DEFAULT_PREDICATE,
+    node_label: Union[str, Callable[[TNode], str], None] = str,
+    node_shape: TShape = None,
+    leaf_distance: Optional[str] = "2em",
+    level_distance: Optional[str] = None,
+    node_options: Iterable[Union[str, Callable[[TNode], str]]] = (),
+    picture_options: Iterable[Union[str, Callable[[TNode], str]]] = (),
+    graph_direction: str = "right",
+    indent: Union[str, int] = 4,
+    align="center",
+):
+    """Export to latex (experimental).
+
+    Make sure to put ``\\usepackage{tikz}`` in your preamble.
+    Does not wrap output in a figure environment.
+    """
+    tree = astree(tree)
+    if isinstance(indent, int):
+        indent = "\t" if indent == -1 else indent * " "
+
+    picture_options = list(picture_options)
+    if align is not None:
+        picture_options.append(f"align={align}")
+    if leaf_distance:
+        distances = _sibling_distances(tree)
+        for level in range(1, len(distances)):
+            sibling_distance = f"{distances[level]:g}*{leaf_distance}"
+            option = f"\nlevel {level}/.style = {{sibling distance = {sibling_distance}}}"
+            picture_options.append(option)
+    if level_distance:
+        picture_options.append(f"level distance = {level_distance}")
+    node_options = list(node_options)
+    if node_shape:
+        node_options.append(node_shape)
+        node_options.append("draw")
+
+    depth = 0
+    label = _escape_string(node_label(tree), "latex")
+    file.write(fr"\begin{{tikzpicture}}{_latex_options(tree, picture_options)}")
+    file.write("\n")
+    options = _latex_options(tree, node_options)
+    file.write(rf"\node{options}{{{label}}} [grow={graph_direction}]")
+    for node, item in tree.descendants.preorder(keep=keep):
+        if item.depth > depth:
+            file.write("\n")
+        else:
+            file.write("}\n")
+            for back in range(depth - 1, item.depth - 1, -1):
+                file.write(back * indent + "}\n")
+
+        depth = item.depth
+        file.write(depth * indent)
+        label = _escape_string(node_label(node), "latex")
+        options = _latex_options(tree, node_options)
+        file.write(f"child {{node{options} {{{label}}}")
+
+    # Close final leaf node on same line
+    if depth:
+        depth -= 1
+        file.write("}")
+
+    # Close open nodes
+    file.write("\n")
+    for back in range(depth, 0, -1):
+        file.write(back * indent + "}\n")
+
+    file.write(r"\end{tikzpicture}")
+
+
+def _latex_options(node, options):
+    output = []
+    for option in options:
+        if callable(option):
+            output.append(str(option(node)))
+        else:
+            output.append(str(option))
+    if not output:
+        return ""
+    else:
+        joined = ",".join(output)
+        return f"[{joined}]"
+
+
+def _sibling_distances(tree, stop=100):
+    """Calculate sibling distances in such a way that nodes don't overlap.
+
+    The chosen strategy is to multiply level ranks from bottom to top.
+    It assumes sibling distance is constant for each level.
+    Parameter stop is used to prevent infinite recursion.
+    """
+    level_ranks = []
+    for level, _ in zip(tree.levels, range(stop)):
+        cousins = itertools.pairwise(level)
+        mid_ranks = [(len(n1.children) + len(n2.children)) / 2 for n1, n2 in cousins]
+        level_ranks.append(max(max(mid_ranks), 1) if mid_ranks else 1)
+
+    distances = len(level_ranks) * [1]
+    for level in reversed(range(len(level_ranks)-1)):
+        distances[level] = level_ranks[level] * distances[level+1]
+    return distances
 
 
 def _node_name_default(node: DownTree):
@@ -416,6 +518,15 @@ def _escape_string(text, what) -> str:
         text = text.replace("#", "#35;")
         text = text.replace("`", "#96;")
         text = text.replace('"', "#quot;")
+    elif what == "latex":
+        text = text.replace("\\", r"\textbackslash")
+        special_chars = "#$%&_{}"
+        for char in special_chars:
+            text = text.replace(char, f"\\{char}")
+
+        text = text.replace("~", r"\~{}")
+        text = text.replace("^", r"\^{}")
+        text = text.replace("\n", r"\\")
     return text
 
 

@@ -36,7 +36,7 @@ for i in range(7):
 
 # AbstractTree
 print("Height of tree:", tree.levels.count() - 1)
-print_tree(tree, keep=None)
+print_tree(tree)
 
 # iTree
 print("Height of tree:", tree.max_depth)

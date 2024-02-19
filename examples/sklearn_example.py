@@ -1,10 +1,8 @@
 # Attempt to contribute this directly to sklearn:
 # https://github.com/scikit-learn/scikit-learn/pull/28364
 
-import operator
-
-from abstracttree import print_tree, to_image
-from abstracttree.conversions import StoredParent, astree
+from abstracttree import print_tree, to_latex, to_image
+from abstracttree.conversions import StoredParent
 
 
 class DecisionTreeAdapter(StoredParent):
@@ -70,9 +68,7 @@ if __name__ == '__main__':
     model = clf.fit(X_train, y_train)
 
     # Now treat the model as a tree
-    from PrettyPrint import PrettyPrintTree
     tree = convert_decisiontree(model)
     print_tree(tree)
+    print(to_latex(tree, node_shape="rectangle", leaf_distance='8em', level_distance="10em"))
     to_image(tree, 'sklearn_example.png')
-    pprint_tree = PrettyPrintTree(get_val=str)
-    pprint_tree(astree(tree), get_children=operator.attrgetter("children"))

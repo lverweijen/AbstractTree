@@ -139,10 +139,11 @@ plt.show()
 ```
 ![images/tree_calc_plot.png](images/tree_calc_plot.png)
 
-Conversion to graphviz or mermaid
+Export to various formats
 ```python
 to_dot(tree)
 to_mermaid(tree)
+to_latex(tree)
 
 to_image(Path('.'), "filetree.png", how="dot")
 to_image(AbstractTree, "class_hierarchy.svg", how="mermaid")
@@ -158,3 +159,7 @@ to_pillow(tree).show()
 - [dendropy](https://github.com/jeetsukumaran/DendroPy)
 - [ete](https://github.com/etetoolkit/ete)
 - [littletree](https://github.com/lverweijen/littletree) - also by me
+
+## Tree visualisation
+
+- [PrettyPrintTree](https://github.com/AharonSambol/PrettyPrintTree) - colored terminal output
