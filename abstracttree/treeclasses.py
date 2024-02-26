@@ -40,12 +40,12 @@ class UpTree(AbstractTree, metaclass=ABCMeta):
 
     @property
     def is_root(self) -> bool:
-        """Return if this node is a root (has no parent)."""
+        """Whether this node is a root (has no parent)."""
         return self.parent is None
 
     @property
     def root(self) -> TNode:
-        """Return root of tree."""
+        """Root of tree."""
         p, p2 = self, self.parent
         while p2:
             p, p2 = p2, p2.parent
@@ -53,10 +53,12 @@ class UpTree(AbstractTree, metaclass=ABCMeta):
 
     @property
     def ancestors(self):
+        """View of ancestors of node."""
         return AncestorsView(self.parent)
 
     @property
     def path(self):
+        """View of path from root to node."""
         return PathView(self)
 
 
@@ -72,27 +74,31 @@ class DownTree(AbstractTree, metaclass=ABCMeta):
 
     @property
     def leaves(self):
+        """View of leaves from this node."""
         return LeavesView(self)
 
     @property
     def nodes(self):
+        """View of this node and its descendants."""
         return NodesView([self], 0)
 
     @property
     def descendants(self):
+        """View of descendants of this node."""
         return NodesView(self.children, 1)
 
     @property
     def levels(self):
+        """View of this node and descendants by level."""
         return LevelsView(self)
 
     @property
     def is_leaf(self) -> bool:
-        """Return whether this node is a leaf (does not have children)."""
+        """Whether this node is a leaf (does not have children)."""
         return not self.children
 
     def transform(self: TNode, f: Callable[[TNode], TMutDownNode], keep=None) -> TMutDownNode:
-        """Return new tree where each node is transformed by f."""
+        """Create new tree where each node of self is transformed by f."""
         stack = []
         for node, item in self.descendants.postorder(keep=keep):
             depth = item.depth
@@ -133,6 +139,7 @@ class Tree(UpTree, DownTree, metaclass=ABCMeta):
 
     @property
     def siblings(self):
+        """View of siblings of this node."""
         return SiblingsView(self)
 
 
@@ -151,6 +158,7 @@ class TreeView(Iterable[TNode], metaclass=ABCMeta):
     __slots__ = ()
 
     def count(self) -> int:
+        """Count number of nodes in this view."""
         counter = itertools.count()
         deque(zip(self, counter), maxlen=0)
         return next(counter)
@@ -213,6 +221,12 @@ class NodesView(TreeView):
             nodes.extend(node.children)
 
     def preorder(self, keep=None):
+        """Iterate through nodes in pre-order.
+
+        Only descend where keep(node).
+        Returns tuples (node, item)
+        Item denotes depth of iteration and index of child.
+        """
         nodes = deque((c, NodeItem(i, self.level)) for (i, c) in enumerate(self.nodes))
         while nodes:
             node, item = nodes.popleft()
@@ -223,6 +237,12 @@ class NodesView(TreeView):
                 nodes.extendleft(reversed(next_nodes))
 
     def postorder(self, keep=None):
+        """Iterate through nodes in post-order.
+
+        Only descend where keep(node).
+        Returns tuples (node, item)
+        Item denotes depth of iteration and index of child.
+        """
         children = iter([(c, NodeItem(i, self.level)) for (i, c) in enumerate(self.nodes)])
         node, item = next(children, (None, None))
         stack = []
@@ -247,6 +267,12 @@ class NodesView(TreeView):
                 node, item = next(children, (None, None))
 
     def levelorder(self, keep=None):
+        """Iterate through nodes in level-order.
+
+        Only descend where keep(node).
+        Returns tuples (node, item)
+        Item denotes depth of iteration and index of child.
+        """
         nodes = deque((c, NodeItem(i, self.level)) for (i, c) in enumerate(self.nodes))
         while nodes:
             node, item = nodes.popleft()
