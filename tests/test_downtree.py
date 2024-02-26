@@ -85,11 +85,19 @@ class TestDownTree(TestCase):
         expected = [1, 2, 3, 4, 5]
         self.assertEqual(expected, values)
 
+        items = [item for _, item in tree.nodes.preorder()]
+        expected = [(0, 0), (0, 1), (1, 1), (0, 2), (0, 3)]
+        self.assertEqual(expected, items)
+
     def test_preorder_descendants(self):
         tree = trees.BINARY_TREE
         values = [node.value for node, _ in tree.descendants.preorder()]
         expected = [2, 3, 4, 5]
         self.assertEqual(expected, values)
+
+        items = [item for _, item in tree.descendants.preorder()]
+        expected = [(0, 1), (1, 1), (0, 2), (0, 3)]
+        self.assertEqual(expected, items)
 
     def test_postorder_nodes(self):
         tree = trees.BINARY_TREE
@@ -97,11 +105,19 @@ class TestDownTree(TestCase):
         expected = [2, 5, 4, 3, 1]
         self.assertEqual(expected, values)
 
+        items = [item for _, item in tree.nodes.postorder()]
+        expected = [(0, 1), (0, 3), (0, 2), (1, 1), (0, 0)]
+        self.assertEqual(expected, items)
+
     def test_postorder_descendants(self):
         tree = trees.BINARY_TREE
         values = [node.value for node, _ in tree.descendants.postorder()]
         expected = [2, 5, 4, 3]
         self.assertEqual(expected, values)
+
+        items = [item for _, item in tree.descendants.postorder()]
+        expected = [(0, 1), (0, 3), (0, 2), (1, 1)]
+        self.assertEqual(expected, items)
 
     def test_levelorder_nodes(self):
         tree = trees.BINARY_TREE
@@ -109,8 +125,16 @@ class TestDownTree(TestCase):
         expected = [1, 2, 3, 4, 5]
         self.assertEqual(expected, values)
 
+        items = [item for _, item in tree.nodes.levelorder()]
+        expected = [(0, 0), (0, 1), (1, 1), (0, 2), (0, 3)]
+        self.assertEqual(expected, items)
+
     def test_levelorder_descendants(self):
         tree = trees.BINARY_TREE
         values = [node.value for node, _ in tree.descendants.levelorder()]
         expected = [2, 3, 4, 5]
         self.assertEqual(expected, values)
+
+        items = [item for _, item in tree.descendants.preorder()]
+        expected = [(0, 1), (1, 1), (0, 2), (0, 3)]
+        self.assertEqual(expected, items)
