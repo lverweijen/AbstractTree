@@ -150,6 +150,24 @@ to_image(AbstractTree, "class_hierarchy.svg", how="mermaid")
 to_pillow(tree).show()
 ```
 
+## Find distance between nodes
+
+```python
+import heapq
+
+from abstracttree import HeapTree, Route
+
+tree = HeapTree([5, 4, 3, 2, 1])
+heapq.heapify(tree.heap)
+left_child = tree.children[0]
+right_child = tree.children[1]
+
+route = Route(left_child, right_child)
+print(f"{route.lca = }")  # => HeapTree([1, 2, 3, 5, 4], 0)
+print(f"{route.nodes.count() = }")  # => 3
+print(f"{route.edges.count() = }")  # => 2
+```
+
 ## A few concrete tree implementations
 
 - [anytree](https://github.com/c0fec0de/anytree)

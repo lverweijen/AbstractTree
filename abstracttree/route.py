@@ -67,7 +67,7 @@ class Route:
         paths = self._apaths
         path0 = min(paths, key=len)
         indices = range(len(path0))
-        if i := bisect(indices, False, key=lambda ind: any(path0[ind] != p[ind] for p in paths)):
+        if i := bisect(indices, False, key=lambda ind: any(not path0[ind].eqv(p[ind]) for p in paths)):
             lca = self._lca = path0[i-1]
             return lca
         else:
@@ -77,7 +77,7 @@ class Route:
     def _common2(self, i, j) -> int:
         path_i, path_j = self._apaths[i], self._apaths[j]
         indices = range(min(len(path_i), len(path_j)))
-        return bisect(indices, False, key=lambda ind: path_i[ind] != path_j[ind]) - 1
+        return bisect(indices, False, key=lambda ind: not path_i[ind].eqv(path_j[ind])) - 1
 
 
 class RouteView(Sized, metaclass=ABCMeta):

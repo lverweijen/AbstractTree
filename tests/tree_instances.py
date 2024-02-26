@@ -1,6 +1,7 @@
+import heapq
 from pathlib import Path
 
-from abstracttree import MutableDownTree, Tree, astree
+from abstracttree import MutableDownTree, Tree, astree, HeapTree
 
 
 class BinaryNode(MutableDownTree):
@@ -68,3 +69,6 @@ COUNTDOWN = astree(COUNTDOWN_MAX,
 SEQTREE = astree([1, [2, 3], []])
 
 INFINITE_TREE = InfiniteSingleton()
+
+HEAP_TREE = HeapTree([5, 4, 3, 2, 1, 0])
+heapq.heapify(HEAP_TREE.heap)

@@ -13,11 +13,11 @@ class HeapTree(Tree):
     >>> for n in range(5, 0, -1):
     >>>     heapq.heappush(tree.heap, n)
     >>> print_tree(tree)
-    1
-    ├─ 2
-    │  ├─ 5
-    │  └─ 4
-    └─ 3
+    0 → 1
+    ├─ 1 → 2
+    │  ├─ 3 → 5
+    │  └─ 4 → 4
+    └─ 2 → 3
     """
     __slots__ = "heap", "index"
 
@@ -27,9 +27,12 @@ class HeapTree(Tree):
         self.heap = heap
         self.index = index
 
+    def __repr__(self):
+        return f"{type(self).__qualname__}{self.heap, self.index}"
+
     def __str__(self):
         try:
-            return repr(self.value)
+            return f"{self.index} → {self.value}"
         except IndexError:
             return repr(self)
 
@@ -48,7 +51,11 @@ class HeapTree(Tree):
 
     @property
     def parent(self: TNode) -> Optional[TNode]:
-        return HeapTree(self.heap, (self.index - 1) // 2)
+        n = self.index
+        if n != 0:
+            return HeapTree(self.heap, (n - 1) // 2)
+        else:
+            return None
 
     @property
     def value(self):

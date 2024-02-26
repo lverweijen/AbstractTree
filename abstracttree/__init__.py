@@ -17,6 +17,7 @@ __all__ = [
     "PreventCycles",
     "MaxDepth",
     "HeapTree",
+    "Route",
 ]
 
 from .conversions import astree
@@ -24,6 +25,7 @@ from .export import print_tree, plot_tree, to_image, to_dot, to_mermaid, to_stri
     to_latex
 from .heaptree import HeapTree
 from .predicates import RemoveDuplicates, PreventCycles, MaxDepth
+from .route import Route
 from .treeclasses import Tree, DownTree, UpTree, MutableDownTree, MutableTree
 
 __version__ = "0.0.4"

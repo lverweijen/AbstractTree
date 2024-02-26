@@ -1,7 +1,7 @@
 import unittest
 
 from abstracttree.route import Route
-from tests.tree_instances import INFINITE_BINARY_TREE, INFINITE_TREE, SEQTREE
+from tests.tree_instances import INFINITE_BINARY_TREE, SEQTREE, HEAP_TREE
 
 
 class TestRoute(unittest.TestCase):
@@ -19,6 +19,8 @@ class TestRoute(unittest.TestCase):
         self.route3 = Route(r, r, tree, tree)
         self.route4 = Route(lll, llrr, llr)
 
+        self.heap_route = Route(HEAP_TREE.children[0], HEAP_TREE.children[1])
+
     def test_anchors(self):
         result = [node.node for node in self.route1.anchors]
         self.assertEqual([0, 18, 0], result)
@@ -34,6 +36,10 @@ class TestRoute(unittest.TestCase):
 
         result = [node.node for node in self.route4.anchors]
         self.assertEqual([7, 18, 8], result)
+        self.assertEqual(3, len(self.route4.anchors))
+
+        result = [node.index for node in self.heap_route.anchors]
+        self.assertEqual([1, 2], result)
         self.assertEqual(3, len(self.route4.anchors))
 
     def test_nodes(self):
@@ -53,6 +59,10 @@ class TestRoute(unittest.TestCase):
         self.assertEqual([7, 3, 8, 18, 8], result)
         self.assertEqual(5, len(self.route4.nodes))
 
+        result = [node.value for node in self.heap_route.nodes]
+        self.assertEqual([1, 0, 3], result)
+        self.assertEqual(3, len(self.heap_route.nodes))
+
     def test_edges(self):
         result = [(v1.node, v2.node) for (v1, v2) in self.route1.edges]
         expected = [(0, 1), (1, 3), (3, 8), (8, 18), (18, 8), (8, 3), (3, 1), (1, 0)]
@@ -64,6 +74,7 @@ class TestRoute(unittest.TestCase):
         self.assertEqual(0, self.route2.lca.node)
         self.assertEqual(0, self.route3.lca.node)
         self.assertEqual(3, self.route4.lca.node)
+        self.assertEqual(0, self.heap_route.lca.index)
 
     def test_add_anchor(self):
         # Same tree
