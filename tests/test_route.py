@@ -69,6 +69,16 @@ class TestRoute(unittest.TestCase):
         self.assertEqual(expected, result)
         self.assertEqual(8, len(self.route1.edges))
 
+    def test_reversed(self):
+        node_result = [node.node for node in reversed(self.route2.nodes)]
+        edge_result = [(v1.node, v2.node) for (v1, v2) in reversed(self.route2.edges)]
+        node_expected = [2, 0, 1, 3, 8, 18, 8, 3, 1, 0, 2, 0, 1, 3, 8, 18]
+        edge_expected = [(2, 0), (0, 1), (1, 3), (3, 8), (8, 18),
+                         (18, 8), (8, 3), (3, 1), (1, 0), (0, 2),
+                         (2, 0), (0, 1), (1, 3), (3, 8), (8, 18)]
+        self.assertEqual(node_expected, node_result)
+        self.assertEqual(edge_expected, edge_result)
+
     def test_lca(self):
         self.assertEqual(0, self.route1.lca.node)
         self.assertEqual(0, self.route2.lca.node)

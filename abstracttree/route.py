@@ -109,6 +109,16 @@ class NodesView(RouteView):
         if path_j:
             yield path_j[-1]
 
+    def __reversed__(self):
+        indices = range(len(self._apaths))
+        path_i = None
+        for j, i in itertools.pairwise(indices[::-1]):
+            path_i, path_j = self._apaths[i:j + 1]
+            c = self._route._common2(i, j)
+            yield from path_j[:c:-1] + path_i[c:-1]
+        if path_i:
+            yield path_i[-1]
+
     def __len__(self):
         s = 1
         indices = range(len(self._apaths))
@@ -121,6 +131,9 @@ class NodesView(RouteView):
 class EdgesView(RouteView):
     def __iter__(self):
         return itertools.pairwise(self._route.nodes)
+
+    def __reversed__(self):
+        return itertools.pairwise(reversed(self._route.nodes))
 
     def __len__(self):
         return len(self._route.nodes) - 1
