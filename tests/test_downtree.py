@@ -135,6 +135,26 @@ class TestDownTree(TestCase):
         expected = [2, 3, 4, 5]
         self.assertEqual(expected, values)
 
-        items = [item for _, item in tree.descendants.preorder()]
+        items = [item for _, item in tree.descendants.levelorder()]
         expected = [(0, 1), (1, 1), (0, 2), (0, 3)]
+        self.assertEqual(expected, items)
+
+    def test_inorder_nodes(self):
+        tree = trees.BINARY_TREE
+        values = [node.value for node, _ in tree.nodes.inorder()]
+        expected = [2, 1, 4, 5, 3]
+        self.assertEqual(expected, values)
+
+        items = [item for _, item in tree.nodes.inorder()]
+        expected = [(0, 1), (0, 0), (0, 2), (1, 3), (1, 1)]
+        self.assertEqual(expected, items)
+
+    def test_inorder_descendants(self):
+        tree = trees.BINARY_TREE
+        values = [node.value for node, _ in tree.descendants.inorder()]
+        expected = [2, 4, 5, 3]
+        self.assertEqual(expected, values)
+
+        items = [item for _, item in tree.descendants.inorder()]
+        expected = [(0, 1), (0, 2), (1, 3), (1, 1)]
         self.assertEqual(expected, items)
