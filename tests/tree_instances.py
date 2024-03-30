@@ -2,9 +2,10 @@ import heapq
 from pathlib import Path
 
 from abstracttree import MutableDownTree, Tree, astree, HeapTree
+from abstracttree.binarytree import BinaryDownTree
 
 
-class BinaryNode(MutableDownTree):
+class BinaryNode(MutableDownTree, BinaryDownTree):
     def __init__(self, value):
         self.value = value
         self.left = None
@@ -14,8 +15,12 @@ class BinaryNode(MutableDownTree):
         return f"({self.value})"
 
     @property
-    def children(self):
-        return [n for n in [self.left, self.right] if n is not None]
+    def left_child(self):
+        return self.left
+
+    @property
+    def right_child(self):
+        return self.right
 
     def add_child(self, node):
         if self.left is None:

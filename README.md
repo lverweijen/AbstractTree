@@ -21,6 +21,8 @@ Tree[Tree];
 MutableTree[MutableTree];
 MutableDownTree[MutableDownTree];
 MutableTree[MutableTree];
+BinaryDownTree[BinaryDownTree]
+BinaryTree[BinaryTree]
 AbstractTree-->UpTree;
 UpTree-->Tree;
 Tree-->MutableTree;
@@ -28,20 +30,25 @@ AbstractTree-->DownTree;
 DownTree-->Tree;
 DownTree-->MutableDownTree;
 MutableDownTree-->MutableTree;
+DownTree-->BinaryDownTree
+BinaryDownTree-->BinaryTree
+Tree-->BinaryTree
 ```
 
 Downtrees are trees that have links to their direct children.
 Uptrees are trees that link to their parent.
 A Tree has links in both directions.
 
-| ABC               | Inherits from             | Abstract Methods                | Mixin Methods                                                        |
-|-------------------|---------------------------|---------------------------------|----------------------------------------------------------------------|
-| `AbstractTree`    |                           |                                 | `nid`, `eqv()`                                                                      |
-| `UpTree`          | `AbstractTree`            | `parent`                        | `root`, `is_root`, `ancestors`, `path`                               |
-| `DownTree`        | `AbstractTree`            | `children`                      | `nodes`, `descendants`, `leaves`, `levels`, `is_leaf`, `transform()` |
-| `Tree`            | `UpTree`, `DownTree`      |                                 | `siblings`                                                           |
-| `MutableDownTree` | `DownTree`                | `add_child()`, `remove_child()` | `add_children()`                                                     |
-| `MutableTree`     | `Tree`, `MutableDownTree` |                                 | `detach()`                                                           |
+| ABC               | Inherits from               | Abstract Methods                  | Mixin Methods                                                                                                                        |
+|-------------------|-----------------------------|-----------------------------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| `AbstractTree`    |                             |                                   | `nid`, `eqv()`                                                                                                                       |
+| `UpTree`          | `AbstractTree`              | `parent`                          | `root`, `is_root`, `ancestors`, `path`                                                                                               |
+| `DownTree`        | `AbstractTree`              | `children`                        | `nodes`, `descendants`, `leaves`, `levels`, `is_leaf`, `transform()`, `nodes.preorder()`, `nodes.postorder()`, `nodes.levelorder()`  |
+| `Tree`            | `UpTree`, `DownTree`        |                                   | `siblings`                                                                                                                           |
+| `MutableDownTree` | `DownTree`                  | `add_child()`, `remove_child()`   | `add_children()`                                                                                                                     |
+| `MutableTree`     | `Tree`, `MutableDownTree`   |                                   | `detach()`                                                                                                                           |
+| `BinaryDownTree`  | `DownTree`                  | `left_child`, `right_child`       | `children`, `nodes.inorder()`, `descendants.inorder()`                                                                               |
+| `BinaryTree`      | `BinaryDownTree`, `Tree`    |                                   |                                                                                                                                      |
 
 In your own code, you can inherit from these trees.
 For example, if your tree only has links to children:

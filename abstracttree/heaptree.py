@@ -1,9 +1,10 @@
 from typing import Collection, Optional
 
-from .treeclasses import Tree, TNode
+from .binarytree import BinaryTree
+from .treeclasses import TNode
 
 
-class HeapTree(Tree):
+class HeapTree(BinaryTree):
     """Provides a tree interface to a heap.
 
     Mainly useful for visualisation purposes.
@@ -48,6 +49,18 @@ class HeapTree(Tree):
         return [HeapTree(self.heap, i)
                 for i in range(2 * self.index + 1, 2 * self.index + 3)
                 if i < len(self.heap)]
+
+    @property
+    def left_child(self) -> Optional[TNode]:
+        i = 2 * self.index + 1
+        if i < len(self.heap):
+            return HeapTree(self.heap, i)
+
+    @property
+    def right_child(self) -> Optional[TNode]:
+        i = 2 * self.index + 2
+        if i < len(self.heap):
+            return HeapTree(self.heap, i)
 
     @property
     def parent(self: TNode) -> Optional[TNode]:
