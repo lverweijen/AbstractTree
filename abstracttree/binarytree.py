@@ -67,7 +67,7 @@ class NodesView(treeclasses.NodesView):
             depth = self.level
             item = NodeItem(index, depth)
 
-            while node or stack:
+            while node is not None or stack:
                 # Traverse down/left
                 left_child, left_item = node.left_child, NodeItem(0, depth + 1)
                 while left_child is not None and (not keep or keep(left_child, left_item)):
