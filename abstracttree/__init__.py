@@ -31,4 +31,4 @@ from .predicates import RemoveDuplicates, PreventCycles, MaxDepth
 from .route import Route
 from .treeclasses import Tree, DownTree, UpTree, MutableDownTree, MutableTree
 
-__version__ = "0.0.4"
+__version__ = "0.0.5"

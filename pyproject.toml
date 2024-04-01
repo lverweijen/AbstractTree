@@ -1,3 +1,53 @@
 [build-system]
 requires = ["setuptools>=40.6.0"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "abstracttree"
+dynamic = ["version"]
+authors = [
+    {name = "lverweijen", email = "lauwerund@gmail.com"}
+]
+description = "Abstract base classes for tree data structures"
+readme = "README.md"
+requires-python = ">= 3.9"
+keywords = [
+    "tree",
+    "datastructure",
+    "hierarchy",
+    "taxonomy",
+    "newick",
+    "graphviz",
+    "mermaid",
+]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Typing :: Typed",
+]
+license = {text = "Apache License 2.0"}
+
+[project.optional-dependencies]
+export = [
+    "Pillow >= 5.0",
+    "matplotlib >= 3.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/lverweijen/abstracttree"
+Repository = "https://github.com/lverweijen/abstracttree"
+Issues = "https://github.com/lverweijen/abstracttree/issues"
+Changelog = "https://github.com/lverweijen/abstracttree/blob/main/changes.md"
+
+[tool.setuptools.packages.find]
+include = ["abstracttree*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "abstracttree.__version__"}
