@@ -323,6 +323,13 @@ class LevelsView:
             yield iter(level)
             level = [child for node in level for child in node.children]
 
+    def zigzag(self):
+        """Traverse the levels in zigzag-order."""
+        level = [self.tree]
+        while level:
+            yield iter(level)
+            level = [child for node in reversed(level) for child in reversed(node.children)]
+
     def count(self):
         return 1 + max(it.depth for (_, it) in self.tree.nodes.preorder())
 

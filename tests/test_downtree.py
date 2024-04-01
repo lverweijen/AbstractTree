@@ -70,6 +70,22 @@ class TestDownTree(TestCase):
         expected = [[1], [2, 3], [4], [5]]
         self.assertEqual(expected, values)
 
+        tree = trees.HEAP_TREE
+        values = [[node.value for node in level] for level in tree.levels]
+        expected = [[0], [1, 3], [2, 4, 5]]
+        self.assertEqual(expected, values)
+
+    def test_levels_zigzag(self):
+        tree = trees.BINARY_TREE
+        values = [[node.value for node in level] for level in tree.levels.zigzag()]
+        expected = [[1], [3, 2], [4], [5]]
+        self.assertEqual(expected, values)
+
+        tree = trees.HEAP_TREE
+        values = [[node.value for node in level] for level in tree.levels.zigzag()]
+        expected = [[0], [3, 1], [4, 2, 5]]
+        self.assertEqual(expected, values)
+
     def test_levels_count(self):
         self.assertEqual(1, trees.SINGLETON.levels.count())
         self.assertEqual(1, trees.NONEXISTENTPATH.levels.count())
