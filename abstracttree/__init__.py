@@ -2,8 +2,10 @@ __all__ = [
     "Tree",
     "DownTree",
     "UpTree",
-    "MutableDownTree",
     "MutableTree",
+    "MutableDownTree",
+    "BinaryTree",
+    "BinaryDownTree",
     "astree",
     "print_tree",
     "plot_tree",
@@ -20,6 +22,7 @@ __all__ = [
     "Route",
 ]
 
+from .binarytree import BinaryTree, BinaryDownTree
 from .conversions import astree
 from .export import print_tree, plot_tree, to_image, to_dot, to_mermaid, to_string, to_pillow, \
     to_latex
