@@ -15,6 +15,17 @@ class AbstractTree(metaclass=ABCMeta):
     """Most abstract baseclass for everything."""
     __slots__ = ()
 
+    @classmethod
+    def convert(cls, obj):
+        """Convert obj to tree-type or raise TypeError if that doesn't work."""
+        from .conversions import convert_tree
+        if isinstance(obj, cls):
+            return obj
+        tree = convert_tree(obj)
+        if isinstance(tree, cls):
+            return tree
+        raise TypeError(f"{obj!r} cannot be converted to {cls.__name__}")
+
     @property
     def nid(self) -> int:
         """Unique number that represents this node."""

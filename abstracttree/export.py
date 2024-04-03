@@ -23,8 +23,6 @@ __all__ = [
     "LiteralText",
 ]
 
-from .conversions import astree
-
 
 class Style(TypedDict):
     branch: str
@@ -89,7 +87,7 @@ def to_string(
     keep=None,
 ):
     """Converts tree to a string in a pretty format."""
-    tree = astree(tree)
+    tree = Tree.convert(tree)
     if isinstance(style, str):
         style = DEFAULT_STYLES[style]
     empty_style = len(style["last"]) * " "
@@ -133,7 +131,7 @@ def plot_tree(tree: Tree, ax=None, formatter=str, keep=DEFAULT_PREDICATE, annota
     """Plot the tree using matplotlib (if installed)."""
     # Roughly based on sklearn.tree.plot_tree()
     import matplotlib.pyplot as plt
-    tree = astree(tree)
+    tree = Tree.convert(tree)
 
     if ax is None:
         ax = plt.gca()
@@ -250,7 +248,7 @@ def to_dot(
     graph_attributes: GraphAttributes = None,
 ):
     """Export to `graphviz <https://graphviz.org/>`_."""
-    tree = astree(tree)
+    tree = Tree.convert(tree)
     if node_name is None:
         node_name = _node_name_default
 
@@ -349,7 +347,7 @@ def to_mermaid(
     graph_direction: str = "TD",
 ):
     """Export to `mermaid <https://mermaid.js.org/>`_."""
-    tree = astree(tree)
+    tree = Tree.convert(tree)
     if node_name is None:
         node_name = _node_name_default
 
@@ -401,7 +399,7 @@ def to_latex(
     Make sure to put ``\\usepackage{tikz}`` in your preamble.
     Does not wrap output in a figure environment.
     """
-    tree = astree(tree)
+    tree = DownTree.convert(tree)
     if isinstance(indent, int):
         indent = "\t" if indent == -1 else indent * " "
 
