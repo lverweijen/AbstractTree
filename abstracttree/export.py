@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Union, Callable, TypedDict, Tuple, Any, TypeVar, Optional
 
 from .predicates import PreventCycles, MaxDepth
-from .treeclasses import DownTree, Tree
+from .tree import DownTree, Tree
 
 __all__ = [
     "print_tree",

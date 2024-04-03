@@ -18,7 +18,7 @@ class AbstractTree(metaclass=ABCMeta):
     @classmethod
     def convert(cls, obj):
         """Convert obj to tree-type or raise TypeError if that doesn't work."""
-        from .conversions import convert_tree
+        from .adapters import convert_tree
         if isinstance(obj, cls):
             return obj
         tree = convert_tree(obj)
