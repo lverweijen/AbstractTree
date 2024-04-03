@@ -1,7 +1,6 @@
 __all__ = [
     "Tree",
     "DownTree",
-    "UpTree",
     "MutableTree",
     "MutableDownTree",
     "BinaryTree",
@@ -29,6 +28,6 @@ from .export import print_tree, plot_tree, to_image, to_dot, to_mermaid, to_stri
 from .heaptree import HeapTree
 from .predicates import RemoveDuplicates, PreventCycles, MaxDepth
 from .route import Route
-from .treeclasses import Tree, DownTree, UpTree, MutableDownTree, MutableTree
+from .treeclasses import Tree, DownTree, MutableDownTree, MutableTree
 
 __version__ = "0.0.5"
