@@ -282,7 +282,7 @@ def to_dot(
         file.write(f"edge{attrs};\n")
 
     nodes = []
-    for node, _ in tree.nodes.preorder(keep=PreventCycles() & keep):
+    for node, _ in tree.nodes.levelorder(keep=PreventCycles() & keep):
         nodes.append(node)
         name = _escape_string(node_name(node), "dot")
         attrs = _handle_attributes(node_dynamic, node)
@@ -359,7 +359,7 @@ def to_mermaid(
 
     # Output nodes
     nodes = []  # Stop automatic garbage collecting
-    for node, _ in tree.nodes.preorder(keep=PreventCycles() & keep):
+    for node, _ in tree.nodes.levelorder(keep=PreventCycles() & keep):
         left, right = _get_shape(node_shape, node)
         name = node_name(node)
         if node_label:

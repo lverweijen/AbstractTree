@@ -68,7 +68,7 @@ class PreventCycles(Predicate):
         self.duplicates = set()
 
     def __call__(self, node: AbstractTree, item):
-        if node.parent and node.parent.nid in self.duplicates:
+        if node.parent is not None and node.parent.nid in self.duplicates and node.nid in self.seen:
             return False
         if node.nid in self.seen:
             self.duplicates.add(node.nid)
@@ -85,7 +85,7 @@ class MaxDepth(Predicate):
     Can be passed to keep argument of methods such as tree.iter_tree().
     >>> from littletree import Node
     >>> tree = Node(identifier='root').path.create(['a', 'b', 'c', 'd']).root
-    >>> [node.identifier for node in tree.iter_nodes(keep=MaxDepth(3))]
+    >>> [node.identifier for node in tree.nodes.preorder(keep=MaxDepth(3))]
     ['root', 'a', 'b', 'c']
     """
     depth: int
