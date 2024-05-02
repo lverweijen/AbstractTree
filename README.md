@@ -1,19 +1,18 @@
 This Python package contains a few abstract base classes for tree data structures.
 Trees are very common data structure that represents a hierarchy of common nodes.
-This package defines abstract base classes for these data structure in order to make code reusable.
+There are many different ways to represent them.
+This package tries to provide a uniform interface, mixin methods and some utility functions without settling on a concrete tree implementation.
 
 ## Abstract base classes ##
 
 ```python
-from abstracttree import to_mermaid
+from abstracttree import DownTree, to_mermaid
 
-to_mermaid(AbstractTree)
+to_mermaid(DownTree)
 ```
 
 ```mermaid
 graph TD;
-AbstractTree[AbstractTree];
-UpTree[UpTree];
 Tree[Tree];
 MutableTree[MutableTree];
 DownTree[DownTree];
@@ -21,34 +20,28 @@ Tree[Tree];
 MutableTree[MutableTree];
 MutableDownTree[MutableDownTree];
 MutableTree[MutableTree];
-BinaryDownTree[BinaryDownTree]
-BinaryTree[BinaryTree]
-AbstractTree-->UpTree;
-UpTree-->Tree;
+BinaryDownTree[BinaryDownTree];
+BinaryTree[BinaryTree];
 Tree-->MutableTree;
-AbstractTree-->DownTree;
 DownTree-->Tree;
 DownTree-->MutableDownTree;
 MutableDownTree-->MutableTree;
-DownTree-->BinaryDownTree
-BinaryDownTree-->BinaryTree
-Tree-->BinaryTree
+DownTree-->BinaryDownTree;
+BinaryDownTree-->BinaryTree;
+Tree-->BinaryTree;
 ```
 
-Downtrees are trees that have links to their direct children.
-Uptrees are trees that link to their parent.
-A Tree has links in both directions.
+A `Downtree` needs to have links to its direct children, but doesn't require a link to its parent.
+A `Tree` needs to have links to both its `children` and its `parent`.
 
-| ABC               | Inherits from               | Abstract Methods                  | Mixin Methods                                                                                                                        |
-|-------------------|-----------------------------|-----------------------------------|--------------------------------------------------------------------------------------------------------------------------------------|
-| `AbstractTree`    |                             |                                   | `nid`, `eqv()`                                                                                                                       |
-| `UpTree`          | `AbstractTree`              | `parent`                          | `root`, `is_root`, `ancestors`, `path`                                                                                               |
-| `DownTree`        | `AbstractTree`              | `children`                        | `nodes`, `descendants`, `leaves`, `levels`, `is_leaf`, `transform()`, `nodes.preorder()`, `nodes.postorder()`, `nodes.levelorder()`  |
-| `Tree`            | `UpTree`, `DownTree`        |                                   | `siblings`                                                                                                                           |
-| `MutableDownTree` | `DownTree`                  | `add_child()`, `remove_child()`   | `add_children()`                                                                                                                     |
-| `MutableTree`     | `Tree`, `MutableDownTree`   |                                   | `detach()`                                                                                                                           |
-| `BinaryDownTree`  | `DownTree`                  | `left_child`, `right_child`       | `children`, `nodes.inorder()`, `descendants.inorder()`                                                                               |
-| `BinaryTree`      | `BinaryDownTree`, `Tree`    |                                   |                                                                                                                                      |
+| ABC               | Inherits from             | Abstract Methods                | Mixin Methods                                                                                                                                                           |
+|-------------------|---------------------------|---------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `DownTree`        |                           | `children`                      | `nodes`, `nodes.preorder()`, `nodes.postorder()`, `nodes.levelorder()`, `descendants`, `leaves`, `levels`, `levels.zigzag()`, `is_leaf`, `transform()`,  `nid`, `eqv()` |
+| `Tree`            | `DownTree`                | `parent`                        | `root`, `is_root`, `ancestors`, `path`, `siblings`                                                                                                                      |
+| `MutableDownTree` | `DownTree`                | `add_child()`, `remove_child()` | `add_children()`                                                                                                                                                        |
+| `MutableTree`     | `Tree`, `MutableDownTree` |                                 | `detach()`                                                                                                                                                              |
+| `BinaryDownTree`  | `DownTree`                | `left_child`, `right_child`     | `children`, `nodes.inorder()`, `descendants.inorder()`                                                                                                                  |
+| `BinaryTree`      | `BinaryDownTree`, `Tree`  |                                 |                                                                                                                                                                         |
 
 In your own code, you can inherit from these trees.
 For example, if your tree only has links to children:
@@ -81,23 +74,27 @@ print_tree(tree)
 ## Adapter ##
 
 In practice, not all existing tree data structures implement one of these abstract classes.
-As a bridge, you can use `astree` to convert these trees to a `Tree` instance.
+As a bridge, you can use `AbstractTree.convert` to convert these trees to a `Tree` instance.
 However, whenever possible, it's recommended to inherit from `Tree` directly for minimal overhead.
 
 Examples:
 
 ```python
 # Trees from built-ins and standard library
-astree(int)
-astree(ast.parse("1 + 1 == 2"))
-astree(pathlib.Path("abstracttree"))
+tree = Tree.convert(int)
+tree = Tree.convert(ast.parse("1 + 1 == 2"))
+tree = Tree.convert(pathlib.Path("abstracttree"))
 
 # Anything that has parent and children attributes (anytree / bigtree / littletree)
-astree(anytree.Node())
+tree = Tree.convert(anytree.Node('name'))
 
 # Nested list
-astree([[1, 2, 3], [4, 5, 6]])
+tree = Tree.convert([[1, 2, 3], [4, 5, 6]])
+```
 
+Or use `astree` if you need a custom function for `parent` or `children`:
+
+```python
 # Tree from json-data
 data = {"name": "a",
         "children": [
@@ -166,10 +163,8 @@ from abstracttree import HeapTree, Route
 
 tree = HeapTree([5, 4, 3, 2, 1])
 heapq.heapify(tree.heap)
-left_child = tree.children[0]
-right_child = tree.children[1]
+route = Route(tree.left_child, tree.right_child)
 
-route = Route(left_child, right_child)
 print(f"{route.lca = }")  # => HeapTree([1, 2, 3, 5, 4], 0)
 print(f"{route.nodes.count() = }")  # => 3
 print(f"{route.edges.count() = }")  # => 2

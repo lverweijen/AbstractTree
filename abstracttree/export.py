@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Union, Callable, TypedDict, Tuple, Any, TypeVar, Optional
 
 from .predicates import PreventCycles, MaxDepth
-from .treeclasses import DownTree, Tree
+from .tree import DownTree, Tree
 
 __all__ = [
     "print_tree",
@@ -22,8 +22,6 @@ __all__ = [
     "to_latex",
     "LiteralText",
 ]
-
-from .conversions import astree
 
 
 class Style(TypedDict):
@@ -89,7 +87,7 @@ def to_string(
     keep=None,
 ):
     """Converts tree to a string in a pretty format."""
-    tree = astree(tree)
+    tree = Tree.convert(tree)
     if isinstance(style, str):
         style = DEFAULT_STYLES[style]
     empty_style = len(style["last"]) * " "
@@ -133,7 +131,7 @@ def plot_tree(tree: Tree, ax=None, formatter=str, keep=DEFAULT_PREDICATE, annota
     """Plot the tree using matplotlib (if installed)."""
     # Roughly based on sklearn.tree.plot_tree()
     import matplotlib.pyplot as plt
-    tree = astree(tree)
+    tree = Tree.convert(tree)
 
     if ax is None:
         ax = plt.gca()
@@ -250,7 +248,7 @@ def to_dot(
     graph_attributes: GraphAttributes = None,
 ):
     """Export to `graphviz <https://graphviz.org/>`_."""
-    tree = astree(tree)
+    tree = Tree.convert(tree)
     if node_name is None:
         node_name = _node_name_default
 
@@ -284,7 +282,7 @@ def to_dot(
         file.write(f"edge{attrs};\n")
 
     nodes = []
-    for node, _ in tree.nodes.preorder(keep=PreventCycles() & keep):
+    for node, _ in tree.nodes.levelorder(keep=PreventCycles() & keep):
         nodes.append(node)
         name = _escape_string(node_name(node), "dot")
         attrs = _handle_attributes(node_dynamic, node)
@@ -349,7 +347,7 @@ def to_mermaid(
     graph_direction: str = "TD",
 ):
     """Export to `mermaid <https://mermaid.js.org/>`_."""
-    tree = astree(tree)
+    tree = Tree.convert(tree)
     if node_name is None:
         node_name = _node_name_default
 
@@ -361,7 +359,7 @@ def to_mermaid(
 
     # Output nodes
     nodes = []  # Stop automatic garbage collecting
-    for node, _ in tree.nodes.preorder(keep=PreventCycles() & keep):
+    for node, _ in tree.nodes.levelorder(keep=PreventCycles() & keep):
         left, right = _get_shape(node_shape, node)
         name = node_name(node)
         if node_label:
@@ -401,7 +399,7 @@ def to_latex(
     Make sure to put ``\\usepackage{tikz}`` in your preamble.
     Does not wrap output in a figure environment.
     """
-    tree = astree(tree)
+    tree = DownTree.convert(tree)
     if isinstance(indent, int):
         indent = "\t" if indent == -1 else indent * " "
 

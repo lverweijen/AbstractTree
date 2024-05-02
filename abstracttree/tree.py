@@ -15,12 +15,23 @@ class AbstractTree(metaclass=ABCMeta):
     """Most abstract baseclass for everything."""
     __slots__ = ()
 
+    @classmethod
+    def convert(cls, obj):
+        """Convert obj to tree-type or raise TypeError if that doesn't work."""
+        from .adapters import convert_tree
+        if isinstance(obj, cls):
+            return obj
+        tree = convert_tree(obj)
+        if isinstance(tree, cls):
+            return tree
+        raise TypeError(f"{obj!r} cannot be converted to {cls.__name__}")
+
     @property
     def nid(self) -> int:
         """Unique number that represents this node."""
         return id(self)
 
-    def eqv(self, other):
+    def eqv(self, other) -> bool:
         """Check if both objects represent the same node.
 
         Should normally be operator.is, but can be overridden by delegates.
@@ -163,9 +174,6 @@ class TreeView(Iterable[TNode], metaclass=ABCMeta):
         deque(zip(self, counter), maxlen=0)
         return next(counter)
 
-    def __contains__(self, node) -> bool:
-        return any(map(node.eqv, self))
-
 
 class AncestorsView(TreeView):
     __slots__ = "parent"
@@ -305,7 +313,7 @@ class LeavesView(TreeView):
         except AttributeError:
             return node in super()
         else:
-            return any(map(self.root.eqv, ancestors))
+            return self.root in ancestors
 
 
 class LevelsView:

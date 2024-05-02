@@ -7,7 +7,7 @@ import zipfile
 from collections.abc import Sequence, Mapping
 from typing import TypeVar, Callable, Iterable, overload, Collection, Union
 
-from .treeclasses import Tree, DownTree
+from .tree import Tree, DownTree
 
 TWrap = TypeVar("TWrap")
 BaseString = Union[str, bytes, bytearray]  # Why did they ever remove this type?

@@ -53,7 +53,7 @@ class InfiniteSingleton(Tree):
 
 
 SINGLETON = astree("Singleton", children=lambda n: ())
-NONEXISTENTPATH = astree(Path("this/path/should/not/exist"))
+NONEXISTENTPATH = Tree.convert(Path("this/path/should/not/exist"))
 
 BINARY_TREE = BinaryNode(1)  # 2 children
 BINARY_TREE.left = BinaryNode(2)  # leaf
@@ -71,7 +71,7 @@ COUNTDOWN = astree(COUNTDOWN_MAX,
                    children=lambda n: [n + 1] if n < COUNTDOWN_MAX else (),
                    parent=lambda n: n - 1 if n > 0 else None)
 
-SEQTREE = astree([1, [2, 3], []])
+SEQTREE = Tree.convert([1, [2, 3], []])
 
 INFINITE_TREE = InfiniteSingleton()
 

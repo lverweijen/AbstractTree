@@ -8,7 +8,7 @@ Since networkx has a very different data model it makes most sense to work with 
 import networkx as nx
 
 from abstracttree import print_tree
-from abstracttree.conversions import TreeAdapter
+from abstracttree.adapters import TreeAdapter
 
 
 class NetworkXTree(TreeAdapter):

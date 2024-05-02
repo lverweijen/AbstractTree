@@ -2,9 +2,9 @@ from abc import ABCMeta, abstractmethod
 from collections import deque
 from typing import Optional, Sequence
 
-from abstracttree import treeclasses
+from abstracttree import tree
 
-from .treeclasses import DownTree, Tree, TNode, NodeItem
+from .tree import DownTree, Tree, TNode, NodeItem
 
 
 class BinaryDownTree(DownTree, metaclass=ABCMeta):
@@ -44,7 +44,7 @@ class BinaryTree(BinaryDownTree, Tree, metaclass=ABCMeta):
     __slots__ = ()
 
 
-class NodesView(treeclasses.NodesView):
+class NodesView(tree.NodesView):
     """Extend NodesView to make it do inorder."""
     __slots__ = ()
 

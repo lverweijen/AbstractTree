@@ -5,7 +5,7 @@ from collections.abc import Sized, Sequence, MutableSequence
 from functools import lru_cache
 from typing import TypeVar, Optional
 
-from .treeclasses import UpTree
+from .tree import UpTree
 
 TNode = TypeVar("TNode", bound=UpTree)
 
