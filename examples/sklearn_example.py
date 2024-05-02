@@ -2,7 +2,7 @@
 # https://github.com/scikit-learn/scikit-learn/pull/28364
 
 from abstracttree import print_tree, to_latex, to_image
-from abstracttree.conversions import StoredParent
+from abstracttree.adapters import StoredParent
 
 
 class DecisionTreeAdapter(StoredParent):
