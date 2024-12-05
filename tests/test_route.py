@@ -73,9 +73,23 @@ class TestRoute(unittest.TestCase):
         node_result = [node.node for node in reversed(self.route2.nodes)]
         edge_result = [(v1.node, v2.node) for (v1, v2) in reversed(self.route2.edges)]
         node_expected = [2, 0, 1, 3, 8, 18, 8, 3, 1, 0, 2, 0, 1, 3, 8, 18]
-        edge_expected = [(2, 0), (0, 1), (1, 3), (3, 8), (8, 18),
-                         (18, 8), (8, 3), (3, 1), (1, 0), (0, 2),
-                         (2, 0), (0, 1), (1, 3), (3, 8), (8, 18)]
+        edge_expected = [
+            (2, 0),
+            (0, 1),
+            (1, 3),
+            (3, 8),
+            (8, 18),
+            (18, 8),
+            (8, 3),
+            (3, 1),
+            (1, 0),
+            (0, 2),
+            (2, 0),
+            (0, 1),
+            (1, 3),
+            (3, 8),
+            (8, 18),
+        ]
         self.assertEqual(node_expected, node_result)
         self.assertEqual(edge_expected, edge_result)
 
@@ -95,5 +109,5 @@ class TestRoute(unittest.TestCase):
             self.route1.add_anchor(SEQTREE)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

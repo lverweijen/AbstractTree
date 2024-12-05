@@ -42,6 +42,7 @@ class PredicateIntersection(Predicate):
 
 class RemoveDuplicates(Predicate):
     """Remove duplicates in case of cycles or multiparent trees."""
+
     __slots__ = "seen"
 
     def __init__(self):
@@ -61,6 +62,7 @@ class PreventCycles(Predicate):
     It might yield nodes more than once, but will not repeat children.
     This is mostly useful when trying to plot cyclic trees.
     """
+
     __slots__ = "seen", "duplicates"
 
     def __init__(self):
@@ -88,6 +90,7 @@ class MaxDepth(Predicate):
     >>> [node.identifier for node in tree.nodes.preorder(keep=MaxDepth(3))]
     ['root', 'a', 'b', 'c']
     """
+
     depth: int
 
     def __call__(self, _node, item):

@@ -41,6 +41,7 @@ class TestMutableDownTree(TestCase):
 
         This is a pretty cool way to convert an infinite tree to a finite one.
         """
+
         def double(node):
             return BinaryNode(value=2 * node.node)
 

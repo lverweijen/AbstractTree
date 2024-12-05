@@ -24,8 +24,17 @@ __all__ = [
 
 from .adapters import astree
 from .binarytree import BinaryTree, BinaryDownTree
-from .export import print_tree, plot_tree, to_image, to_dot, to_mermaid, to_string, to_pillow, \
-    to_latex, to_reportlab
+from .export import (
+    print_tree,
+    plot_tree,
+    to_image,
+    to_dot,
+    to_mermaid,
+    to_string,
+    to_pillow,
+    to_latex,
+    to_reportlab,
+)
 from .heaptree import HeapTree
 from .predicates import RemoveDuplicates, PreventCycles, MaxDepth
 from .route import Route

@@ -30,6 +30,7 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Typing :: Typed",
 ]
 license = {text = "Apache License 2.0"}
@@ -38,9 +39,7 @@ license = {text = "Apache License 2.0"}
 export = [
     "Pillow >= 5.0",
     "matplotlib >= 3.0",
-]
-reportlab = [
-    "svglib => 1.5.0"
+    "svglib >= 1.5.0",
 ]
 
 [project.urls]
@@ -54,3 +53,16 @@ include = ["abstracttree*"]
 
 [tool.setuptools.dynamic]
 version = {attr = "abstracttree.__version__"}
+
+[tool.ruff]
+line-length = 100
+indent-width = 4
+target-version = "py39"
+
+[tool.ruff.format]
+preview = true
+
+[dependency-groups]
+dev = [
+    "ruff>=0.8.2",
+]

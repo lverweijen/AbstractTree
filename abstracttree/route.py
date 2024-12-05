@@ -16,6 +16,7 @@ class Route:
     Two nodes are adjacent if they have a parent-child relationship.
     The route will be as short as possible, but it will visit the anchor points in order.
     """
+
     __slots__ = "_apaths", "_lca"
 
     def __init__(self, *anchors: TNode):
@@ -67,8 +68,12 @@ class Route:
         paths = self._apaths
         path0 = min(paths, key=len)
         indices = range(len(path0))
-        if i := bisect(indices, False, key=lambda ind: any(not path0[ind].eqv(p[ind]) for p in paths)):
-            lca = self._lca = path0[i-1]
+        if i := bisect(
+            indices,
+            False,
+            key=lambda ind: any(not path0[ind].eqv(p[ind]) for p in paths),
+        ):
+            lca = self._lca = path0[i - 1]
             return lca
         else:
             return None
@@ -103,7 +108,7 @@ class NodesView(RouteView):
         indices = range(len(self._apaths))
         path_j = None
         for i, j in itertools.pairwise(indices):
-            path_i, path_j = self._apaths[i:j + 1]
+            path_i, path_j = self._apaths[i : j + 1]
             c = self._route._common2(i, j)
             yield from path_i[:c:-1] + path_j[c:-1]
         if path_j:
@@ -113,7 +118,7 @@ class NodesView(RouteView):
         indices = range(len(self._apaths))
         path_i = None
         for j, i in itertools.pairwise(indices[::-1]):
-            path_i, path_j = self._apaths[i:j + 1]
+            path_i, path_j = self._apaths[i : j + 1]
             c = self._route._common2(i, j)
             yield from path_j[:c:-1] + path_i[c:-1]
         if path_i:
@@ -123,7 +128,7 @@ class NodesView(RouteView):
         s = 1
         indices = range(len(self._apaths))
         for i, j in itertools.pairwise(indices):
-            p1, p2 = self._apaths[i:j + 1]
+            p1, p2 = self._apaths[i : j + 1]
             s += len(p1) + len(p2) - 2 * self._route._common2(i, j) - 2
         return s
 

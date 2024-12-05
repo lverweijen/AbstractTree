@@ -63,13 +63,15 @@ BINARY_TREE.right.left.right = BinaryNode(5)  # leaf
 
 BINARY_TREE_SUBTREE = BINARY_TREE.right.left.right
 
-INFINITE_BINARY_TREE = astree(0, children=lambda n: (2*n + 1, 2*n + 2))
+INFINITE_BINARY_TREE = astree(0, children=lambda n: (2 * n + 1, 2 * n + 2))
 INFINITE_BINARY_TREE_SUBTREE = INFINITE_BINARY_TREE.children[1].children[0]
 
 COUNTDOWN_MAX = 5
-COUNTDOWN = astree(COUNTDOWN_MAX,
-                   children=lambda n: [n + 1] if n < COUNTDOWN_MAX else (),
-                   parent=lambda n: n - 1 if n > 0 else None)
+COUNTDOWN = astree(
+    COUNTDOWN_MAX,
+    children=lambda n: [n + 1] if n < COUNTDOWN_MAX else (),
+    parent=lambda n: n - 1 if n > 0 else None,
+)
 
 SEQTREE = Tree.convert([1, [2, 3], []])
 

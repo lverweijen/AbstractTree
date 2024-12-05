@@ -9,6 +9,7 @@ from .tree import DownTree, Tree, TNode, NodeItem
 
 class BinaryDownTree(DownTree, metaclass=ABCMeta):
     """Binary-tree with links to children."""
+
     __slots__ = ()
 
     @property
@@ -41,11 +42,13 @@ class BinaryDownTree(DownTree, metaclass=ABCMeta):
 
 class BinaryTree(BinaryDownTree, Tree, metaclass=ABCMeta):
     """Binary-tree with links to children and to parent."""
+
     __slots__ = ()
 
 
 class NodesView(tree.NodesView):
     """Extend NodesView to make it do inorder."""
+
     __slots__ = ()
 
     def inorder(self, keep=None):
@@ -79,7 +82,9 @@ class NodesView(tree.NodesView):
 
                 # Traverse right/up
                 right_child, right_item = node.right_child, NodeItem(1, depth + 1)
-                while stack and (right_child is None or (keep and not keep(right_child, right_item))):
+                while stack and (
+                    right_child is None or (keep and not keep(right_child, right_item))
+                ):
                     node, item = stack.pop()
                     yield node, item
                     depth -= 1

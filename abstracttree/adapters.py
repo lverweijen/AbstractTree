@@ -14,20 +14,19 @@ BaseString = Union[str, bytes, bytearray]  # Why did they ever remove this type?
 
 
 @overload
-def astree(obj) -> Tree:
-    ...
+def astree(obj) -> Tree: ...
 
 
 @overload
-def astree(obj: TWrap, children: Callable[[TWrap], Collection[TWrap]]) -> Tree:
-    ...
+def astree(obj: TWrap, children: Callable[[TWrap], Collection[TWrap]]) -> Tree: ...
 
 
 @overload
-def astree(obj: TWrap,
-           children: Callable[[TWrap], Collection[TWrap]],
-           parent: Callable[[TWrap], TWrap]) -> Tree:
-    ...
+def astree(
+    obj: TWrap,
+    children: Callable[[TWrap], Collection[TWrap]],
+    parent: Callable[[TWrap], TWrap],
+) -> Tree: ...
 
 
 def astree(
@@ -45,12 +44,16 @@ def astree(
         return convert_tree(obj)
     else:
         if parent:
+
             class CustomTree(TreeAdapter):
                 child_func = staticmethod(children)
                 parent_func = staticmethod(parent)
+
         else:
+
             class CustomTree(StoredParent):
                 child_func = staticmethod(children)
+
         return CustomTree(obj)
 
 
@@ -61,7 +64,7 @@ def convert_tree(tree):
     The default implementation ducktypes on `tree.parent` and `tree.children`.
     Classes can also define a method _abstracttree_ to override their conversion.
     """
-    explicit_conversion = getattr(tree, '_abstracttree_', None)
+    explicit_conversion = getattr(tree, "_abstracttree_", None)
     if explicit_conversion:
         return explicit_conversion()
     if hasattr(tree, "children"):
@@ -107,8 +110,10 @@ def _(tree: Sequence):
 @convert_tree.register(bytes)
 @convert_tree.register(bytearray)
 def _(_: BaseString):
-    raise NotImplementedError("astree(x: str | bytes | bytearray) is unsafe, "
-                              "because x is infinitely recursively iterable.")
+    raise NotImplementedError(
+        "astree(x: str | bytes | bytearray) is unsafe, "
+        "because x is infinitely recursively iterable."
+    )
 
 
 @convert_tree.register
@@ -343,7 +348,7 @@ class InvertedTypeTree(TypeTree):
 
 class AstTree(StoredParent):
     __slots__ = ()
-    CONT = '↓'
+    CONT = "↓"
     SINGLETON = Union[ast.expr_context, ast.boolop, ast.operator, ast.unaryop, ast.cmpop]
 
     @classmethod

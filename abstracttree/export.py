@@ -53,6 +53,7 @@ def _wrap_file(f):
     2) str / path (filename) -> Write to filename
     3) Filebuffer -> Write to filebuffer
     """
+
     @functools.wraps(f)
     def new_f(tree, file=None, *args, **kwargs):
         if file is None:
@@ -131,6 +132,7 @@ def plot_tree(tree: Tree, ax=None, formatter=str, keep=DEFAULT_PREDICATE, annota
     """Plot the tree using matplotlib (if installed)."""
     # Roughly based on sklearn.tree.plot_tree()
     import matplotlib.pyplot as plt
+
     tree = Tree.convert(tree)
 
     if ax is None:
@@ -157,7 +159,7 @@ def plot_tree(tree: Tree, ax=None, formatter=str, keep=DEFAULT_PREDICATE, annota
         for i, node in enumerate(level):
             x = (i + 1) / (len(level) + 1)
             y = 1 - depth / tree_height
-            kwargs['zorder'] = 100 - 10 * depth
+            kwargs["zorder"] = 100 - 10 * depth
             if node is tree:
                 ax.annotate(formatter(node), (x, y), **kwargs)
             else:
@@ -206,6 +208,7 @@ def to_image(
 def to_pillow(tree: Tree, **kwargs):
     """Convert tree to pillow-format (uses graphviz on the background)."""
     from PIL import Image
+
     if "file_format" not in kwargs:
         kwargs = kwargs.copy()
         kwargs.setdefault("file_format", "png")
@@ -213,8 +216,9 @@ def to_pillow(tree: Tree, **kwargs):
 
 
 def to_reportlab(tree: Tree, **kwargs):
-    """Convert as tree to """
+    """Convert tree to drawing for use with reportlab package."""
     from svglib.svglib import svg2rlg
+
     if "file_format" not in kwargs:
         kwargs = kwargs.copy()
         kwargs.setdefault("file_format", "svg")
@@ -331,7 +335,7 @@ def _handle_attributes(attributes, *args):
             v = v(*args)
         res.append(f"{k}={_escape_string(v, 'dot')}")
     if res:
-        return '[' + "".join(res) + ']'
+        return "[" + "".join(res) + "]"
     else:
         return ""
 
@@ -442,7 +446,7 @@ def to_latex(
 
     depth = 0
     label = _escape_string(node_label(tree), "latex")
-    file.write(fr"\begin{{tikzpicture}}{_latex_options(tree, picture_options)}")
+    file.write(rf"\begin{{tikzpicture}}{_latex_options(tree, picture_options)}")
     file.write("\n")
     options = _latex_options(tree, node_options)
     file.write(rf"\node{options}{{{label}}} [grow={graph_direction}]")
@@ -501,8 +505,8 @@ def _sibling_distances(tree, stop=100):
         level_ranks.append(max(max(mid_ranks), 1) if mid_ranks else 1)
 
     distances = len(level_ranks) * [1]
-    for level in reversed(range(len(level_ranks)-1)):
-        distances[level] = level_ranks[level] * distances[level+1]
+    for level in reversed(range(len(level_ranks) - 1)):
+        distances[level] = level_ranks[level] * distances[level + 1]
     return distances
 
 

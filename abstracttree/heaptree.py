@@ -20,6 +20,7 @@ class HeapTree(BinaryTree):
     │  └─ 4 → 4
     └─ 2 → 3
     """
+
     __slots__ = "heap", "index"
 
     def __init__(self, heap=None, index=0):
@@ -46,9 +47,11 @@ class HeapTree(BinaryTree):
 
     @property
     def children(self: TNode) -> Collection[TNode]:
-        return [HeapTree(self.heap, i)
-                for i in range(2 * self.index + 1, 2 * self.index + 3)
-                if i < len(self.heap)]
+        return [
+            HeapTree(self.heap, i)
+            for i in range(2 * self.index + 1, 2 * self.index + 3)
+            if i < len(self.heap)
+        ]
 
     @property
     def left_child(self) -> Optional[TNode]:

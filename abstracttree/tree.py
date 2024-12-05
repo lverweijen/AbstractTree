@@ -1,8 +1,7 @@
 import itertools
 from abc import abstractmethod, ABCMeta
 from collections import deque, namedtuple
-from typing import TypeVar, Callable, Optional, Collection, Literal, \
-    Iterable
+from typing import TypeVar, Callable, Optional, Collection, Literal, Iterable
 
 TNode = TypeVar("TNode")
 TMutDownNode = TypeVar("TMutDownNode", bound="MutableDownTree")
@@ -13,12 +12,14 @@ NodePredicate = Callable[[TNode, NodeItem], bool]
 
 class AbstractTree(metaclass=ABCMeta):
     """Most abstract baseclass for everything."""
+
     __slots__ = ()
 
     @classmethod
     def convert(cls, obj):
         """Convert obj to tree-type or raise TypeError if that doesn't work."""
         from .adapters import convert_tree
+
         if isinstance(obj, cls):
             return obj
         tree = convert_tree(obj)
@@ -41,6 +42,7 @@ class AbstractTree(metaclass=ABCMeta):
 
 class UpTree(AbstractTree, metaclass=ABCMeta):
     """Abstract class for tree classes with parent but no children."""
+
     __slots__ = ()
 
     @property
@@ -75,6 +77,7 @@ class UpTree(AbstractTree, metaclass=ABCMeta):
 
 class DownTree(AbstractTree, metaclass=ABCMeta):
     """Abstract class for tree classes with children but no parent."""
+
     __slots__ = ()
 
     @property
@@ -126,6 +129,7 @@ class DownTree(AbstractTree, metaclass=ABCMeta):
 
 class MutableDownTree(DownTree, metaclass=ABCMeta):
     """Abstract class for mutable tree with children."""
+
     __slots__ = ()
 
     @abstractmethod
@@ -146,6 +150,7 @@ class MutableDownTree(DownTree, metaclass=ABCMeta):
 
 class Tree(UpTree, DownTree, metaclass=ABCMeta):
     """Abstract class for tree classes with access to children and parents."""
+
     __slots__ = ()
 
     @property
@@ -156,6 +161,7 @@ class Tree(UpTree, DownTree, metaclass=ABCMeta):
 
 class MutableTree(Tree, MutableDownTree, metaclass=ABCMeta):
     """Abstract class for mutable tree with children and parent."""
+
     __slots__ = ()
 
     def detach(self) -> TNode:
@@ -240,8 +246,7 @@ class NodesView(TreeView):
             node, item = nodes.popleft()
             if not keep or keep(node, item):
                 yield node, item
-                next_nodes = [(c, NodeItem(i, item.depth + 1))
-                              for i, c in enumerate(node.children)]
+                next_nodes = [(c, NodeItem(i, item.depth + 1)) for i, c in enumerate(node.children)]
                 nodes.extendleft(reversed(next_nodes))
 
     def postorder(self, keep=None):
@@ -260,8 +265,9 @@ class NodesView(TreeView):
             keep_node = keep is None or keep(node, item)
             while keep_node and node.children:
                 stack.append((node, item, children))
-                children = iter([(c, NodeItem(i, item.depth + 1))
-                                 for (i, c) in enumerate(node.children)])
+                children = iter([
+                    (c, NodeItem(i, item.depth + 1)) for (i, c) in enumerate(node.children)
+                ])
                 node, item = next(children)
                 keep_node = keep is None or keep(node, item)
             if keep_node:
@@ -286,8 +292,7 @@ class NodesView(TreeView):
             node, item = nodes.popleft()
             if not keep or keep(node, item):
                 yield node, item
-                next_nodes = [(c, NodeItem(i, item.depth + 1))
-                              for i, c in enumerate(node.children)]
+                next_nodes = [(c, NodeItem(i, item.depth + 1)) for i, c in enumerate(node.children)]
                 nodes.extend(next_nodes)
 
 
