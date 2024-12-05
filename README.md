@@ -148,6 +148,7 @@ Export to various formats
 to_dot(tree)
 to_mermaid(tree)
 to_latex(tree)
+to_reportlab(tree)
 
 to_image(Path('.'), "filetree.png", how="dot")
 to_image(AbstractTree, "class_hierarchy.svg", how="mermaid")

@@ -39,6 +39,9 @@ export = [
     "Pillow >= 5.0",
     "matplotlib >= 3.0",
 ]
+reportlab = [
+    "svglib => 1.5.0"
+]
 
 [project.urls]
 Homepage = "https://github.com/lverweijen/abstracttree"

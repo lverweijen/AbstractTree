@@ -59,7 +59,11 @@ def convert_tree(tree):
     """Low level conversion of tree object to an abstracttree.Tree.
 
     The default implementation ducktypes on `tree.parent` and `tree.children`.
+    Classes can also define a method _abstracttree_ to override their conversion.
     """
+    explicit_conversion = getattr(tree, '_abstracttree_', None)
+    if explicit_conversion:
+        return explicit_conversion()
     if hasattr(tree, "children"):
         if hasattr(tree, "parent"):
             return TreeAdapter(tree)

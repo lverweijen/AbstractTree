@@ -1,6 +1,7 @@
+import shutil
 from unittest import TestCase
 
-from abstracttree import to_string, to_mermaid, to_dot, MaxDepth, to_latex
+from abstracttree import to_string, to_mermaid, to_dot, MaxDepth, to_latex, to_image
 from tree_instances import INFINITE_TREE, BINARY_TREE
 
 
@@ -63,6 +64,13 @@ class TestExport(TestCase):
                     '3-->4;\n'
                     '4-->5;\n')
         self.assertEqual(expected, result)
+
+    def test_to_image(self):
+        if not shutil.which("dot"):
+            self.skipTest("Program dot not found")
+        tree_bytes = to_image(BINARY_TREE, file_format='svg')
+        tree_xml = tree_bytes.decode('utf-8')
+        self.assertTrue(tree_xml.startswith("<?xml"))
 
     def test_to_latex(self):
         result = to_latex(BINARY_TREE, node_label=lambda n: str(n)[1:-1])

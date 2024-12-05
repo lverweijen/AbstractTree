@@ -181,17 +181,24 @@ def to_image(
     *args,
     **kwargs,
 ):
-    """Export to image. Uses graphviz(dot) or mermaid."""
+    """Export to image. Uses graphviz(dot) or mermaid.
+
+    If file is str or Path, save file under given name.
+    If file is None (default), return image as bytes.
+    If file is writable (binary), write to it.
+    """
     if how == "dot":
         if file is None:
-            img = _image_dot(tree, file=subprocess.PIPE, file_format="png", *args, **kwargs)
-            return io.BytesIO(img)
+            return _image_dot(tree, file=subprocess.PIPE, *args, **kwargs)
         elif hasattr(file, "write"):
-            _image_dot(tree, file, file_format="png", *args, **kwargs)
+            _image_dot(tree, file, *args, **kwargs)
         else:
             filepath = Path(file)
+            if "file_format" not in kwargs:
+                kwargs = kwargs.copy()
+                kwargs.setdefault("file_format", filepath.suffix[1:])
             with open(filepath, "bw") as file:
-                _image_dot(tree, file, file_format=filepath.suffix[1:], *args, **kwargs)
+                _image_dot(tree, file, *args, **kwargs)
     elif how == "mermaid":
         _image_mermaid(tree, Path(file), *args, **kwargs)
 
@@ -199,7 +206,21 @@ def to_image(
 def to_pillow(tree: Tree, **kwargs):
     """Convert tree to pillow-format (uses graphviz on the background)."""
     from PIL import Image
-    return Image.open(to_image(tree, file=None, how="dot", **kwargs))
+    if "file_format" not in kwargs:
+        kwargs = kwargs.copy()
+        kwargs.setdefault("file_format", "png")
+    return Image.open(io.BytesIO(to_image(tree, file=None, how="dot", **kwargs)))
+
+
+def to_reportlab(tree: Tree, **kwargs):
+    """Convert as tree to """
+    from svglib.svglib import svg2rlg
+    if "file_format" not in kwargs:
+        kwargs = kwargs.copy()
+        kwargs.setdefault("file_format", "svg")
+    svg_bytes = to_image(tree, **kwargs)
+    drawing = svg2rlg(io.BytesIO(svg_bytes))
+    return drawing
 
 
 def _image_dot(
