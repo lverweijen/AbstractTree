@@ -4,7 +4,7 @@ API
 Abstract base classes
 ---------------------
 
-.. automodule:: abstracttree.treeclasses
+.. automodule:: abstracttree.tree
    :members:
    :show-inheritance:
 
@@ -12,10 +12,10 @@ Abstract base classes
    :members:
    :show-inheritance:
 
-Conversions
+Adapters
 ------------------
 
-.. automodule:: abstracttree.conversions
+.. automodule:: abstracttree.adapters
    :members: astree, convert_tree
    :show-inheritance:
 

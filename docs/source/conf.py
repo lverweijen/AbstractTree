@@ -31,3 +31,9 @@ exclude_patterns = []
 
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
+
+
+from pathlib import Path
+src_folder = Path(__file__).parent.parent / "src"
+import sys
+sys.path.insert(0, str(src_folder))
