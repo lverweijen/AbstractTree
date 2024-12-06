@@ -39,5 +39,3 @@ from .heaptree import HeapTree
 from .predicates import RemoveDuplicates, PreventCycles, MaxDepth
 from .route import Route
 from .tree import Tree, DownTree, MutableDownTree, MutableTree
-
-__version__ = "0.1.1"

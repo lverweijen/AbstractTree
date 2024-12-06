@@ -1,7 +1,3 @@
-[build-system]
-requires = ["setuptools>=40.6.0"]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "abstracttree"
 dynamic = ["version"]
@@ -48,21 +44,22 @@ Repository = "https://github.com/lverweijen/abstracttree"
 Issues = "https://github.com/lverweijen/abstracttree/issues"
 Changelog = "https://github.com/lverweijen/abstracttree/blob/main/changes.md"
 
-[tool.setuptools.packages.find]
-include = ["abstracttree*"]
-
-[tool.setuptools.dynamic]
-version = {attr = "abstracttree.__version__"}
-
 [tool.ruff]
 line-length = 100
 indent-width = 4
 target-version = "py39"
+src = ["src"]
 
 [tool.ruff.format]
 preview = true
+
+[tool.setuptools_scm]
 
 [dependency-groups]
 dev = [
     "ruff>=0.8.2",
 ]
+
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
