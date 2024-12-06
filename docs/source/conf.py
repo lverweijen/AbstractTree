@@ -31,3 +31,11 @@ exclude_patterns = []
 
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
+
+
+# Code is in src. Make sure sphinx can find it
+import sys
+from pathlib import Path
+src_folder = Path(__file__).parent.parent.parent / "src"
+print(src_folder)
+sys.path.insert(0, str(src_folder.resolve(strict=True)))
