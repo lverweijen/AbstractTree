@@ -33,7 +33,9 @@ html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
 
 
-from pathlib import Path
-src_folder = Path(__file__).parent.parent / "src"
+# Code is in src. Make sure sphinx can find it
 import sys
-sys.path.insert(0, str(src_folder))
+from pathlib import Path
+src_folder = Path(__file__).parent.parent.parent / "src"
+print(src_folder)
+sys.path.insert(0, str(src_folder.resolve(strict=True)))
