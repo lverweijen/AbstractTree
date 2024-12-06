@@ -58,6 +58,7 @@ preview = true
 [dependency-groups]
 dev = [
     "ruff>=0.8.2",
+    "sphinx>=7.4.7",
 ]
 
 [build-system]
