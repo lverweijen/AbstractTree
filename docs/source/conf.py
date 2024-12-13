@@ -6,19 +6,11 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-# Code is in src. Make sure sphinx can find it
-import sys
-from pathlib import Path
-src_folder = Path(__file__).parent.parent.parent / "src"
-print(src_folder)
-sys.path.insert(0, str(src_folder.resolve(strict=True)))
-
-from setuptools_scm import get_version
 
 project = 'AbstractTree'
 copyright = '2024, Laurent Verweijen'
 author = 'Laurent Verweijen'
-release = get_version('abstracttree')
+release = 'stable'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -46,3 +38,9 @@ html_static_path = ['_static']
 
 myst_enable_extensions = ["colon_fence"]
 
+# Code is in src. Make sure sphinx can find it
+import sys
+from pathlib import Path
+src_folder = Path(__file__).parent.parent.parent / "src"
+print(src_folder)
+sys.path.insert(0, str(src_folder.resolve(strict=True)))
