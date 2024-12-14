@@ -4,22 +4,40 @@ Usage
 Abstract tree classes
 ---------------------
 
-.. image:: images/abstracttree.png
+.. mermaid::
 
-Downtrees are trees that have links to their direct children.
-Uptrees are trees that link to their parent.
-A Tree has links in both directions.
+    graph TD;
+    Tree[Tree];
+    MutableTree[MutableTree];
+    DownTree[DownTree];
+    Tree[Tree];
+    MutableTree[MutableTree];
+    MutableDownTree[MutableDownTree];
+    MutableTree[MutableTree];
+    BinaryDownTree[BinaryDownTree];
+    BinaryTree[BinaryTree];
+    Tree-->MutableTree;
+    DownTree-->Tree;
+    DownTree-->MutableDownTree;
+    MutableDownTree-->MutableTree;
+    DownTree-->BinaryDownTree;
+    BinaryDownTree-->BinaryTree;
+    Tree-->BinaryTree;
+
+
+A Downtrees is an object that has links to its direct children.
+A Tree is has links to both its children and its parent.
+A binary tree has exactly two children (left and right).
+A mutable tree can change its structure once created.
 
 +---------------------+-------------------------------+-------------------------------------+------------------------------------------------------------------------------------+
 | ABC                 | Inherits from                 | Abstract Methods                    | Mixin Methods                                                                      |
 +=====================+===============================+=====================================+====================================================================================+
 | ``AbstractTree``    |                               |                                     | ``nid``, ``eqv()``                                                                 |
 +---------------------+-------------------------------+-------------------------------------+------------------------------------------------------------------------------------+
-| ``UpTree``          | ``AbstractTree``              | ``parent``                          | ``root``, ``is_root``, ``ancestors``, ``path``                                     |
-+---------------------+-------------------------------+-------------------------------------+------------------------------------------------------------------------------------+
 | ``DownTree``        | ``AbstractTree``              | ``children``                        | ``nodes``, ``descendants``, ``leaves``, ``levels``, ``is_leaf``, ``transform()``   |
 +---------------------+-------------------------------+-------------------------------------+------------------------------------------------------------------------------------+
-| ``Tree``            | ``UpTree``, ``DownTree``      |                                     | ``siblings``                                                                       |
+| ``Tree``            | ``DownTree``                  |                                     | ``siblings``                                                                       |
 +---------------------+-------------------------------+-------------------------------------+------------------------------------------------------------------------------------+
 | ``MutableDownTree`` | ``DownTree``                  | ``add_child()``, ``remove_child()`` | ``add_children()``                                                                 |
 +---------------------+-------------------------------+-------------------------------------+------------------------------------------------------------------------------------+
@@ -120,7 +138,7 @@ Pre-order
 Post-order
     The children are iterated over before their parent.
 
-Post-order
+Level-order
     Nodes closer to root are iterated over before nodes further from the root.
 
 All these are possible by writing one of::

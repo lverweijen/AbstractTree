@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>API &mdash; AbstractTree 0.0.4 documentation</title>
+  <title>API &mdash; AbstractTree stable documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=ae2dc491"></script>
+      <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=921e5888"></script>
       <script src="_static/doctools.js?v=888ff710"></script>
       <script src="_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="_static/js/theme.js"></script>
@@ -128,7 +128,18 @@
 <li class="toctree-l3"><a class="reference internal" href="#abstracttree.adapters.convert_tree"><code class="docutils literal notranslate"><span class="pre">convert_tree()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#export">Export</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-abstracttree.export">Export</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.export.LiteralText"><code class="docutils literal notranslate"><span class="pre">LiteralText</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.export.plot_tree"><code class="docutils literal notranslate"><span class="pre">plot_tree()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.export.print_tree"><code class="docutils literal notranslate"><span class="pre">print_tree()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.export.to_dot"><code class="docutils literal notranslate"><span class="pre">to_dot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.export.to_image"><code class="docutils literal notranslate"><span class="pre">to_image()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.export.to_latex"><code class="docutils literal notranslate"><span class="pre">to_latex()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.export.to_mermaid"><code class="docutils literal notranslate"><span class="pre">to_mermaid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.export.to_pillow"><code class="docutils literal notranslate"><span class="pre">to_pillow()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.export.to_string"><code class="docutils literal notranslate"><span class="pre">to_string()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#module-abstracttree.predicates">Predicates</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#abstracttree.predicates.MaxDepth"><code class="docutils literal notranslate"><span class="pre">MaxDepth</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#abstracttree.predicates.Predicate"><code class="docutils literal notranslate"><span class="pre">Predicate</span></code></a></li>
@@ -138,8 +149,27 @@
 <li class="toctree-l3"><a class="reference internal" href="#abstracttree.predicates.RemoveDuplicates"><code class="docutils literal notranslate"><span class="pre">RemoveDuplicates</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#heaptree">HeapTree</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#route">Route</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-abstracttree.heaptree">HeapTree</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.heaptree.HeapTree"><code class="docutils literal notranslate"><span class="pre">HeapTree</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.heaptree.HeapTree.children"><code class="docutils literal notranslate"><span class="pre">HeapTree.children</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.heaptree.HeapTree.eqv"><code class="docutils literal notranslate"><span class="pre">HeapTree.eqv()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.heaptree.HeapTree.nid"><code class="docutils literal notranslate"><span class="pre">HeapTree.nid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.heaptree.HeapTree.parent"><code class="docutils literal notranslate"><span class="pre">HeapTree.parent</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-abstracttree.route">Route</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.route.Route"><code class="docutils literal notranslate"><span class="pre">Route</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.route.Route.add_anchor"><code class="docutils literal notranslate"><span class="pre">Route.add_anchor()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.route.Route.anchors"><code class="docutils literal notranslate"><span class="pre">Route.anchors</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.route.Route.edges"><code class="docutils literal notranslate"><span class="pre">Route.edges</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.route.Route.lca"><code class="docutils literal notranslate"><span class="pre">Route.lca</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.route.Route.nodes"><code class="docutils literal notranslate"><span class="pre">Route.nodes</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -387,7 +417,7 @@ Item denotes depth of iteration and index of child.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="abstracttree.tree.TreeView">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.tree.</span></span><span class="sig-name descname"><span class="pre">TreeView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/tree.html#TreeView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.tree.TreeView" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.tree.</span></span><span class="sig-name descname"><span class="pre">TreeView</span></span><a class="reference internal" href="_modules/abstracttree/tree.html#TreeView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.tree.TreeView" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">TNode</span></code>]</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="abstracttree.tree.TreeView.count">
@@ -540,8 +570,67 @@ Classes can also define a method _abstracttree_ to override their conversion.</p
 </dd></dl>
 
 </section>
-<section id="export">
-<h2>Export<a class="headerlink" href="#export" title="Permalink to this heading"></a></h2>
+<section id="module-abstracttree.export">
+<span id="export"></span><h2>Export<a class="headerlink" href="#module-abstracttree.export" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="abstracttree.export.LiteralText">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.export.</span></span><span class="sig-name descname"><span class="pre">LiteralText</span></span><a class="reference internal" href="_modules/abstracttree/export.html#LiteralText"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.export.LiteralText" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="abstracttree.export.plot_tree">
+<span class="sig-prename descclassname"><span class="pre">abstracttree.export.</span></span><span class="sig-name descname"><span class="pre">plot_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree:</span> <span class="pre">~abstracttree.tree.Tree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter=&lt;class</span> <span class="pre">'str'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep=MaxDepth(depth=5)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotate_args=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/export.html#plot_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.export.plot_tree" title="Permalink to this definition"></a></dt>
+<dd><p>Plot the tree using matplotlib (if installed).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="abstracttree.export.print_tree">
+<span class="sig-prename descclassname"><span class="pre">abstracttree.export.</span></span><span class="sig-name descname"><span class="pre">print_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter=&lt;class</span> <span class="pre">'str'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/export.html#print_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.export.print_tree" title="Permalink to this definition"></a></dt>
+<dd><p>Print this tree. Shortcut for print(to_string(tree)).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="abstracttree.export.to_dot">
+<span class="sig-prename descclassname"><span class="pre">abstracttree.export.</span></span><span class="sig-name descname"><span class="pre">to_dot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">tree:</span> <span class="pre">~abstracttree.tree.Tree,</span> <span class="pre">file=None,</span> <span class="pre">keep=MaxDepth(depth=5),</span> <span class="pre">node_name:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.Callable[[~abstracttree.export.TNode],</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">node_label:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.Callable[[~abstracttree.export.TNode],</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'str'&gt;,</span> <span class="pre">node_shape:</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.Callable[[~abstracttree.export.TNode],</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">node_attributes:</span> <span class="pre">~collections.abc.Mapping[str,</span> <span class="pre">~typing.Any]</span> <span class="pre">|</span> <span class="pre">~typing.Callable[[~abstracttree.export.TNode],</span> <span class="pre">~collections.abc.Mapping[str,</span> <span class="pre">~typing.Any]]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">edge_attributes:</span> <span class="pre">~collections.abc.Mapping[str,</span> <span class="pre">~typing.Any]</span> <span class="pre">|</span> <span class="pre">~typing.Callable[[~abstracttree.export.TNode,</span> <span class="pre">~abstracttree.export.TNode],</span> <span class="pre">~collections.abc.Mapping[str,</span> <span class="pre">~typing.Any]]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">graph_attributes:</span> <span class="pre">~collections.abc.Mapping[str,</span> <span class="pre">~typing.Any]</span> <span class="pre">=</span> <span class="pre">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/export.html#to_dot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.export.to_dot" title="Permalink to this definition"></a></dt>
+<dd><p>Export to <a class="reference external" href="https://graphviz.org/">graphviz</a>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="abstracttree.export.to_image">
+<span class="sig-prename descclassname"><span class="pre">abstracttree.export.</span></span><span class="sig-name descname"><span class="pre">to_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#abstracttree.tree.Tree" title="abstracttree.tree.Tree"><span class="pre">Tree</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">how</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dot'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/export.html#to_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.export.to_image" title="Permalink to this definition"></a></dt>
+<dd><p>Export to image. Uses graphviz(dot) or mermaid.</p>
+<p>If file is str or Path, save file under given name.
+If file is None (default), return image as bytes.
+If file is writable (binary), write to it.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="abstracttree.export.to_latex">
+<span class="sig-prename descclassname"><span class="pre">abstracttree.export.</span></span><span class="sig-name descname"><span class="pre">to_latex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">tree,</span> <span class="pre">file=None,</span> <span class="pre">keep=MaxDepth(depth=5),</span> <span class="pre">node_label:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.Callable[[~abstracttree.export.TNode],</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'str'&gt;,</span> <span class="pre">node_shape:</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.Callable[[~abstracttree.export.TNode],</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">leaf_distance:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">'2em',</span> <span class="pre">level_distance:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">node_options:</span> <span class="pre">~collections.abc.Iterable[str</span> <span class="pre">|</span> <span class="pre">~typing.Callable[[~abstracttree.export.TNode],</span> <span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">(),</span> <span class="pre">picture_options:</span> <span class="pre">~collections.abc.Iterable[str</span> <span class="pre">|</span> <span class="pre">~typing.Callable[[~abstracttree.export.TNode],</span> <span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">(),</span> <span class="pre">graph_direction:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'right',</span> <span class="pre">indent:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">4,</span> <span class="pre">align='center'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/export.html#to_latex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.export.to_latex" title="Permalink to this definition"></a></dt>
+<dd><p>Export to latex (experimental).</p>
+<p>Make sure to put <code class="docutils literal notranslate"><span class="pre">\usepackage{tikz}</span></code> in your preamble.
+Does not wrap output in a figure environment.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="abstracttree.export.to_mermaid">
+<span class="sig-prename descclassname"><span class="pre">abstracttree.export.</span></span><span class="sig-name descname"><span class="pre">to_mermaid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">tree:</span> <span class="pre">~abstracttree.tree.Tree,</span> <span class="pre">file=None,</span> <span class="pre">keep=MaxDepth(depth=5),</span> <span class="pre">node_name:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.Callable[[~abstracttree.export.TNode],</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">node_label:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.Callable[[~abstracttree.export.TNode],</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'str'&gt;,</span> <span class="pre">node_shape:</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.Callable[[~abstracttree.export.TNode],</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">str]</span> <span class="pre">=</span> <span class="pre">'box',</span> <span class="pre">edge_arrow:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.Callable[[~abstracttree.export.TNode,</span> <span class="pre">~abstracttree.export.TNode],</span> <span class="pre">str]</span> <span class="pre">=</span> <span class="pre">'--&gt;',</span> <span class="pre">graph_direction:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'TD'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/export.html#to_mermaid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.export.to_mermaid" title="Permalink to this definition"></a></dt>
+<dd><p>Export to <a class="reference external" href="https://mermaid.js.org/">mermaid</a>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="abstracttree.export.to_pillow">
+<span class="sig-prename descclassname"><span class="pre">abstracttree.export.</span></span><span class="sig-name descname"><span class="pre">to_pillow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#abstracttree.tree.Tree" title="abstracttree.tree.Tree"><span class="pre">Tree</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/export.html#to_pillow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.export.to_pillow" title="Permalink to this definition"></a></dt>
+<dd><p>Convert tree to pillow-format (uses graphviz on the background).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="abstracttree.export.to_string">
+<span class="sig-prename descclassname"><span class="pre">abstracttree.export.</span></span><span class="sig-name descname"><span class="pre">to_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree:</span> <span class="pre">~abstracttree.tree.DownTree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter=&lt;class</span> <span class="pre">'str'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~abstracttree.export.Style</span> <span class="pre">=</span> <span class="pre">'square'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/export.html#to_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.export.to_string" title="Permalink to this definition"></a></dt>
+<dd><p>Converts tree to a string in a pretty format.</p>
+</dd></dl>
+
 </section>
 <section id="module-abstracttree.predicates">
 <span id="predicates"></span><h2>Predicates<a class="headerlink" href="#module-abstracttree.predicates" title="Permalink to this heading"></a></h2>
@@ -559,7 +648,7 @@ Classes can also define a method _abstracttree_ to override their conversion.</p
 
 <dl class="py class">
 <dt class="sig sig-object py" id="abstracttree.predicates.Predicate">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.predicates.</span></span><span class="sig-name descname"><span class="pre">Predicate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/predicates.html#Predicate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.predicates.Predicate" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.predicates.</span></span><span class="sig-name descname"><span class="pre">Predicate</span></span><a class="reference internal" href="_modules/abstracttree/predicates.html#Predicate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.predicates.Predicate" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Callable</span></code>[[<a class="reference internal" href="#abstracttree.tree.AbstractTree" title="abstracttree.tree.AbstractTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractTree</span></code></a>, <a class="reference internal" href="#abstracttree.tree.NodeItem" title="abstracttree.tree.NodeItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeItem</span></code></a>], <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</p>
 </dd></dl>
 
@@ -592,11 +681,95 @@ This is mostly useful when trying to plot cyclic trees.</p>
 </dd></dl>
 
 </section>
-<section id="heaptree">
-<h2>HeapTree<a class="headerlink" href="#heaptree" title="Permalink to this heading"></a></h2>
+<section id="module-abstracttree.heaptree">
+<span id="heaptree"></span><h2>HeapTree<a class="headerlink" href="#module-abstracttree.heaptree" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="abstracttree.heaptree.HeapTree">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.heaptree.</span></span><span class="sig-name descname"><span class="pre">HeapTree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">heap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/heaptree.html#HeapTree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.heaptree.HeapTree" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#abstracttree.binarytree.BinaryTree" title="abstracttree.binarytree.BinaryTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">BinaryTree</span></code></a></p>
+<p>Provides a tree interface to a heap.</p>
+<p>Mainly useful for visualisation purposes.
+&gt;&gt;&gt; from abstracttree import print_tree
+&gt;&gt;&gt; import heapq
+&gt;&gt;&gt; tree = HeapTree()
+&gt;&gt;&gt; for n in range(5, 0, -1):
+&gt;&gt;&gt;     heapq.heappush(tree.heap, n)
+&gt;&gt;&gt; print_tree(tree)
+0 → 1
+├─ 1 → 2
+│  ├─ 3 → 5
+│  └─ 4 → 4
+└─ 2 → 3</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="abstracttree.heaptree.HeapTree.children">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">children</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">TNode</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#abstracttree.heaptree.HeapTree.children" title="Permalink to this definition"></a></dt>
+<dd><p>Children of this node.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="abstracttree.heaptree.HeapTree.eqv">
+<span class="sig-name descname"><span class="pre">eqv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/heaptree.html#HeapTree.eqv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.heaptree.HeapTree.eqv" title="Permalink to this definition"></a></dt>
+<dd><p>Check if both objects represent the same node.</p>
+<p>Should normally be operator.is, but can be overridden by delegates.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="abstracttree.heaptree.HeapTree.nid">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nid</span></span><a class="headerlink" href="#abstracttree.heaptree.HeapTree.nid" title="Permalink to this definition"></a></dt>
+<dd><p>Unique number that represents this node.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="abstracttree.heaptree.HeapTree.parent">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parent</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">TNode</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#abstracttree.heaptree.HeapTree.parent" title="Permalink to this definition"></a></dt>
+<dd><p>Parent of this node or None if root.</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="route">
-<h2>Route<a class="headerlink" href="#route" title="Permalink to this heading"></a></h2>
+<section id="module-abstracttree.route">
+<span id="route"></span><h2>Route<a class="headerlink" href="#module-abstracttree.route" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="abstracttree.route.Route">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.route.</span></span><span class="sig-name descname"><span class="pre">Route</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">anchors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TNode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/route.html#Route"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.route.Route" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Representation of a route trough adjacent nodes in the tree.</p>
+<p>Two nodes are adjacent if they have a parent-child relationship.
+The route will be as short as possible, but it will visit the anchor points in order.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="abstracttree.route.Route.add_anchor">
+<span class="sig-name descname"><span class="pre">add_anchor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">anchor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TNode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/route.html#Route.add_anchor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.route.Route.add_anchor" title="Permalink to this definition"></a></dt>
+<dd><p>Add a node to the route.</p>
+<p>The node should belong to the same tree as any existing anchor nodes.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="abstracttree.route.Route.anchors">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">anchors</span></span><a class="headerlink" href="#abstracttree.route.Route.anchors" title="Permalink to this definition"></a></dt>
+<dd><p>View of the anchor nodes.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="abstracttree.route.Route.edges">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">edges</span></span><a class="headerlink" href="#abstracttree.route.Route.edges" title="Permalink to this definition"></a></dt>
+<dd><p>View of all edges that make up the route.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="abstracttree.route.Route.lca">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lca</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">TNode</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#abstracttree.route.Route.lca" title="Permalink to this definition"></a></dt>
+<dd><p>The least common ancestor of all anchor nodes.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="abstracttree.route.Route.nodes">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nodes</span></span><a class="headerlink" href="#abstracttree.route.Route.nodes" title="Permalink to this definition"></a></dt>
+<dd><p>View of all nodes that make up the route.</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 </section>
 

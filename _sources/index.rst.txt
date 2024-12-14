@@ -18,6 +18,7 @@ Finally, it provides many exports that even work on objects that don't inherit f
    installation
    usage_bundled
    api
+   CHANGES
 
 
 Indices and tables
