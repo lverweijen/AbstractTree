@@ -43,7 +43,7 @@ Homepage = "https://github.com/lverweijen/abstracttree"
 Repository = "https://github.com/lverweijen/abstracttree"
 Documentation = "https://lverweijen.github.io/AbstractTree/"
 Issues = "https://github.com/lverweijen/abstracttree/issues"
-Changelog = "https://github.com/lverweijen/abstracttree/blob/main/changes.md"
+Changelog = "https://lverweijen.github.io/AbstractTree/CHANGES.html"
 
 [tool.ruff]
 line-length = 100
