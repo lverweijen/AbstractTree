@@ -41,8 +41,9 @@ export = [
 [project.urls]
 Homepage = "https://github.com/lverweijen/abstracttree"
 Repository = "https://github.com/lverweijen/abstracttree"
+Documentation = "https://lverweijen.github.io/AbstractTree/"
 Issues = "https://github.com/lverweijen/abstracttree/issues"
-Changelog = "https://github.com/lverweijen/abstracttree/blob/main/changes.md"
+Changelog = "https://lverweijen.github.io/AbstractTree/CHANGES.html"
 
 [tool.ruff]
 line-length = 100
@@ -58,6 +59,11 @@ preview = true
 [dependency-groups]
 dev = [
     "ruff>=0.8.2",
+    "sphinx-rtd-theme>=3.0.2",
+    "sphinx>=7.4.7",
+    "myst-parser>=3.0.1",
+    "myst>=1.0.4",
+    "sphinxcontrib-mermaid>=1.0.0",
 ]
 
 [build-system]

@@ -1,3 +1,5 @@
+# Changelog
+
 ## Version 0.1.1
 
 * Make it possible to pass options like `file_format` to `to_image`.
