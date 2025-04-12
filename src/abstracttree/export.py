@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Union, Callable, TypedDict, Tuple, Any, TypeVar, Optional
 
 from .predicates import PreventCycles, MaxDepth
-from .tree import DownTree, Tree
+from .mixins import DownTree, Tree
 
 __all__ = [
     "print_tree",
@@ -20,6 +20,7 @@ __all__ = [
     "to_image",
     "to_pillow",
     "to_latex",
+    "to_reportlab",
     "LiteralText",
 ]
 

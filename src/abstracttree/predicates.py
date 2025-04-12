@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Callable
 
-from .tree import AbstractTree, NodeItem
+from .mixins.tree import AbstractTree, NodeItem
 
 
 class Predicate(Callable[[AbstractTree, NodeItem], bool]):

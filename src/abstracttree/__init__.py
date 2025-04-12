@@ -5,7 +5,7 @@ __all__ = [
     "MutableDownTree",
     "BinaryTree",
     "BinaryDownTree",
-    "astree",
+    "as_tree",
     "print_tree",
     "plot_tree",
     "to_string",
@@ -22,8 +22,7 @@ __all__ = [
     "Route",
 ]
 
-from .adapters import astree
-from .binarytree import BinaryTree, BinaryDownTree
+from .adapters import HeapTree, as_tree
 from .export import (
     print_tree,
     plot_tree,
@@ -35,7 +34,6 @@ from .export import (
     to_latex,
     to_reportlab,
 )
-from .heaptree import HeapTree
+from .mixins import Tree, DownTree, MutableDownTree, MutableTree, BinaryTree, BinaryDownTree
 from .predicates import RemoveDuplicates, PreventCycles, MaxDepth
 from .route import Route
-from .tree import Tree, DownTree, MutableDownTree, MutableTree

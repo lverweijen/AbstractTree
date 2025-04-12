@@ -2,9 +2,8 @@ from abc import ABCMeta, abstractmethod
 from collections import deque
 from typing import Optional, Sequence
 
-from abstracttree import tree
-
 from .tree import DownTree, Tree, TNode, NodeItem
+from .tree import NodesView
 
 
 class BinaryDownTree(DownTree, metaclass=ABCMeta):
@@ -24,20 +23,20 @@ class BinaryDownTree(DownTree, metaclass=ABCMeta):
 
     @property
     def children(self) -> Sequence[TNode]:
-        children = list()
+        nodes = list()
         if self.left_child is not None:
-            children.append(self.left_child)
+            nodes.append(self.left_child)
         if self.right_child is not None:
-            children.append(self.right_child)
-        return children
+            nodes.append(self.right_child)
+        return nodes
 
     @property
     def nodes(self):
-        return NodesView([self], 0)
+        return BinaryNodesView([self], 0)
 
     @property
     def descendants(self):
-        return NodesView(self.children, 1)
+        return BinaryNodesView(self.children, 1)
 
 
 class BinaryTree(BinaryDownTree, Tree, metaclass=ABCMeta):
@@ -46,7 +45,7 @@ class BinaryTree(BinaryDownTree, Tree, metaclass=ABCMeta):
     __slots__ = ()
 
 
-class NodesView(tree.NodesView):
+class BinaryNodesView(NodesView):
     """Extend NodesView to make it do inorder."""
 
     __slots__ = ()

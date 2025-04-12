@@ -1,7 +1,7 @@
 from typing import Collection, Optional
 
-from .binarytree import BinaryTree
-from .tree import TNode
+from ..mixins.binarytree import BinaryTree
+from ..mixins.tree import TNode
 
 
 class HeapTree(BinaryTree):

@@ -43,7 +43,7 @@ class TestMutableDownTree(TestCase):
         """
 
         def double(node):
-            return BinaryNode(value=2 * node.node)
+            return BinaryNode(value=2 * node.value)
 
         double_tree = INFINITE_BINARY_TREE.transform(double, keep=MaxDepth(2))
         values = [node.value for node, _ in double_tree.nodes.preorder()]

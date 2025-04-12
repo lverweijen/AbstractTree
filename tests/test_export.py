@@ -6,6 +6,8 @@ from tree_instances import INFINITE_TREE, BINARY_TREE
 
 
 class TestExport(TestCase):
+    maxDiff = None
+
     def test_to_string(self):
         result = to_string(INFINITE_TREE, keep=MaxDepth(2))
         expected = 3 * "Infinite singleton!\n"
