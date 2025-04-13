@@ -176,14 +176,9 @@ def _(_: type) -> type:
     return object
 
 
-# BasePath and PathLike
+# BasePath
 @children.register
-def _(pth: BasePath | os.PathLike | zipfile.ZipFile):
-    if isinstance(pth, os.PathLike):
-        pth = Path(pth)
-    elif isinstance(pth, zipfile.ZipFile):
-        pth = zipfile.Path(pth)
-
+def _(pth: BasePath):
     if pth.is_dir():
         try:
             return tuple(pth.iterdir())
@@ -196,19 +191,23 @@ def _(pth: BasePath | os.PathLike | zipfile.ZipFile):
         return ()
 
 @parent.register
-def _(pth: BasePath | os.PathLike):
-    if isinstance(pth, os.PathLike):
-        pth = Path(pth)
+def _(pth: BasePath):
     parent_path = pth.parent
     if pth != parent_path:
         return parent_path
     else:
         return None
 
-@root.register
-def _(pth: os.PathLike) -> Path:
-    return Path(Path(pth).anchor)
+@label.register
+def _(pth: BasePath):
+    return pth.name
 
+@root.register
+def _(pth: BasePath):
+    return pth.anchor
+
+
+# PathLike (not fully supported, except for Path)
 @nid.register
 def _(pth: os.PathLike):
     # Some paths are circular. nid can be used to stop recursion in those cases.
@@ -222,10 +221,6 @@ def _(pth: os.PathLike):
 @eqv.register
 def _(p1: os.PathLike, p2: os.PathLike) -> bool:
     return p1 == p2 or os.path.samefile(p1, p2)
-
-@label.register
-def _(pth: BasePath):
-    return pth.name
 
 @label.register
 def _(pth: os.PathLike):
@@ -267,12 +262,9 @@ def _(node: ast.AST):
         return f"{type(node).__name__}({joined_args})"
 
 
-# XML / ElementTree
+# XML / ElementTree.Element
 @children.register
-def _(element: ET.Element | ET.ElementTree):
-    if isinstance(element, ET.ElementTree):
-        element = element.getroot()
-
+def _(element: ET.Element):
     return element
 
 @label.register
