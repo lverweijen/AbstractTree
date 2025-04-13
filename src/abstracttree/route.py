@@ -5,7 +5,8 @@ from collections.abc import Sized, Sequence, MutableSequence
 from functools import lru_cache
 from typing import TypeVar, Optional
 
-from .generics import TreeLike, path, eqv
+from . import _iterators
+from .generics import TreeLike, eqv
 
 TNode = TypeVar("TNode", bound=TreeLike)
 
@@ -40,7 +41,9 @@ class Route:
         The node should belong to the same tree as any existing anchor nodes.
         """
         self._lca = None
-        anchor_path = tuple(path(anchor))
+        anchor_ancestors = list(_iterators.ancestors(anchor))
+        anchor_path = list(itertools.chain(reversed(anchor_ancestors), [anchor]))
+
         apaths = self._apaths
 
         if apaths and not eqv(apaths[0][0], anchor_path[0]):

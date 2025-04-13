@@ -3,7 +3,7 @@ from collections import deque
 from typing import Optional, Sequence
 
 from .tree import DownTree, Tree, TNode, NodeItem
-from .tree import NodesView
+from ._views import NodesView
 
 
 class BinaryDownTree(DownTree, metaclass=ABCMeta):
@@ -32,11 +32,11 @@ class BinaryDownTree(DownTree, metaclass=ABCMeta):
 
     @property
     def nodes(self):
-        return BinaryNodesView([self], 0)
+        return BinaryNodesView(self)
 
     @property
     def descendants(self):
-        return BinaryNodesView(self.children, 1)
+        return BinaryNodesView(self, include_root=False)
 
 
 class BinaryTree(BinaryDownTree, Tree, metaclass=ABCMeta):
@@ -46,10 +46,6 @@ class BinaryTree(BinaryDownTree, Tree, metaclass=ABCMeta):
 
 
 class BinaryNodesView(NodesView):
-    """Extend NodesView to make it do inorder."""
-
-    __slots__ = ()
-
     def inorder(self, keep=None):
         """
         Iterate through nodes in inorder (traverse left, yield root, traverse right).
@@ -63,29 +59,34 @@ class BinaryNodesView(NodesView):
         Like the other iterators, the root of a subtree always gets item.index equal to 0,
         even if it is actually a right child in a bigger tree.
         """
-        stack = deque()
+        if self.include_root:
+            yield from _inorder(self._node, keep, index=None, depth=0)
+        else:
+            yield from _inorder(self._node.left_child, keep, index=0, depth=1)
+            yield from _inorder(self._node.right_child, keep, index=1, depth=1)
 
-        for index, node in enumerate(self.nodes):
-            depth = self.level
-            item = NodeItem(index, depth)
 
-            while node is not None or stack:
-                # Traverse down/left
-                left_child, left_item = node.left_child, NodeItem(0, depth + 1)
-                while left_child is not None and (not keep or keep(left_child, left_item)):
-                    stack.append((node, item))
-                    node, item, depth = left_child, left_item, depth + 1
-                    left_child, left_item = node.left_child, NodeItem(0, depth + 1)
+def _inorder(node, keep=None, index=None, depth=0):
+    stack = deque()
+    item = NodeItem(index, depth)
 
-                yield node, item
+    while node is not None or stack:
+        # Traverse down/left
+        left_child, left_item = node.left_child, NodeItem(0, depth + 1)
+        while left_child is not None and (not keep or keep(left_child, left_item)):
+            stack.append((node, item))
+            node, item, depth = left_child, left_item, depth + 1
+            left_child, left_item = node.left_child, NodeItem(0, depth + 1)
 
-                # Traverse right/up
-                right_child, right_item = node.right_child, NodeItem(1, depth + 1)
-                while stack and (
-                    right_child is None or (keep and not keep(right_child, right_item))
-                ):
-                    node, item = stack.pop()
-                    yield node, item
-                    depth -= 1
-                    right_child, right_item = node.right_child, NodeItem(1, depth + 1)
-                node, item, depth = right_child, right_item, depth + 1
+        yield node, item
+
+        # Traverse right/up
+        right_child, right_item = node.right_child, NodeItem(1, depth + 1)
+        while stack and (
+                right_child is None or (keep and not keep(right_child, right_item))
+        ):
+            node, item = stack.pop()
+            yield node, item
+            depth -= 1
+            right_child, right_item = node.right_child, NodeItem(1, depth + 1)
+        node, item, depth = right_child, right_item, depth + 1

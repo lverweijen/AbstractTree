@@ -1,7 +1,8 @@
-import itertools
 from abc import abstractmethod, ABCMeta
-from collections import deque, namedtuple
+from collections import namedtuple
 from typing import TypeVar, Callable, Optional, Collection, Literal, Iterable
+
+from ._views import AncestorsView, PathView, NodesView, LeavesView, LevelsView, SiblingsView
 
 TNode = TypeVar("TNode")
 TMutDownNode = TypeVar("TMutDownNode", bound="MutableDownTree")
@@ -67,7 +68,7 @@ class UpTree(AbstractTree, metaclass=ABCMeta):
     @property
     def ancestors(self):
         """View of ancestors of node."""
-        return AncestorsView(self.parent)
+        return AncestorsView(self)
 
     @property
     def path(self):
@@ -94,12 +95,12 @@ class DownTree(AbstractTree, metaclass=ABCMeta):
     @property
     def nodes(self):
         """View of this node and its descendants."""
-        return NodesView([self], 0)
+        return NodesView(self)
 
     @property
     def descendants(self):
         """View of descendants of this node."""
-        return NodesView(self.children, 1)
+        return NodesView(self, include_root=False)
 
     @property
     def levels(self):
@@ -169,204 +170,3 @@ class MutableTree(Tree, MutableDownTree, metaclass=ABCMeta):
         if p := self.parent:
             p.remove_child(self)
         return self
-
-
-class TreeView(Iterable[TNode], metaclass=ABCMeta):
-    __slots__ = ()
-
-    def count(self) -> int:
-        """Count number of nodes in this view."""
-        counter = itertools.count()
-        deque(zip(self, counter), maxlen=0)
-        return next(counter)
-
-
-class AncestorsView(TreeView):
-    __slots__ = "parent"
-
-    def __init__(self, parent):
-        self.parent = parent
-
-    def __iter__(self):
-        p = self.parent
-        while p:
-            yield p
-            p = p.parent
-
-    def __bool__(self):
-        return bool(self.parent)
-
-
-class PathView(TreeView):
-    __slots__ = "view"
-
-    def __init__(self, node):
-        self.view = AncestorsView(node)
-
-    def __iter__(self):
-        return reversed(list(self.view))
-
-    def __reversed__(self):
-        return iter(self.view)
-
-    def __contains__(self, node):
-        return node in self.view
-
-    def __bool__(self):
-        return True
-
-    def count(self):
-        return self.view.count()
-
-
-class NodesView(TreeView):
-    __slots__ = "nodes", "level"
-
-    def __init__(self, nodes, level):
-        self.nodes, self.level = nodes, level
-
-    def __bool__(self):
-        return bool(self.nodes)
-
-    def __iter__(self):
-        nodes = deque(self.nodes)
-        while nodes:
-            yield (node := nodes.pop())
-            nodes.extend(node.children)
-
-    def preorder(self, keep=None):
-        """Iterate through nodes in pre-order.
-
-        Only descend where keep(node).
-        Returns tuples (node, item)
-        Item denotes depth of iteration and index of child.
-        """
-        nodes = deque((c, NodeItem(i, self.level)) for (i, c) in enumerate(self.nodes))
-        while nodes:
-            node, item = nodes.popleft()
-            if not keep or keep(node, item):
-                yield node, item
-                next_nodes = [(c, NodeItem(i, item.depth + 1)) for i, c in enumerate(node.children)]
-                nodes.extendleft(reversed(next_nodes))
-
-    def postorder(self, keep=None):
-        """Iterate through nodes in post-order.
-
-        Only descend where keep(node).
-        Returns tuples (node, item)
-        Item denotes depth of iteration and index of child.
-        """
-        children = iter([(c, NodeItem(i, self.level)) for (i, c) in enumerate(self.nodes)])
-        node, item = next(children, (None, None))
-        stack = []
-
-        while node or stack:
-            # Go down
-            keep_node = keep is None or keep(node, item)
-            while keep_node and node.children:
-                stack.append((node, item, children))
-                children = iter([
-                    (c, NodeItem(i, item.depth + 1)) for (i, c) in enumerate(node.children)
-                ])
-                node, item = next(children)
-                keep_node = keep is None or keep(node, item)
-            if keep_node:
-                yield node, item
-
-            # Go right or go up
-            node, item = next(children, (None, None))
-            while node is None and stack:
-                node, item, children = stack.pop()
-                yield node, item
-                node, item = next(children, (None, None))
-
-    def levelorder(self, keep=None):
-        """Iterate through nodes in level-order.
-
-        Only descend where keep(node).
-        Returns tuples (node, item)
-        Item denotes depth of iteration and index of child.
-        """
-        nodes = deque((c, NodeItem(i, self.level)) for (i, c) in enumerate(self.nodes))
-        while nodes:
-            node, item = nodes.popleft()
-            if not keep or keep(node, item):
-                yield node, item
-                next_nodes = [(c, NodeItem(i, item.depth + 1)) for i, c in enumerate(node.children)]
-                nodes.extend(next_nodes)
-
-
-class LeavesView(TreeView):
-    __slots__ = "root"
-
-    def __init__(self, root):
-        self.root = root
-
-    def __bool__(self):
-        return True
-
-    def __iter__(self):
-        for node in self.root.nodes:
-            if node.is_leaf:
-                yield node
-
-    def __contains__(self, node):
-        if not node.is_leaf:
-            return False
-        try:
-            ancestors = node.ancestors
-        except AttributeError:
-            return node in super()
-        else:
-            return self.root in ancestors
-
-
-class LevelsView:
-    __slots__ = "tree"
-
-    def __init__(self, tree):
-        self.tree = tree
-
-    def __bool__(self):
-        return True
-
-    def __iter__(self):
-        level = [self.tree]
-        while level:
-            yield iter(level)
-            level = [child for node in level for child in node.children]
-
-    def zigzag(self):
-        """Traverse the levels in zigzag-order."""
-        level = [self.tree]
-        while level:
-            yield iter(level)
-            level = [child for node in reversed(level) for child in reversed(node.children)]
-
-    def count(self):
-        return 1 + max(it.depth for (_, it) in self.tree.nodes.preorder())
-
-
-class SiblingsView(TreeView):
-    __slots__ = "node"
-
-    def __init__(self, node):
-        self.node = node
-
-    def __iter__(self):
-        node = self.node
-        parent = node.parent
-        if parent is not None:
-            return (child for child in parent.children if not node.eqv(child))
-        else:
-            return iter(())
-
-    def __contains__(self, node):
-        return not self.node.eqv(node) and self.node.parent.eqv(node.parent)
-
-    def __len__(self):
-        if p := self.node.parent:
-            return len(p.children) - 1
-        return 0
-
-    count = __len__

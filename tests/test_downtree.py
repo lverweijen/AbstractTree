@@ -102,7 +102,7 @@ class TestDownTree(TestCase):
         self.assertEqual(expected, values)
 
         items = [item for _, item in tree.nodes.preorder()]
-        expected = [(0, 0), (0, 1), (1, 1), (0, 2), (0, 3)]
+        expected = [(None, 0), (0, 1), (1, 1), (0, 2), (0, 3)]
         self.assertEqual(expected, items)
 
     def test_preorder_descendants(self):
@@ -122,7 +122,7 @@ class TestDownTree(TestCase):
         self.assertEqual(expected, values)
 
         items = [item for _, item in tree.nodes.postorder()]
-        expected = [(0, 1), (0, 3), (0, 2), (1, 1), (0, 0)]
+        expected = [(0, 1), (0, 3), (0, 2), (1, 1), (None, 0)]
         self.assertEqual(expected, items)
 
     def test_postorder_descendants(self):
@@ -142,7 +142,7 @@ class TestDownTree(TestCase):
         self.assertEqual(expected, values)
 
         items = [item for _, item in tree.nodes.levelorder()]
-        expected = [(0, 0), (0, 1), (1, 1), (0, 2), (0, 3)]
+        expected = [(None, 0), (0, 1), (1, 1), (0, 2), (0, 3)]
         self.assertEqual(expected, items)
 
     def test_levelorder_descendants(self):
@@ -162,7 +162,7 @@ class TestDownTree(TestCase):
         self.assertEqual(expected, values)
 
         items = [item for _, item in tree.nodes.inorder()]
-        expected = [(0, 1), (0, 0), (0, 2), (1, 3), (1, 1)]
+        expected = [(0, 1), (None, 0), (0, 2), (1, 3), (1, 1)]
         self.assertEqual(expected, items)
 
     def test_inorder_descendants(self):

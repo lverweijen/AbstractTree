@@ -1,16 +1,19 @@
 import ast
 import itertools
+import operator
 import os
 import xml.etree.ElementTree as ET
 import zipfile
 from abc import ABCMeta
 from collections import namedtuple
-from collections.abc import Sequence, Mapping, Iterable, Collection
+from collections.abc import Sequence, Mapping, Collection
 from functools import singledispatch
 from pathlib import Path
 from typing import TypeVar, Optional, Union
 
-T = TypeVar("T")
+BaseString = Union[str, bytes, bytearray]
+BasePath = Union[Path, zipfile.Path]
+
 
 
 class DownTreeLike(metaclass=ABCMeta):
@@ -39,32 +42,38 @@ class TreeLike(metaclass=ABCMeta):
         return None
 
 
+DT = TypeVar("DT", bound=TreeLike)
+T = TypeVar("T", bound=DownTreeLike)
+
+
 # Base cases
 @singledispatch
-def children(tree: T) -> Sequence[T]:
-    try:
-        return tree.children
-    except AttributeError:
-        raise TypeError("This is not a DownTree.") from None
+def children(tree: DT) -> Sequence[DT]:
+    """Returns children of any downtreelike-object."""
+    if hasattr(tree, "children"):
+        # Optimisation. Compile fast `children` method.
+        for cls, cls_parent in itertools.pairwise(type(tree).__mro__):
+            if not hasattr(cls_parent, "children"):
+                children.register(cls, operator.attrgetter("children"))
+                return tree.children
+    else:
+        raise TypeError(f"{type(tree)} is not DownTreeLike. Children not defined.") from None
 
 @singledispatch
 def parent(tree: T) -> Optional[T]:
-    try:
-        return tree.parent
-    except AttributeError:
-        raise TypeError("That is not a tree.") from None
-
-@singledispatch
-def path(node: TreeLike):
-    """Find path from root to node."""
-    ancestors = [node]
-    while (node := parent(node)) is not None:
-        ancestors.append(node)
-    return reversed(ancestors)
+    """Returns parent of any treelike-object."""
+    if hasattr(tree, "parent"):
+        # Optimisation. Compile fast `parent` method.
+        for cls, cls_parent in itertools.pairwise(type(tree).__mro__):
+            if not hasattr(cls_parent, "parent"):
+                parent.register(cls, operator.attrgetter("parent"))
+                return tree.parent
+    else:
+        raise TypeError(f"{type(tree)} is not TreeLike. Parent not defined.") from None
 
 @singledispatch
 def parents(multitree: T) -> Sequence[T]:
-    """Like parent(tree) but return value is a sequence."""
+    """Like parent(tree) but return value as a sequence."""
     tree_parent = parent(multitree)
     if tree_parent is not None:
         return (tree_parent,)
@@ -72,7 +81,7 @@ def parents(multitree: T) -> Sequence[T]:
         return ()
 
 @singledispatch
-def root(node):
+def root(node: T):
     """Find the root of a node in a tree."""
     maybe_parent = parent(node)
     while maybe_parent is not None:
@@ -80,16 +89,21 @@ def root(node):
     return node
 
 @singledispatch
-def label(node) -> str:
+def label(node: object) -> str:
     """Return a string representation of this node.
 
     This representation should always represent just the Node.
     If the node has parents or children these should be omitted.
     """
+    ...
+label.register(object, str)
+
+@singledispatch
+def nid(node: object):
     try:
-        return node.label()
+        return node.nid()
     except AttributeError:
-        return str(node)
+        return id(node)
 
 @singledispatch
 def eqv(node, node2):
@@ -133,8 +147,6 @@ def _(item: MappingItem):
 
 
 # BaseString
-BaseString = Union[str, bytes, bytearray]
-
 @children.register
 def _(_: BaseString):
     # Prevent a string from becoming a tree with infinite depth
@@ -164,9 +176,9 @@ def _(_: type) -> type:
     return object
 
 
-# PathLike
+# BasePath and PathLike
 @children.register
-def _(pth: os.PathLike | zipfile.ZipFile | zipfile.Path):
+def _(pth: BasePath | os.PathLike | zipfile.ZipFile):
     if isinstance(pth, os.PathLike):
         pth = Path(pth)
     elif isinstance(pth, zipfile.ZipFile):
@@ -184,7 +196,7 @@ def _(pth: os.PathLike | zipfile.ZipFile | zipfile.Path):
         return ()
 
 @parent.register
-def _(pth: os.PathLike | zipfile.Path):
+def _(pth: BasePath | os.PathLike):
     if isinstance(pth, os.PathLike):
         pth = Path(pth)
     parent_path = pth.parent
@@ -197,18 +209,23 @@ def _(pth: os.PathLike | zipfile.Path):
 def _(pth: os.PathLike) -> Path:
     return Path(Path(pth).anchor)
 
+@nid.register
+def _(pth: os.PathLike):
+    # Some paths are circular. nid can be used to stop recursion in those cases.
+    try:
+        st = os.lstat(pth)
+    except (FileNotFoundError, AttributeError):
+        return id(pth)  # Fall-back
+    else:
+        return -st.st_ino
+
 @eqv.register
 def _(p1: os.PathLike, p2: os.PathLike) -> bool:
-    return os.path.samefile(p1, p2)
-
-@path.register
-def _(pth: os.PathLike) -> Iterable[Path]:
-    pth = Path(pth)
-    return itertools.chain(reversed(pth.parents), [pth])
+    return p1 == p2 or os.path.samefile(p1, p2)
 
 @label.register
-def _(zf: Path | zipfile.Path):
-    return zf.name
+def _(pth: BasePath):
+    return pth.name
 
 @label.register
 def _(pth: os.PathLike):
