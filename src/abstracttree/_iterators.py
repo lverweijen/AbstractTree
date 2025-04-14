@@ -107,9 +107,10 @@ def leaves(tree: DT) -> Iterator[DT]:
 
 def siblings(node: T) -> Iterator[T]:
     """Iterate through siblings of node."""
-    eqv = generics.eqv.dispatch(type(node))
+    nid = generics.nid.dispatch(type(node))
+    node_nid = nid(node)
     if p := generics.parent(node):
-        return (child for child in generics.children(p) if not eqv(node, child))
+        return (child for child in generics.children(p) if node_nid != nid(child))
     else:
         return iter(())
 

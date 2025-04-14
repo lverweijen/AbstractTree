@@ -80,11 +80,13 @@ class TreeAdapter(Tree):
     def __str__(self):
         return self.label_func(self._value)
 
+    @property
     def nid(self) -> int:
         return generics.nid(self._value)
 
     def eqv(self, other) -> bool:
-        return generics.eqv(self._value, other.value)
+        nid = generics.nid
+        return nid(self._value) == nid(other.value)
 
     def __eq__(self, other):
         return self._value == other.value

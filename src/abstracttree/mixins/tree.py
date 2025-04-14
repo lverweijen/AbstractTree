@@ -171,4 +171,4 @@ class MutableTree(Tree, MutableDownTree, metaclass=ABCMeta):
 # Some optimizations
 generics.children.register(DownTree, operator.attrgetter("children"))
 generics.parent.register(UpTree, operator.attrgetter("parent"))
-generics.label.register(AbstractTree, operator.attrgetter("label"))
+generics.label.register(AbstractTree, str)

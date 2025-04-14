@@ -6,7 +6,7 @@ from functools import lru_cache
 from typing import TypeVar, Optional
 
 from . import _iterators
-from .generics import TreeLike, eqv
+from .generics import TreeLike, nid
 
 TNode = TypeVar("TNode", bound=TreeLike)
 
@@ -46,7 +46,7 @@ class Route:
 
         apaths = self._apaths
 
-        if apaths and not eqv(apaths[0][0], anchor_path[0]):
+        if apaths and nid(apaths[0][0]) != nid(anchor_path[0]):
             raise ValueError("Different tree!")
         else:
             apaths.append(anchor_path)
@@ -75,7 +75,7 @@ class Route:
         if i := bisect(
             indices,
             False,
-            key=lambda ind: any(not eqv(path0[ind], p[ind]) for p in paths),
+            key=lambda ind: any(nid(path0[ind]) != nid(p[ind]) for p in paths),
         ):
             lca = self._lca = path0[i - 1]
             return lca
@@ -86,7 +86,7 @@ class Route:
     def _common2(self, i, j) -> int:
         path_i, path_j = self._apaths[i], self._apaths[j]
         indices = range(min(len(path_i), len(path_j)))
-        return bisect(indices, False, key=lambda ind: not eqv(path_i[ind], path_j[ind])) - 1
+        return bisect(indices, False, key=lambda ind: nid(path_i[ind]) != nid(path_j[ind])) - 1
 
 
 class RouteView(Sized, metaclass=ABCMeta):

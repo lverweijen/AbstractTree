@@ -1,6 +1,4 @@
 import ast
-import itertools
-import operator
 import os
 import xml.etree.ElementTree as ET
 import zipfile
@@ -9,7 +7,7 @@ from collections import namedtuple
 from collections.abc import Sequence, Mapping, Collection
 from functools import singledispatch
 from pathlib import Path
-from typing import TypeVar, Optional, Union
+from typing import TypeVar, Optional, Union, Any
 
 BaseString = Union[str, bytes, bytearray]
 BasePath = Union[Path, zipfile.Path]
@@ -92,19 +90,19 @@ def label(node: object) -> str:
 label.register(object, str)
 
 @singledispatch
-def nid(node: object):
+def nid(node: Any):
+    """Unique idenitifier for node.
+
+    Usually the same as id, but can be overwritten for classes that act as delegates.
+    """
     try:
-        return node.nid()
+        return node.nid
     except AttributeError:
         return id(node)
 
-@singledispatch
-def eqv(node, node2):
+def eqv(n1: DT, n2: DT) -> bool:
     """Whether 2 nodes reference the same object."""
-    try:
-        return node.eqv(node2)
-    except AttributeError:
-        return node is node2
+    return nid(n1) == nid(n2)
 
 
 # Collections (Handle Mapping, Sequence and BaseString together to allow specialisation).
@@ -197,10 +195,6 @@ def _(pth: os.PathLike):
         return id(pth)  # Fall-back
     else:
         return -st.st_ino
-
-@eqv.register
-def _(p1: os.PathLike, p2: os.PathLike) -> bool:
-    return p1 == p2 or os.path.samefile(p1, p2)
 
 @label.register
 def _(pth: os.PathLike):
