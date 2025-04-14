@@ -1,4 +1,5 @@
-from collections.abc import Sequence, Mapping, Collection, Callable, Iterable
+from collections.abc import Sequence, Callable, Iterable
+from functools import lru_cache
 from typing import Optional, TypeVar
 
 import abstracttree.generics as generics
@@ -8,17 +9,22 @@ from abstracttree.mixins.tree import Tree, TNode
 T = TypeVar("T")
 
 
-def convert_tree(tree: TreeLike) -> Tree:
+def convert_tree(tree: TreeLike, required_type=Tree) -> Tree:
     """Convert a TreeLike to a powerful Tree.
 
     If needed, it uses a TreeAdapter.
     """
-    if isinstance(tree, Tree):
+    if isinstance(tree, required_type):
         return tree
-    elif isinstance(tree, Sequence | Mapping):
-        return CollectionTreeAdapter(tree)
+    elif hasattr(tree, '_abstracttree_'):
+        tree = tree._abstracttree_()
     else:
-        return TreeAdapter(tree)
+        tree = as_tree(tree)
+
+    if isinstance(tree, required_type):
+        return tree
+    else:
+        raise TypeError(f"Unable to convert {tree!r} to {required_type.__name__}")
 
 
 def as_tree(
@@ -32,16 +38,28 @@ def as_tree(
     Functions can be passed to control how the conversion should be done.
     The original object can be accessed by using the value attribute.
     """
-    children = children or generics.children
-    parent = parent or generics.parent
-    label = label or generics.label
+    cls = type(obj)
+    adapter = compile_adapter(cls, children, parent, label)
+    tree = adapter(obj)
+    return tree
+
+
+@lru_cache(maxsize=None)
+def compile_adapter(
+    cls,
+    children: Callable[[T], Iterable[T]] = None,
+    parent: Callable[[T], Optional[T]] = None,
+    label: Callable[[T], str] = None,
+):
+    if not parent and issubclass(cls, TreeLike):
+        parent = generics.parent.dispatch(cls)
 
     class CustomTreeAdapter(TreeAdapter):
-        child_func = staticmethod(children)
+        child_func = staticmethod(children or generics.children.dispatch(cls))
         parent_func = staticmethod(parent)
-        label_func = staticmethod(label)
+        label_func = staticmethod(label or generics.label.dispatch(cls))
 
-    return CustomTreeAdapter(obj)
+    return CustomTreeAdapter
 
 # Alias for backwards compatibility
 astree = as_tree
@@ -79,39 +97,17 @@ class TreeAdapter(Tree):
     def parent(self: TNode) -> Optional[TNode]:
         if self._parent is not None:
             return self._parent
+
         cls = type(self)
-        try:
-            parent = cls.parent_func(self._value)
-        except TypeError:
-            return None
-        else:
-            if parent is not None:
-                return cls(parent)
-            else:
-                return None
+        if pf := cls.parent_func:
+            par = pf(self._value)
+            if par is not None:
+                return cls(par)
+        return None
 
     @property
     def children(self: TNode) -> Sequence[TNode]:
         cls = type(self)
         _child_func = cls.child_func
-        try:
-            child_nodes = _child_func(self._value)
-        except TypeError:
-            return ()
-        else:
-            return [cls(c, self) for c in child_nodes]
-
-
-class CollectionTreeAdapter(TreeAdapter):
-    """Same as TreeView, but a non-collection is always a leaf.
-
-    This is convenient if the collection contains tree-like objects (e.g. Path) that should not be handled recursively.
-    """
-
-    @property
-    def children(self: TNode) -> Sequence[TNode]:
-        value = self._value
-        if not isinstance(value, Collection) or isinstance(value, generics.BaseString):
-            return ()
-        else:
-            return super().children
+        child_nodes = _child_func(self._value)
+        return [cls(c, self) for c in child_nodes]

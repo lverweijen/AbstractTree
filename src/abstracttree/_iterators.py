@@ -25,7 +25,6 @@ def preorder(tree: DT, keep=None, include_root=True) -> Iterator[tuple[DT, NodeI
     Item denotes depth of iteration and index of child.
     """
     children = generics.children.dispatch(type(tree))
-    nodes = deque([(tree, NodeItem(None, 0))])
     if include_root:
         nodes = deque([(tree, NodeItem(None, 0))])
     else:

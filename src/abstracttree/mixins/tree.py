@@ -1,8 +1,10 @@
+import operator
 from abc import abstractmethod, ABCMeta
 from collections import namedtuple
 from typing import TypeVar, Callable, Optional, Collection, Literal, Iterable
 
 from ._views import AncestorsView, PathView, NodesView, LeavesView, LevelsView, SiblingsView
+from .. import generics
 
 TNode = TypeVar("TNode")
 TMutDownNode = TypeVar("TMutDownNode", bound="MutableDownTree")
@@ -20,13 +22,7 @@ class AbstractTree(metaclass=ABCMeta):
     def convert(cls, obj):
         """Convert obj to tree-type or raise TypeError if that doesn't work."""
         from ..adapters import convert_tree
-
-        if isinstance(obj, cls):
-            return obj
-        tree = convert_tree(obj)
-        if isinstance(tree, cls):
-            return tree
-        raise TypeError(f"{obj!r} cannot be converted to {cls.__name__}")
+        return convert_tree(obj, cls)
 
     @property
     def nid(self) -> int:
@@ -170,3 +166,9 @@ class MutableTree(Tree, MutableDownTree, metaclass=ABCMeta):
         if p := self.parent:
             p.remove_child(self)
         return self
+
+
+# Some optimizations
+generics.children.register(DownTree, operator.attrgetter("children"))
+generics.parent.register(UpTree, operator.attrgetter("parent"))
+generics.label.register(AbstractTree, operator.attrgetter("label"))

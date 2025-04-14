@@ -13,6 +13,7 @@ from typing import TypeVar, Optional, Union
 
 BaseString = Union[str, bytes, bytearray]
 BasePath = Union[Path, zipfile.Path]
+MappingItem = namedtuple("MappingItem", ["key", "value"])
 
 
 
@@ -50,25 +51,17 @@ T = TypeVar("T", bound=DownTreeLike)
 @singledispatch
 def children(tree: DT) -> Sequence[DT]:
     """Returns children of any downtreelike-object."""
-    if hasattr(tree, "children"):
-        # Optimisation. Compile fast `children` method.
-        for cls, cls_parent in itertools.pairwise(type(tree).__mro__):
-            if not hasattr(cls_parent, "children"):
-                children.register(cls, operator.attrgetter("children"))
-                return tree.children
-    else:
+    try:
+        return tree.children
+    except AttributeError:
         raise TypeError(f"{type(tree)} is not DownTreeLike. Children not defined.") from None
 
 @singledispatch
 def parent(tree: T) -> Optional[T]:
     """Returns parent of any treelike-object."""
-    if hasattr(tree, "parent"):
-        # Optimisation. Compile fast `parent` method.
-        for cls, cls_parent in itertools.pairwise(type(tree).__mro__):
-            if not hasattr(cls_parent, "parent"):
-                parent.register(cls, operator.attrgetter("parent"))
-                return tree.parent
-    else:
+    try:
+        return tree.parent
+    except AttributeError:
         raise TypeError(f"{type(tree)} is not TreeLike. Parent not defined.") from None
 
 @singledispatch
@@ -114,47 +107,34 @@ def eqv(node, node2):
         return node is node2
 
 
-# Collections
+# Collections (Handle Mapping, Sequence and BaseString together to allow specialisation).
 @children.register
 def _(coll: Collection):
-    return coll
+    match coll:
+        case Mapping():
+            return [MappingItem(k, v) for k, v in coll.items()]
+        case MappingItem():  #value=value):
+            value = coll.value
+            if isinstance(value, Collection) and not isinstance(value, BaseString):
+                return children(value)
+            else:
+                return [value]
+        case Collection() if not isinstance(coll, BaseString):
+            return coll
+        case _:
+            return ()
 
 @label.register
 def _(coll: Collection):
     """In python a type can have multiple parent classes."""
-    cls_name = type(coll).__name__
-    return f"{cls_name}[{len(coll)}]"
-
-
-# Mappings
-MappingItem = namedtuple("MappingItem", ["key", "value"])
-
-@children.register
-def _(mapping: Mapping):
-    return [MappingItem(k, v) for k, v in mapping.items()]
-
-@children.register
-def _(item: MappingItem):
-    value = item.value
-    if isinstance(value, Collection) and not isinstance(value, BaseString):
-        return children(value)
-    else:
-        return [value]
-
-@label.register
-def _(item: MappingItem):
-    return str(item.key)
-
-
-# BaseString
-@children.register
-def _(_: BaseString):
-    # Prevent a string from becoming a tree with infinite depth
-    raise TypeError("String-types aren't trees.")
-
-@label.register
-def _(text: BaseString):
-    return str(text)
+    match coll:
+        case MappingItem(key=key):
+            return str(key)
+        case Collection() if not isinstance(coll, BaseString):
+            cls_name = type(coll).__name__
+            return f"{cls_name}[{len(coll)}]"
+        case _:
+            return str(coll)
 
 
 # Types
