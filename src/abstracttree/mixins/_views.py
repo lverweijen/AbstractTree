@@ -38,45 +38,49 @@ class AncestorsView(TreeView):
     """View over ancestors."""
     itr_method = _iterators.ancestors
 
-    def __bool__(self):
-        return self._node.parent is not None
-
 
 class PathView(TreeView):
     """View over path from root to self."""
-    itr_method = _iterators.ancestors
+    itr_method = _iterators.path
 
-    def __iter__(self):
-        seq = list(type(self).itr_method(self._node))
-        return itertools.chain(reversed(seq), [self._node])
+    def __bool__(self):
+        # A path always contains at least one node. No need to check.
+        return True
+
+    def __contains__(self, item):
+        return item in reversed(self)
 
     def __reversed__(self):
-        seq = type(self).itr_method(self._node)
-        return itertools.chain([self._node], seq)
+        return _iterators.path(self._node, reverse=True)
+
+    def count(self):
+        counter = itertools.count()
+        deque(zip(reversed(self), counter), maxlen=0)
+        return next(counter)
 
 
 class NodesView(TreeView):
     """View over nodes."""
-    __slots__ = "include_root"
+    __slots__ = "_include_root"
 
     def __init__(self, node, include_root: bool = True):
         super().__init__(node)
-        self.include_root = include_root
+        self._include_root = include_root
 
     def __iter__(self):
-        nodes = deque([self._node] if self.include_root else self._node.children)
+        nodes = deque([self._node] if self._include_root else self._node.children)
         while nodes:
             yield (node := nodes.pop())
             nodes.extend(node.children)
 
     def preorder(self, keep=None):
-        return _iterators.preorder(self._node, keep, include_root=self.include_root)
+        return _iterators.preorder(self._node, keep, include_root=self._include_root)
 
     def postorder(self, keep=None):
-        return _iterators.postorder(self._node, keep, include_root=self.include_root)
+        return _iterators.postorder(self._node, keep, include_root=self._include_root)
 
     def levelorder(self, keep=None):
-        return _iterators.levelorder(self._node, keep, include_root=self.include_root)
+        return _iterators.levelorder(self._node, keep, include_root=self._include_root)
 
 
 class LeavesView(TreeView):

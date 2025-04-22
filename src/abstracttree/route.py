@@ -41,15 +41,13 @@ class Route:
         The node should belong to the same tree as any existing anchor nodes.
         """
         self._lca = None
-        anchor_ancestors = list(_iterators.ancestors(anchor))
-        anchor_path = list(itertools.chain(reversed(anchor_ancestors), [anchor]))
-
+        anchor_path = list(_iterators.path(anchor))
         apaths = self._apaths
 
-        if apaths and nid(apaths[0][0]) != nid(anchor_path[0]):
-            raise ValueError("Different tree!")
-        else:
+        if not apaths or nid(apaths[0][0]) == nid(anchor_path[0]):
             apaths.append(anchor_path)
+        else:
+            raise ValueError("Different tree!")
 
     @property
     def anchors(self):

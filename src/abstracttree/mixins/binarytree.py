@@ -59,7 +59,7 @@ class BinaryNodesView(NodesView):
         Like the other iterators, the root of a subtree always gets item.index equal to 0,
         even if it is actually a right child in a bigger tree.
         """
-        if self.include_root:
+        if self._include_root:
             yield from _inorder(self._node, keep, index=None, depth=0)
         else:
             yield from _inorder(self._node.left_child, keep, index=0, depth=1)

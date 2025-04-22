@@ -1,3 +1,4 @@
+import itertools
 from collections import namedtuple, deque
 from collections.abc import Iterator, Sequence
 from typing import TypeVar
@@ -15,6 +16,14 @@ def ancestors(node: T) -> Iterator[T]:
     parent = generics.parent.dispatch(type(node))
     while (node := parent(node)) is not None:
         yield node
+
+
+def path(node: T, reverse=False) -> Iterator[T]:
+    """Iterate through path of node."""
+    if not reverse:
+        return itertools.chain(reversed(list(ancestors(node))), [node])
+    else:
+        return itertools.chain([node], reversed(list(ancestors(node))))
 
 
 def preorder(tree: DT, keep=None, include_root=True) -> Iterator[tuple[DT, NodeItem]]:
