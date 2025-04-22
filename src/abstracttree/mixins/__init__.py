@@ -3,9 +3,8 @@ __all__ = [
     "DownTree",
     "MutableTree",
     "MutableDownTree",
-    "BinaryTree",
     "BinaryDownTree",
+    "BinaryTree",
 ]
 
-from .binarytree import BinaryTree, BinaryDownTree
-from .tree import Tree, DownTree, MutableDownTree, MutableTree
+from .trees import Tree, DownTree, MutableDownTree, MutableTree, BinaryDownTree, BinaryTree

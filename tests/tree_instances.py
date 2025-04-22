@@ -1,8 +1,7 @@
 import heapq
 from pathlib import Path
 
-from abstracttree import MutableDownTree, Tree, as_tree, HeapTree
-from abstracttree import BinaryDownTree
+from abstracttree import BinaryDownTree, MutableDownTree, Tree, as_tree, HeapTree
 
 
 class BinaryNode(MutableDownTree, BinaryDownTree):

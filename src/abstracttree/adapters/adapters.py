@@ -1,15 +1,15 @@
 from collections.abc import Sequence, Callable, Iterable
 from functools import lru_cache
-from typing import Optional, TypeVar
+from typing import Optional, TypeVar, Type
 
 import abstracttree.generics as generics
-from abstracttree.generics import TreeLike
-from abstracttree.mixins.tree import Tree, TNode
+from abstracttree.generics import TreeLike, DownTreeLike
+from abstracttree.mixins import Tree
 
 T = TypeVar("T")
 
 
-def convert_tree(tree: TreeLike, required_type=Tree) -> Tree:
+def convert_tree(tree: DownTreeLike, required_type=Type[T]) -> T:
     """Convert a TreeLike to a powerful Tree.
 
     If needed, it uses a TreeAdapter.
@@ -96,7 +96,7 @@ class TreeAdapter(Tree):
         return self._value
 
     @property
-    def parent(self: TNode) -> Optional[TNode]:
+    def parent(self: T) -> Optional[T]:
         if self._parent is not None:
             return self._parent
 
@@ -108,7 +108,7 @@ class TreeAdapter(Tree):
         return None
 
     @property
-    def children(self: TNode) -> Sequence[TNode]:
+    def children(self: T) -> Sequence[T]:
         cls = type(self)
         _child_func = cls.child_func
         child_nodes = _child_func(self._value)

@@ -140,3 +140,35 @@ def levels_zigzag(tree: DT) -> Iterator[Sequence[DT]]:
     while level:
         yield iter(level)
         level = [child for node in reversed(level) for child in reversed(children(node))]
+
+
+def _inorder(node, keep=None, index=None, depth=0):
+    """Iterate through nodes of BinaryTree.
+
+    This requires node to be a BinaryTree.
+    It's less generic than the other methods. Therefore, it's not exported by default.
+    It can be accessed through mixins.views.BinaryNodes.
+    """
+    stack = deque()
+    item = NodeItem(index, depth)
+
+    while node is not None or stack:
+        # Traverse down/left
+        left_child, left_item = node.left_child, NodeItem(0, depth + 1)
+        while left_child is not None and (not keep or keep(left_child, left_item)):
+            stack.append((node, item))
+            node, item, depth = left_child, left_item, depth + 1
+            left_child, left_item = node.left_child, NodeItem(0, depth + 1)
+
+        yield node, item
+
+        # Traverse right/up
+        right_child, right_item = node.right_child, NodeItem(1, depth + 1)
+        while stack and (
+                right_child is None or (keep and not keep(right_child, right_item))
+        ):
+            node, item = stack.pop()
+            yield node, item
+            depth -= 1
+            right_child, right_item = node.right_child, NodeItem(1, depth + 1)
+        node, item, depth = right_child, right_item, depth + 1

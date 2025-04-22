@@ -113,3 +113,24 @@ class SiblingsView(TreeView):
         return 0
 
     count = __len__
+
+
+class BinaryNodesView(NodesView):
+    def inorder(self, keep=None):
+        """
+        Iterate through nodes in inorder (traverse left, yield root, traverse right).
+
+        Note:
+        - `item.index` will be 0 for every left child
+        - `item.index` will be 1 for every right child (even if node.left_child is None)
+        This is a bit different from how `preorder()`, `postorder()` and `levelorder()` work,
+        because those functions always give index 0 to the first child,
+        regardless of whether it's a left or right child.
+        Like the other iterators, the root of a subtree always gets item.index equal to 0,
+        even if it is actually a right child in a bigger tree.
+        """
+        if self._include_root:
+            yield from _iterators._inorder(self._node, keep, index=None, depth=0)
+        else:
+            yield from _iterators._inorder(self._node.left_child, keep, index=0, depth=1)
+            yield from _iterators._inorder(self._node.right_child, keep, index=1, depth=1)

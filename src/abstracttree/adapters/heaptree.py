@@ -1,7 +1,8 @@
-from typing import Collection, Optional
+from typing import Collection, Optional, TypeVar
 
-from ..mixins.binarytree import BinaryTree
-from ..mixins.tree import TNode
+from ..mixins import BinaryTree
+
+TNode = TypeVar("TNode")
 
 
 class HeapTree(BinaryTree):

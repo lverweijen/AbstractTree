@@ -101,10 +101,6 @@ def nid(node: Any):
     except AttributeError:
         return id(node)
 
-def eqv(n1: DT, n2: DT) -> bool:
-    """Whether 2 nodes reference the same object."""
-    return nid(n1) == nid(n2)
-
 
 # Collections (Handle Mapping, Sequence and BaseString together to allow specialisation).
 @children.register

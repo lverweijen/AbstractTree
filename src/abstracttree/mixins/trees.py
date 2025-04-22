@@ -1,16 +1,13 @@
 import operator
 from abc import abstractmethod, ABCMeta
-from collections import namedtuple
-from typing import TypeVar, Callable, Optional, Collection, Literal, Iterable
+from typing import TypeVar, Callable, Optional, Collection, Literal, Iterable, Sequence
 
-from ._views import AncestorsView, PathView, NodesView, LeavesView, LevelsView, SiblingsView
+from .views import AncestorsView, PathView, NodesView, LeavesView, LevelsView, SiblingsView, BinaryNodesView
 from .. import generics
 
 TNode = TypeVar("TNode")
 TMutDownNode = TypeVar("TMutDownNode", bound="MutableDownTree")
 Order = Literal["pre", "post", "level"]
-NodeItem = namedtuple("NodeItem", ["index", "depth"])
-NodePredicate = Callable[[TNode, NodeItem], bool]
 
 
 class AbstractTree(metaclass=ABCMeta):
@@ -21,6 +18,7 @@ class AbstractTree(metaclass=ABCMeta):
     @classmethod
     def convert(cls, obj):
         """Convert obj to tree-type or raise TypeError if that doesn't work."""
+        # TODO Keep?
         from ..adapters import convert_tree
         return convert_tree(obj, cls)
 
@@ -28,13 +26,6 @@ class AbstractTree(metaclass=ABCMeta):
     def nid(self) -> int:
         """Unique number that represents this node."""
         return id(self)
-
-    def eqv(self, other) -> bool:
-        """Check if both objects represent the same node.
-
-        Should normally be operator.is, but can be overridden by delegates.
-        """
-        return self is other
 
 
 class UpTree(AbstractTree, metaclass=ABCMeta):
@@ -168,7 +159,47 @@ class MutableTree(Tree, MutableDownTree, metaclass=ABCMeta):
         return self
 
 
+class BinaryDownTree(DownTree, metaclass=ABCMeta):
+    """Binary-tree with links to children."""
+
+    __slots__ = ()
+
+    @property
+    @abstractmethod
+    def left_child(self) -> Optional[TNode]:
+        return None
+
+    @property
+    @abstractmethod
+    def right_child(self) -> Optional[TNode]:
+        return None
+
+    @property
+    def children(self) -> Sequence[TNode]:
+        nodes = list()
+        if self.left_child is not None:
+            nodes.append(self.left_child)
+        if self.right_child is not None:
+            nodes.append(self.right_child)
+        return nodes
+
+    @property
+    def nodes(self):
+        return BinaryNodesView(self)
+
+    @property
+    def descendants(self):
+        return BinaryNodesView(self, include_root=False)
+
+
+class BinaryTree(BinaryDownTree, Tree, metaclass=ABCMeta):
+    """Binary-tree with links to children and to parent."""
+
+    __slots__ = ()
+
+
 # Some optimizations
 generics.children.register(DownTree, operator.attrgetter("children"))
 generics.parent.register(UpTree, operator.attrgetter("parent"))
+generics.nid.register(AbstractTree, operator.attrgetter("nid"))
 generics.label.register(AbstractTree, str)

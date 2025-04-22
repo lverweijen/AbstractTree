@@ -3,8 +3,6 @@ __all__ = [
     "DownTree",
     "MutableTree",
     "MutableDownTree",
-    "BinaryTree",
-    "BinaryDownTree",
     "as_tree",
     "print_tree",
     "plot_tree",
@@ -34,6 +32,6 @@ from .export import (
     to_latex,
     to_reportlab,
 )
-from .mixins import Tree, DownTree, MutableDownTree, MutableTree, BinaryTree, BinaryDownTree
+from .mixins import Tree, DownTree, MutableDownTree, MutableTree, BinaryDownTree, BinaryTree
 from .predicates import RemoveDuplicates, PreventCycles, MaxDepth
 from .route import Route

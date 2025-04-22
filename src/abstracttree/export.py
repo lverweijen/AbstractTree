@@ -4,12 +4,15 @@ import itertools
 import operator
 import subprocess
 import sys
-from collections.abc import Iterable, Mapping
+from collections.abc import Iterable, Mapping, Callable
 from pathlib import Path
-from typing import Union, Callable, TypedDict, Tuple, Any, TypeVar, Optional
+from typing import Union, TypedDict, Tuple, Any, TypeVar, Optional
 
+from . import generics, _iterators
+from ._iterators import preorder, levels, levelorder
+from .adapters import convert_tree
+from .generics import TreeLike, DownTreeLike, label, nid
 from .predicates import PreventCycles, MaxDepth
-from .mixins import DownTree, Tree
 
 __all__ = [
     "print_tree",
