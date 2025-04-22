@@ -72,11 +72,12 @@ def parents(multitree: T) -> Sequence[T]:
         return ()
 
 @singledispatch
-def root(node: T):
+def root(node: T) -> T:
     """Find the root of a node in a tree."""
-    maybe_parent = parent(node)
+    parent_ = parent.dispatch(type(node))
+    maybe_parent = parent_(node)
     while maybe_parent is not None:
-        node, maybe_parent = maybe_parent, parent(maybe_parent)
+        node, maybe_parent = maybe_parent, parent_(maybe_parent)
     return node
 
 @singledispatch
@@ -111,8 +112,7 @@ def _(coll: Collection):
     match coll:
         case Mapping():
             return [MappingItem(k, v) for k, v in coll.items()]
-        case MappingItem():  #value=value):
-            value = coll.value
+        case MappingItem(value=value):
             if isinstance(value, Collection) and not isinstance(value, BaseString):
                 return children(value)
             else:
@@ -135,10 +135,15 @@ def _(coll: Collection):
             return str(coll)
 
 
+# BaseString (should not be treated as a collection).
+children.register(BaseString, children.dispatch(object))
+
+
 # Types
 @children.register
 def _(cls: type):
-    return cls.__subclasses__()
+    # We need this static way of calling it, to make it work on type itself.
+    return type(cls).__subclasses__(cls)
 
 @parents.register
 def _(cls: type):
@@ -234,6 +239,26 @@ def _(node: ast.AST):
         args = [f"{name}={format_value(field)}" for name, field in ast.iter_fields(node)]
         joined_args = ", ".join(args)
         return f"{type(node).__name__}({joined_args})"
+
+# Exception group (python 3.11 or higher)
+try:
+    ExceptionGroup
+except AttributeError:
+    pass
+else:
+    @children.register(BaseExceptionGroup)
+    def _(group: Exception):
+        if isinstance(group, BaseExceptionGroup):
+            return group.exceptions
+        else:
+            return ()
+
+    @label.register(BaseExceptionGroup)
+    def _(group: Exception):
+        if isinstance(group, BaseExceptionGroup):
+            return f"{type(group).__qualname__}({group.message})"
+        else:
+            return repr(group)
 
 
 # XML / ElementTree.Element
