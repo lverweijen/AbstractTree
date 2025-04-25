@@ -1,4 +1,4 @@
-from .adapters import HeapTree, as_tree, convert_tree
+from .adapters import HeapTree, as_tree, convert_tree, TreeAdapter
 from .export import (
     print_tree,
     plot_tree,

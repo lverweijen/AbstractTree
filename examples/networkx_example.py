@@ -13,13 +13,19 @@ from abstracttree.adapters import TreeAdapter
 
 class NetworkXTree(TreeAdapter):
     @property
-    def nid(self):
-        return id(self.identifier)
+    def graph(self):
+        (graph, _) = self.value
+        return graph
 
-    def eqv(self, other):
-        if not isinstance(other, type(self)):
-            return False
-        return self.graph is other.graph and self.identifier == other.identifier
+    @property
+    def identifier(self):
+        (_, identifier) = self.value
+        return identifier
+
+    @property
+    def data(self):
+        (graph, identifier) = self.value
+        return graph.nodes[identifier]
 
     def __str__(self):
         return f"{self.identifier}"
@@ -42,19 +48,8 @@ class NetworkXTree(TreeAdapter):
             return graph, parents[0]
 
     @property
-    def graph(self):
-        (graph, _) = self.node
-        return graph
-
-    @property
-    def identifier(self):
-        (_, identifier) = self.node
-        return identifier
-
-    @property
-    def data(self):
-        (graph, identifier) = self.node
-        return graph.nodes[identifier]
+    def nid(self):
+        return id(self.graph) << 32 | id(self.identifier)
 
 
 def graph_to_tree(graph: nx.Graph, node=None, check=True):
