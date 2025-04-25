@@ -26,6 +26,24 @@ def path(node: T, reverse=False) -> Iterator[T]:
         return itertools.chain([node], reversed(list(ancestors(node))))
 
 
+def nodes(tree: DT, include_root=True) -> Iterator[DT]:
+    """Iterate through all nodes of this tree.
+
+    The order of nodes might change between versions.
+    Use methods like preorder, postorder, levelorder if the order is important.
+    """
+    children = generics.children.dispatch(type(tree))
+    nodes = deque([tree] if include_root else children(tree))
+    while nodes:
+        yield (node := nodes.pop())
+        nodes.extend(children(node))
+
+
+def descendants(node: DT) -> Iterator[DT]:
+    """Iterate through descendants of node in no particular order."""
+    return nodes(node, include_root=False)
+
+
 def preorder(tree: DT, keep=None, include_root=True) -> Iterator[tuple[DT, NodeItem]]:
     """Iterate through nodes in pre-order.
 
@@ -109,7 +127,7 @@ def levelorder(tree: DT, keep=None, include_root=True) -> Iterator[tuple[DT, Nod
 def leaves(tree: DT) -> Iterator[DT]:
     """Iterate through leaves of node."""
     children = generics.children.dispatch(type(tree))
-    for node, _ in preorder(tree):
+    for node in nodes(tree):
         if not children(node):
             yield node
 

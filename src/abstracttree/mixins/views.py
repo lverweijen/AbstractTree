@@ -1,9 +1,8 @@
 import itertools
 from abc import ABCMeta
-from collections import deque
 from typing import Iterable, TypeVar
 
-from .. import _iterators
+from .. import iterators as _iterators
 from ..generics import TreeLike
 
 T = TypeVar("T", bound=TreeLike)
@@ -29,9 +28,7 @@ class TreeView(Iterable[T], metaclass=ABCMeta):
 
     def count(self) -> int:
         """Count number of nodes in this view."""
-        counter = itertools.count()
-        deque(zip(self, counter), maxlen=0)
-        return next(counter)
+        return _ilen(self)
 
 
 class AncestorsView(TreeView):
@@ -54,24 +51,20 @@ class PathView(TreeView):
         return _iterators.path(self._node, reverse=True)
 
     def count(self):
-        counter = itertools.count()
-        deque(zip(reversed(self), counter), maxlen=0)
-        return next(counter)
+        return _ilen(reversed(self))
 
 
 class NodesView(TreeView):
     """View over nodes."""
     __slots__ = "_include_root"
+    itr_method = _iterators.nodes
 
     def __init__(self, node, include_root: bool = True):
         super().__init__(node)
         self._include_root = include_root
 
     def __iter__(self):
-        nodes = deque([self._node] if self._include_root else self._node.children)
-        while nodes:
-            yield (node := nodes.pop())
-            nodes.extend(node.children)
+        return _iterators.nodes(self._node, include_root=self._include_root)
 
     def preorder(self, keep=None):
         return _iterators.preorder(self._node, keep, include_root=self._include_root)
@@ -123,14 +116,18 @@ class BinaryNodesView(NodesView):
         Note:
         - `item.index` will be 0 for every left child
         - `item.index` will be 1 for every right child (even if node.left_child is None)
+        - `item.index` will be None for the root (even if root is a subtree)
         This is a bit different from how `preorder()`, `postorder()` and `levelorder()` work,
         because those functions always give index 0 to the first child,
         regardless of whether it's a left or right child.
-        Like the other iterators, the root of a subtree always gets item.index equal to 0,
-        even if it is actually a right child in a bigger tree.
         """
         if self._include_root:
             yield from _iterators._inorder(self._node, keep, index=None, depth=0)
         else:
             yield from _iterators._inorder(self._node.left_child, keep, index=0, depth=1)
             yield from _iterators._inorder(self._node.right_child, keep, index=1, depth=1)
+
+
+def _ilen(itr):
+    """Recipe from https://more-itertools.readthedocs.io/en/stable/api.html#more_itertools.ilen"""
+    return sum(itertools.compress(itertools.repeat(1), zip(itr)))

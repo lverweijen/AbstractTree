@@ -8,8 +8,8 @@ from collections.abc import Iterable, Mapping, Callable
 from pathlib import Path
 from typing import Union, TypedDict, Tuple, Any, TypeVar, Optional
 
-from . import generics, _iterators
-from ._iterators import preorder, levels, levelorder
+from . import generics
+from .iterators import preorder, levels, levelorder
 from .adapters import convert_tree
 from .generics import TreeLike, DownTreeLike, label, nid
 from .predicates import PreventCycles, MaxDepth
@@ -123,7 +123,7 @@ def _iterate_patterns(tree, keep):
 
     pattern = []
     yield pattern, tree
-    for node, item in _iterators.preorder(tree, keep=keep, include_root=False):
+    for node, item in preorder(tree, keep=keep, include_root=False):
         del pattern[item.depth - 1 :]
         is_continued = item.index < len(_children(_parent(node))) - 1
         pattern.append(is_continued)

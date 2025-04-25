@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Callable, TypeVar
 
-from ._iterators import NodeItem
+from .iterators import NodeItem
 from .generics import TreeLike, DownTreeLike, nid, parent
 
 T = TypeVar("T", bound=TreeLike)

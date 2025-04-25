@@ -5,7 +5,7 @@ from collections.abc import Sized, Sequence, MutableSequence
 from functools import lru_cache
 from typing import TypeVar, Optional
 
-from . import _iterators
+from . import iterators as _iterators
 from .generics import TreeLike, nid
 
 TNode = TypeVar("TNode", bound=TreeLike)
