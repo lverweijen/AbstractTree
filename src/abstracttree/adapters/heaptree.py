@@ -1,8 +1,6 @@
-from typing import Collection, Optional, TypeVar
+from typing import Collection, Optional
 
 from ..mixins import BinaryTree
-
-TNode = TypeVar("TNode")
 
 
 class HeapTree(BinaryTree):
@@ -41,13 +39,14 @@ class HeapTree(BinaryTree):
 
     @property
     def nid(self):
-        return self.index
+        return (id(self.heap) << 32) | self.index
 
-    def eqv(self, other):
-        return type(self) is type(other) and self.index == other.index
+    def __eq__(self, other):
+        """Nodes should refer to the same heap (identity) with the same index."""
+        return self.heap is other.heap and self.index == other.index
 
     @property
-    def children(self: TNode) -> Collection[TNode]:
+    def children(self) -> Collection["HeapTree"]:
         return [
             HeapTree(self.heap, i)
             for i in range(2 * self.index + 1, 2 * self.index + 3)
@@ -55,19 +54,19 @@ class HeapTree(BinaryTree):
         ]
 
     @property
-    def left_child(self) -> Optional[TNode]:
+    def left_child(self) -> Optional["HeapTree"]:
         i = 2 * self.index + 1
         if i < len(self.heap):
             return HeapTree(self.heap, i)
 
     @property
-    def right_child(self) -> Optional[TNode]:
+    def right_child(self) -> Optional["HeapTree"]:
         i = 2 * self.index + 2
         if i < len(self.heap):
             return HeapTree(self.heap, i)
 
     @property
-    def parent(self: TNode) -> Optional[TNode]:
+    def parent(self) -> Optional["HeapTree"]:
         n = self.index
         if n != 0:
             return HeapTree(self.heap, (n - 1) // 2)

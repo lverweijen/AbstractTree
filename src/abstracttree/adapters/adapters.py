@@ -5,6 +5,7 @@ from typing import Optional, TypeVar, Type
 import abstracttree.generics as generics
 from abstracttree.generics import TreeLike, DownTreeLike
 from abstracttree.mixins import Tree
+from abstracttree.utils import eqv
 
 T = TypeVar("T")
 
@@ -24,7 +25,7 @@ def convert_tree(tree: DownTreeLike, required_type=Type[T]) -> T:
     if isinstance(tree, required_type):
         return tree
     else:
-        raise TypeError(f"Unable to convert {tree!r} to {required_type.__name__}")
+        raise TypeError(f"Unable to convert {type(tree)} to {required_type}")
 
 
 def as_tree(
@@ -77,19 +78,20 @@ class TreeAdapter(Tree):
     def __repr__(self) -> str:
         return f"{type(self).__qualname__}({self.value!r})"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.label_func(self._value)
 
     @property
     def nid(self) -> int:
         return generics.nid(self._value)
 
-    def eqv(self, other) -> bool:
-        nid = generics.nid
-        return nid(self._value) == nid(other.value)
+    def __eq__(self, other) -> bool:
+        """Check if the same node is wrapped. Similar to eqv(self.value, other.value)."""
+        return eqv(self, other)
 
-    def __eq__(self, other):
-        return self._value == other.value
+    def __hash__(self) -> int:
+        """An adapter is hashable iff the underlying object is hashable."""
+        return hash(self._value)
 
     @property
     def value(self):

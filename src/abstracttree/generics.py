@@ -23,10 +23,6 @@ class DownTreeLike(metaclass=ABCMeta):
                         or children.dispatch(object) is not children.dispatch(subclass))
         return has_children
 
-    @property
-    def children(self):
-        return ()
-
 
 class TreeLike(metaclass=ABCMeta):
     """Any object that has an identifiable parent."""
@@ -36,23 +32,19 @@ class TreeLike(metaclass=ABCMeta):
                       or parent.dispatch(object) is not parent.dispatch(subclass))
         return has_parent and issubclass(subclass, DownTreeLike)
 
-    @property
-    def parent(self):
-        return None
 
-
-DT = TypeVar("DT", bound=TreeLike)
-T = TypeVar("T", bound=DownTreeLike)
+T = TypeVar("T", bound=TreeLike)
+DT = TypeVar("DT", bound=DownTreeLike)
 
 
 # Base cases
 @singledispatch
-def children(tree: DT) -> Sequence[DT]:
+def children(tree: DT) -> Collection[DT]:
     """Returns children of any downtreelike-object."""
     try:
         return tree.children
     except AttributeError:
-        raise TypeError(f"{type(tree)} is not DownTreeLike. Children not defined.") from None
+        raise TypeError(f"{type(tree)} is not DownTreeLike. children(x) is not defined.") from None
 
 @singledispatch
 def parent(tree: T) -> Optional[T]:
@@ -60,12 +52,12 @@ def parent(tree: T) -> Optional[T]:
     try:
         return tree.parent
     except AttributeError:
-        raise TypeError(f"{type(tree)} is not TreeLike. Parent not defined.") from None
+        raise TypeError(f"{type(tree)} is not TreeLike. parent(x) is not defined.") from None
 
 @singledispatch
-def parents(multitree: T) -> Sequence[T]:
+def parents(tree: T) -> Sequence[T]:
     """Like parent(tree) but return value as a sequence."""
-    tree_parent = parent(multitree)
+    tree_parent = parent(tree)
     if tree_parent is not None:
         return (tree_parent,)
     else:
