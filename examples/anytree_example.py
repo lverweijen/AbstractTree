@@ -2,7 +2,7 @@ import abstracttree
 import anytree
 
 
-# If you want to use abstracttree as a mixin, this is a nice way to do it.
+# If you want to use abstracttree as a mixin, it can be done like this.
 # Usually the mixin would come second, but in this case anytree.Node has many similarly named methods and properties,
 # which are already provided by abstracttree in a more generic way.
 class MyTree(abstracttree.Tree, anytree.Node):

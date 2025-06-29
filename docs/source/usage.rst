@@ -41,7 +41,7 @@ A mutable tree can change its structure once created.
 +---------------------+-------------------------------+-------------------------------------+------------------------------------------------------------------------------------+
 | ``MutableDownTree`` | ``DownTree``                  | ``add_child()``, ``remove_child()`` | ``add_children()``                                                                 |
 +---------------------+-------------------------------+-------------------------------------+------------------------------------------------------------------------------------+
-| ``MutableTree``     | ``Tree``, ``MutableDownTree`` |                                     | ``detach()``                                                                       |
+| ``MutableTree``     | ``MutableDownTree``, ``Tree`` |                                     | ``detach()``                                                                       |
 +---------------------+-------------------------------+-------------------------------------+------------------------------------------------------------------------------------+
 | ``BinaryDownTree``  | ``DownTree``                  | ``left_child``, ``right_child``     | ``children``                                                                       |
 +---------------------+-------------------------------+-------------------------------------+------------------------------------------------------------------------------------+
@@ -51,10 +51,9 @@ A mutable tree can change its structure once created.
 In your own code, you can inherit from these trees.
 For example, if your tree only has links to children::
 
-    import abstracttree
-    from abstracttree import print_tree
+    from abstracttree import DownTree, print_tree
 
-    class MyTree(abstracttree.DownTree):
+    class MyTree(DownTree):
         def __init__(self, value, children=()):
             self.value = value
             self._children = children
@@ -86,12 +85,11 @@ The following objects are ``TreeLike``:
 
 - All objects that support ``obj.children`` and ``obj.parent``.
 - Builtins classes ``pathlib.Path`` and ``zipfile.Path``.
-- Third party tree libraries from `anytree <https://github.com/c0fec0de/anytree>`_, `bigtree <https://github.com/kayjan/bigtree>`_, `itertree <https://github.com/BR1py/itertree>_` and `littletree <https://github.com/lverweijen/littletree>_`.
+- Third party tree classes from `anytree <https://github.com/c0fec0de/anytree>`_, `bigtree <https://github.com/kayjan/bigtree>`_, `itertree <https://github.com/BR1py/itertree>`_ and `littletree <https://github.com/lverweijen/littletree>`_.
 
-The following objects are `DownTreeLike`:
+The following objects are ``DownTreeLike``:
 
 - All objects that support ``obj.children``.
-- Anything implementing ``DownTree``.
 - Recursive collections like lists, tuples, sets, dicts. This can be useful when dealing with json-data.
 
 This can be tested using `isinstance`::
@@ -119,7 +117,7 @@ Additionally, on treelikes::
 
 Examples::
 
-    >>> from abstracttree.generics import *
+    >>> from abstracttree import *
     >>> children([1, 2, 3])
     [1, 2, 3]
     >>> children({"name": "Philip", "children": ["Pete", "Mariam"]})
@@ -136,48 +134,19 @@ Examples::
 Iterators
 ---------
 
-On downtreelikes::
+The following methods can iterate through nodes::
 
     nodes(tree)  # Iterate through all nodes in tree (in no particular order).
     descendants(node)  # Children and grand-(grand-*)-children of node.
     leaves(root)  # Leaves reachable from root
-
-Additionally, on treelikes::
-
     ancestors(node)  # Ancestors of node.
     path(node)  # Path from root to this node including this node.
     siblings(node)  # Siblings of node
 
-Adapters
-------------------
-
-If you want a ``Tree``-object, you can use ``as_tree`` to convert these treelikes to a full ``Tree``.
-Alternatively, you can explicitly specify how to find ``children`` and ``parent``::
-
-    # Tree from json-data
-    data = {"name": "a",
-            "children": [
-                {"name": "b", "children": []},
-                {"name": "c", "children": []}
-    ]}
-    as_tree(data, children=operator.itemgetter["children"])
-
-    # pyqt.QtWidget
-    as_tree(widget, children=lambda w: w.children(), parent = lambda w: w.parent())
-
-    # Tree from treelib
-    as_tree(tree.root, children=lambda nid: tree.children(nid), parent=lambda nid: tree.parent(nid))
-
-    # itertree
-    as_tree(tree, children=iter, parent=lambda t: t.parent)
-
-    # Infinite binary tree
-    inf_binary = as_tree(0, children=lambda n: (2*n + 1, 2*n + 2))
-
 Traversal
-----------------------------------------
+~~~~~~~~~
 
-There are 3 common ways to traverse a tree:
+The following methods also iterate, but in a very specific order.
 
 Pre-order
     The parent is iterated over before its children.
@@ -228,6 +197,31 @@ If the order of iteration doesn't matter an alternative way to iterate is as fol
     for descendant in descendants(tree):
         ...
 
+Adapters
+------------------
+
+If you want a ``Tree``-object, you can use ``as_tree`` to convert these treelikes to a full ``Tree``.
+Alternatively, you can explicitly specify how to find ``children`` and ``parent``::
+
+    # Tree from json-data
+    data = {"name": "a",
+            "children": [
+                {"name": "b", "children": []},
+                {"name": "c", "children": []}
+    ]}
+    as_tree(data, children=operator.itemgetter["children"])
+
+    # pyqt.QtWidget
+    as_tree(widget, children=lambda w: w.children(), parent = lambda w: w.parent())
+
+    # Tree from treelib
+    as_tree(tree.root, children=lambda nid: tree.children(nid), parent=lambda nid: tree.parent(nid))
+
+    # itertree
+    as_tree(tree, children=iter, parent=lambda t: t.parent)
+
+    # Infinite binary tree
+    inf_binary = as_tree(0, children=lambda n: (2*n + 1, 2*n + 2))
 
 Export
 ----------------------------------------

@@ -1,5 +1,20 @@
 # Changelog
 
+## Version 0.2.0
+
+* Add generics `TreeLike` and `DownTreeLike`.
+* Add many new functions that accept above generics as parameter.
+* Change many existing functions to accept above generics above as parameter.
+* Rename `astree(x)` to `as_tree(x)`. Also `as_tree` will now always return a `TreeView`.
+* Remove `convert_tree.register`, but add granular methods `children.register`, `parent.register`.
+* Iteration methods on `tree.nodes` and `tree.descendants` now use `None` as index for root (instead of 0).
+* Change how `Mapping` is converted to Tree. `children(mapping)` is mostly similar to `mapping.items()`. This works well on jsonlike-data.
+* Replace `x.eqv(y)` method by `eqv(x, y)` function.
+* `TreeAdapter` remains, but some alternative adapters have been removed.
+* `TreeAdapter` is hashable if the underlying object is hashable.
+* `TreeAdapter.node` has been renamed to `TreeAdapter.value`.
+* `HeapTree` has become immutable and hashable (by id(heap) and index). The heap itself may remain mutable without a problem.
+
 ## Version 0.1.1
 
 * Make it possible to pass options like `file_format` to `to_image`.

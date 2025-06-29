@@ -1,15 +1,19 @@
-This Python package contains a few abstract base classes for tree data structures.
-Trees are very common data structure that represents a hierarchy of common nodes.
-There are many different ways to represent them.
-This package tries to provide a uniform interface, mixin methods and some utility functions without settling on a concrete tree implementation.
+Trees are a common data structure and there are many different ways to implement them.
+This package provides a common interface to access and operate on these objects.
 
-## Abstract base classes ##
+## Installing ##
+ 
+Use [pip](https://pip.pypa.io/en/stable/getting-started/) to install abstracttree:
 
-```python
-from abstracttree import DownTree, to_mermaid
-
-to_mermaid(DownTree)
+```sh
+$ pip install --upgrade abstracttree
 ```
+
+## Usage ##
+
+You can start by implementing the mixins below. Otherwise, a lot of trees are supported out of the box.
+
+### Mixins ###
 
 ```mermaid
 graph TD;
@@ -31,26 +35,21 @@ BinaryDownTree-->BinaryTree;
 Tree-->BinaryTree;
 ```
 
-A `Downtree` needs to have links to its direct children, but doesn't require a link to its parent.
-A `Tree` needs to have links to both its `children` and its `parent`.
+| ABC               | Inherits from             | Abstract Methods                | Mixin Methods                                                                                                                                                  |
+|-------------------|---------------------------|---------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `DownTree`        |                           | `children`                      | `nodes`, `nodes.preorder()`, `nodes.postorder()`, `nodes.levelorder()`, `descendants`, `leaves`, `levels`, `levels.zigzag()`, `is_leaf`, `transform()`,  `nid` |
+| `Tree`            | `DownTree`                | `parent`                        | `root`, `is_root`, `ancestors`, `path`, `siblings`                                                                                                             |
+| `MutableDownTree` | `DownTree`                | `add_child()`, `remove_child()` | `add_children()`                                                                                                                                               |
+| `MutableTree`     | `MutableDownTree`, `Tree` |                                 | `detach()`                                                                                                                                                     |
+| `BinaryDownTree`  | `DownTree`                | `left_child`, `right_child`     | `children`, `nodes.inorder()`, `descendants.inorder()`                                                                                                         |
+| `BinaryTree`      | `BinaryDownTree`, `Tree`  |                                 |                                                                                                                                                                |
 
-| ABC               | Inherits from             | Abstract Methods                | Mixin Methods                                                                                                                                                           |
-|-------------------|---------------------------|---------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `DownTree`        |                           | `children`                      | `nodes`, `nodes.preorder()`, `nodes.postorder()`, `nodes.levelorder()`, `descendants`, `leaves`, `levels`, `levels.zigzag()`, `is_leaf`, `transform()`,  `nid`, `eqv()` |
-| `Tree`            | `DownTree`                | `parent`                        | `root`, `is_root`, `ancestors`, `path`, `siblings`                                                                                                                      |
-| `MutableDownTree` | `DownTree`                | `add_child()`, `remove_child()` | `add_children()`                                                                                                                                                        |
-| `MutableTree`     | `Tree`, `MutableDownTree` |                                 | `detach()`                                                                                                                                                              |
-| `BinaryDownTree`  | `DownTree`                | `left_child`, `right_child`     | `children`, `nodes.inorder()`, `descendants.inorder()`                                                                                                                  |
-| `BinaryTree`      | `BinaryDownTree`, `Tree`  |                                 |                                                                                                                                                                         |
-
-In your own code, you can inherit from these trees.
-For example, if your tree only has links to children:
+For example, to create a simple tree with children (but no parent):
 
 ```python
-import abstracttree
-from abstracttree import print_tree
+from abstracttree import DownTree, print_tree
 
-class MyTree(abstracttree.DownTree):
+class MyTree(DownTree):
     def __init__(self, value, children=()):
         self.value = value
         self._children = children
@@ -71,116 +70,118 @@ print_tree(tree)
 # └─ MyTree 3
 ```
 
-## Adapter ##
+### Generics ##
 
-In practice, not all existing tree data structures implement one of these abstract classes.
-As a bridge, you can use `AbstractTree.convert` to convert these trees to a `Tree` instance.
-However, whenever possible, it's recommended to inherit from `Tree` directly for minimal overhead.
+Unfortunately, not all trees inherit from the mixins above. Yet, some objects still have treelike behaviour.
+Therefore, AbstractTree provides support for a slightly weaker protocol.
+
+The following objects are `TreeLike`:
+- All objects that support `obj.children` and `obj.parent`.
+- Builtins classes `pathlib.Path` and `zipfile.Path`.
+- Third party tree classes from [anytree](https://github.com/c0fec0de/anytree), [bigtree](https://github.com/kayjan/bigtree), [itertree](https://github.com/BR1py/itertree) and [littletree](https://github.com/lverweijen/littletree).
+
+The following objects are `DownTreeLike`:
+- All objects that support `obj.children`.
+- Anything implementing `DownTree`.
+- Recursive collections like lists, tuples, sets, dicts. This can be useful when dealing with json-data.
+
+This can be tested using `isinstance`:
+
+```python
+isinstance(Path(r"C:\\Windows\System"), TreeLike)  # True
+isinstance(range(100), DownTreeLike)  # True
+isinstance(range(100), TreeLike)  # False
+isinstance(5, DownTreeLike)  # False
+isinstance("some text", DownTreeLike)  # False (even though it might be considered a collection by python).
+```
+
+### Basic functions
+
+On downtreelikes:
+```python
+children(node)  # Children of node
+label(node)  # String representation of node (similar to str, but output excludes parent and children)
+nid(node)  # Address of node (similar to id, but supports delegates).
+eqv(node1, node2)  # Check if 2 nodes have the same identity (similar to is, but supports delegates)
+```
+
+Additionally, on treelikes:
+```python
+parent(node)  # Parent of node or None if node is root of its own tree.
+root(node)  # Find root of this tree.
+```
 
 Examples:
-
 ```python
-# Trees from built-ins and standard library
-tree = Tree.convert(int)
-tree = Tree.convert(ast.parse("1 + 1 == 2"))
-tree = Tree.convert(pathlib.Path("abstracttree"))
-
-# Anything that has parent and children attributes (anytree / bigtree / littletree)
-tree = Tree.convert(anytree.Node('name'))
-
-# Nested list
-tree = Tree.convert([[1, 2, 3], [4, 5, 6]])
+>>> from abstracttree import *
+>>> children([1, 2, 3])
+[1, 2, 3]
+>>> children({"name": "Philip", "children": ["Pete", "Mariam"]})
+[MappingItem(key="name", value="Philip"), MappingItem(key="children", value=["Pete", "Miriam"])]
+>>> parent(Path(r"C:\\Windows\System"))
+Path(r"C:\\Windows")
+>>> label(Path(r"C:\\Windows\System"))
+"System"
+>>> eqv(Path(r"C:\\Windows\System"), Path(r"C:\\Windows\System"))
+True
+>>> eqv([1, 2, 3], [1, 2, 3])
+False
 ```
 
-Or use `astree` if you need a custom function for `parent` or `children`:
+### Iterators
 
+On downtreelikes:
 ```python
-# Tree from json-data
-data = {"name": "a",
-        "children": [
-            {"name": "b", "children": []},
-            {"name": "c", "children": []}
-]}
-astree(data, children=operator.itemgetter["children"])
-
-# pyqt.QtWidget
-astree(widget, children=lambda w: w.children(), parent = lambda w: w.parent())
-
-# Tree from treelib
-astree(tree.root, children=lambda nid: tree.children(nid), parent=lambda nid: tree.parent(nid))
-
-# itertree
-astree(tree, children=iter, parent=lambda t: t.parent)
-
-# Infinite binary tree
-inf_binary = astree(0, children=lambda n: (2*n + 1, 2*n + 2))
+nodes(tree)  # Iterate through all nodes in tree (in no particular order).
+descendants(node)  # Children and grand-(grand-*)-children of node.
+leaves(root)  # Leaves reachable from root
 ```
 
-## Utility functions
-
-Pretty printing
+If you want to iterate though the nodes in a specific order, use:
 ```python
-tree = astree(seq, children=lambda x: [x[:-2], x[1:]] if x else [])
-print_tree(tree)
-print(to_string(tree))
+preorder(node)  # Nodes in preorder (root comes first).
+postorder(node)  # Nodes in postorder (root comes last).
+levelorder(node)  # Nodes near the root come before later nodes.
+```
+These will return tuples with (node, item). The item-object contains information about the depth of the node.
 
-# ['a', 'b', 'c', 'd']
-# ├─ ['a', 'b']
-# │  └─ ['b']
-# └─ ['b', 'c', 'd']
-#    ├─ ['b']
-#    └─ ['c', 'd']
-#       └─ ['d']
+Additionally, on treelikes:
+```python
+ancestors(node)  # Ancestors of node.
+path(node)  # Path from root to this node including this node.
+siblings(node)  # Siblings of node
 ```
 
-Plotting with matplotlib
-```python
-import matplotlib.pyplot as plt
+### Adapters ###
 
-expr = ast.parse("y = x*x + 1")
-plot_tree(expr)
-plt.show()
+To upgrade a `TreeLike` to a full `Tree` use `as_tree`.
+
+```python
+path_tree = as_tree(pathlib.Path("my_documents"))  # Optionally pass `children`, `parent`, `label`.
+
+# Iterate over all its descendants
+for node in path_tree.descendants:
+    path_obj = node.value  # Get back a Path-object from TreeAdapter
 ```
-![images/tree_calc_plot.png](images/tree_calc_plot.png)
+
+There is also `TreeAdapter` to help with classes that are very different.
+
+### Exporting ###
 
 Export to various formats
 ```python
+print_tree(tree)
+
+# If matplotlib is installed
+plot_tree(tree)
+
+# These may require graphviz or Pillow to be installed.
 to_dot(tree)
 to_mermaid(tree)
 to_latex(tree)
 to_reportlab(tree)
 
 to_image(Path('.'), "filetree.png", how="dot")
-to_image(AbstractTree, "class_hierarchy.svg", how="mermaid")
+to_image(DownTree, "tree_hierarchy.svg", how="mermaid")
 to_pillow(tree).show()
 ```
-
-## Find distance between nodes
-
-```python
-import heapq
-
-from abstracttree import HeapTree, Route
-
-tree = HeapTree([5, 4, 3, 2, 1])
-heapq.heapify(tree.heap)
-route = Route(tree.left_child, tree.right_child)
-
-print(f"{route.lca = }")  # => HeapTree([1, 2, 3, 5, 4], 0)
-print(f"{route.nodes.count() = }")  # => 3
-print(f"{route.edges.count() = }")  # => 2
-```
-
-## A few concrete tree implementations
-
-- [anytree](https://github.com/c0fec0de/anytree)
-- [treelib](https://github.com/caesar0301/treelib)
-- [bigtree](https://github.com/kayjan/bigtree)
-- [itertree](https://github.com/BR1py/itertree)
-- [dendropy](https://github.com/jeetsukumaran/DendroPy)
-- [ete](https://github.com/etetoolkit/ete)
-- [littletree](https://github.com/lverweijen/littletree) - also by me
-
-## Tree visualisation
-
-- [PrettyPrintTree](https://github.com/AharonSambol/PrettyPrintTree) - colored terminal output

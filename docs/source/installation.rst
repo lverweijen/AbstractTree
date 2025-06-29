@@ -3,7 +3,7 @@ Installation
 
 Use `pip <https://pip.pypa.io/en/stable/getting-started/>`_ to install littletree::
 
-    $ pip install --upgrade littletree
+    $ pip install --upgrade abstracttree
 
 In addition you may want to install the following for some export functions::
 
