@@ -1,24 +1,24 @@
 import itertools
 from abc import ABCMeta
+from collections.abc import Iterator
 from typing import Iterable, TypeVar
 
 from .. import iterators as _iterators
-from ..generics import TreeLike
 
-T = TypeVar("T", bound=TreeLike)
+T = TypeVar("T", bound="Tree")
 
 
 class TreeView(Iterable[T], metaclass=ABCMeta):
     __slots__ = "_node"
     itr_method = None
 
-    def __init__(self, node):
-        self._node = node
+    def __init__(self, node: T):
+        self._node: T = node
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[T]:
         return type(self).itr_method(self._node)
 
-    def __bool__(self):
+    def __bool__(self) -> bool:
         try:
             next(iter(self))
         except StopIteration:
@@ -33,11 +33,13 @@ class TreeView(Iterable[T], metaclass=ABCMeta):
 
 class AncestorsView(TreeView):
     """View over ancestors."""
+    __slots__ = ()
     itr_method = _iterators.ancestors
 
 
 class PathView(TreeView):
     """View over path from root to self."""
+    __slots__ = ()
     itr_method = _iterators.path
 
     def __bool__(self):
@@ -78,11 +80,13 @@ class NodesView(TreeView):
 
 class LeavesView(TreeView):
     """View over leaves."""
+    __slots__ = ()
     itr_method = _iterators.leaves
 
 
 class LevelsView(TreeView):
     """View over levels."""
+    __slots__ = ()
     itr_method = _iterators.levels
 
     def __bool__(self):
@@ -95,10 +99,16 @@ class LevelsView(TreeView):
 
 class SiblingsView(TreeView):
     """View over siblings."""
+    __slots__ = ()
     itr_method = _iterators.siblings
 
-    def __contains__(self, node):
-        return not self._node is node and node.parent is self._node.parent
+    def __contains__(self, other):
+        try:
+            other_parent = other.parent
+        except AttributeError:
+            return False  # not a Tree
+        else:
+            return other_parent is self._node.parent and other is not self._node
 
     def __len__(self):
         if p := self._node.parent:
@@ -109,6 +119,7 @@ class SiblingsView(TreeView):
 
 
 class BinaryNodesView(NodesView):
+    __slots__ = ()
     def inorder(self, keep=None):
         """
         Iterate through nodes in inorder (traverse left, yield root, traverse right).

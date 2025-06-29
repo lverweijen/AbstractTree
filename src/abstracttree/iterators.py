@@ -33,10 +33,10 @@ def nodes(tree: DT, include_root=True) -> Iterator[DT]:
     Use methods like preorder, postorder, levelorder if the order is important.
     """
     children = generics.children.dispatch(type(tree))
-    nodes = deque([tree] if include_root else children(tree))
-    while nodes:
-        yield (node := nodes.pop())
-        nodes.extend(children(node))
+    coll = deque([tree] if include_root else children(tree))
+    while coll:
+        yield (node := coll.pop())
+        coll.extend(children(node))
 
 
 def descendants(node: DT) -> Iterator[DT]:
@@ -53,16 +53,16 @@ def preorder(tree: DT, keep=None, include_root=True) -> Iterator[tuple[DT, NodeI
     """
     children = generics.children.dispatch(type(tree))
     if include_root:
-        nodes = deque([(tree, NodeItem(None, 0))])
+        coll = deque([(tree, NodeItem(None, 0))])
     else:
-        nodes = deque(reversed([(c, NodeItem(i, 1)) for i, c in enumerate(children(tree))]))
+        coll = deque(reversed([(c, NodeItem(i, 1)) for i, c in enumerate(children(tree))]))
 
-    while nodes:
-        node, item = nodes.pop()
+    while coll:
+        node, item = coll.pop()
         if not keep or keep(node, item):
             yield node, item
             next_nodes = [(c, NodeItem(i, item.depth + 1)) for i, c in enumerate(children(node))]
-            nodes.extend(reversed(next_nodes))
+            coll.extend(reversed(next_nodes))
 
 
 def postorder(tree: DT, keep=None, include_root=True) -> Iterator[tuple[DT, NodeItem]]:
@@ -75,32 +75,32 @@ def postorder(tree: DT, keep=None, include_root=True) -> Iterator[tuple[DT, Node
     children = generics.children.dispatch(type(tree))
 
     if include_root:
-        nodes = iter([(tree, NodeItem(None, 0))])
+        coll = iter([(tree, NodeItem(None, 0))])
     else:
-        nodes = iter([(c, NodeItem(i, 1)) for i, c in enumerate(children(tree))])
+        coll = iter([(c, NodeItem(i, 1)) for i, c in enumerate(children(tree))])
 
-    node, item = next(nodes, (None, None))
+    node, item = next(coll, (None, None))
     stack = []
 
     while node or stack:
         # Go down
         keep_node = keep is None or keep(node, item)
         while keep_node and (cc := children(node)):
-            stack.append((node, item, nodes))
-            nodes = iter([
+            stack.append((node, item, coll))
+            coll = iter([
                 (c, NodeItem(i, item.depth + 1)) for (i, c) in enumerate(cc)
             ])
-            node, item = next(nodes)
+            node, item = next(coll)
             keep_node = keep is None or keep(node, item)
         if keep_node:
             yield node, item
 
         # Go right or go up
-        node, item = next(nodes, (None, None))
+        node, item = next(coll, (None, None))
         while node is None and stack:
-            node, item, nodes = stack.pop()
+            node, item, coll = stack.pop()
             yield node, item
-            node, item = next(nodes, (None, None))
+            node, item = next(coll, (None, None))
 
 
 def levelorder(tree: DT, keep=None, include_root=True) -> Iterator[tuple[DT, NodeItem]]:
@@ -112,16 +112,16 @@ def levelorder(tree: DT, keep=None, include_root=True) -> Iterator[tuple[DT, Nod
     """
     children = generics.children.dispatch(type(tree))
     if include_root:
-        nodes = deque([(tree, NodeItem(None, 0))])
+        coll = deque([(tree, NodeItem(None, 0))])
     else:
-        nodes = deque([(c, NodeItem(i, 1)) for i, c in enumerate(children(tree))])
+        coll = deque([(c, NodeItem(i, 1)) for i, c in enumerate(children(tree))])
 
-    while nodes:
-        node, item = nodes.popleft()
+    while coll:
+        node, item = coll.popleft()
         if not keep or keep(node, item):
             yield node, item
             next_nodes = [(c, NodeItem(i, item.depth + 1)) for i, c in enumerate(children(node))]
-            nodes.extend(next_nodes)
+            coll.extend(next_nodes)
 
 
 def leaves(tree: DT) -> Iterator[DT]:
