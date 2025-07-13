@@ -42,7 +42,7 @@ class TestGenerics(TestCase):
             if expected is SKIPTOKEN:
                 continue
 
-            with self.subTest("Test for {case}"):
+            with self.subTest(f"Test for {case}"):
                 self.assertEqual(expected, children(case))
 
     def test_parent(self):
@@ -57,7 +57,7 @@ class TestGenerics(TestCase):
         ]
 
         for case, expected in zip(self.cases, expectations, strict=True):
-            with self.subTest("Test for {case}"):
+            with self.subTest(f"Test for {case}"):
                 if expected is not ERRTOKEN:
                     self.assertEqual(expected, parent(case))
                 else:
@@ -79,5 +79,5 @@ class TestGenerics(TestCase):
         for case, expected in zip(self.cases, expectations, strict=True):
             if expected is SKIPTOKEN:
                 continue
-            with self.subTest("Test for {case}"):
+            with self.subTest(f"Test for {case}"):
                 self.assertEqual(expected, label(case))

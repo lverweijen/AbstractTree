@@ -1,6 +1,9 @@
 from unittest import TestCase
 
-import tree_instances as trees
+try:
+    from . import tree_instances as trees
+except ImportError:
+    import tree_instances as trees
 
 
 class TestTree(TestCase):

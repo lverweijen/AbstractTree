@@ -1,7 +1,11 @@
 from unittest import TestCase
 
 from abstracttree import MaxDepth
-from tree_instances import BinaryNode, INFINITE_BINARY_TREE
+
+try:
+    from .tree_instances import BinaryNode, INFINITE_BINARY_TREE
+except ImportError:
+    from tree_instances import BinaryNode, INFINITE_BINARY_TREE
 
 
 class TestMutableDownTree(TestCase):

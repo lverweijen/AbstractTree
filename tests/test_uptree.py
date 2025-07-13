@@ -1,7 +1,11 @@
 from pathlib import Path
 from unittest import TestCase
 
-import tree_instances as trees
+try:
+    from . import tree_instances as trees
+except ImportError:
+    import tree_instances as trees
+
 from abstracttree import as_tree
 
 
