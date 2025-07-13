@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import TypeVar, Optional, Union, Any
 
 BaseString = Union[str, bytes, bytearray]
+_BaseString = [str, bytes, bytearray]  # Support py3.10
 BasePath = Union[Path, zipfile.Path]
 MappingItem = namedtuple("MappingItem", ["key", "value"])
 
@@ -124,7 +125,9 @@ def _(coll: Collection):
 
 
 # BaseString (should not be treated as a collection).
-children.register(BaseString, children.dispatch(object))
+# children.register(BaseString, children.dispatch(object))  # if py >= 3.11
+for cls in _BaseString:
+    children.register(cls, children.dispatch(object))
 
 
 # Types
@@ -148,7 +151,8 @@ def _(_: type) -> type:
 
 
 # BasePath
-@children.register
+@children.register(Path)
+@children.register(zipfile.Path)
 def _(pth: BasePath):
     if pth.is_dir():
         try:
@@ -161,7 +165,8 @@ def _(pth: BasePath):
     else:
         return ()
 
-@parent.register
+@parent.register(Path)
+@parent.register(zipfile.Path)
 def _(pth: BasePath):
     parent_path = pth.parent
     if pth != parent_path:
@@ -169,11 +174,13 @@ def _(pth: BasePath):
     else:
         return None
 
-@label.register
+@label.register(Path)
+@label.register(zipfile.Path)
 def _(pth: BasePath):
     return pth.name
 
-@root.register
+@root.register(Path)
+@root.register(zipfile.Path)
 def _(pth: BasePath):
     return pth.anchor
 
@@ -231,7 +238,7 @@ def _(node: ast.AST):
 # Exception group (python 3.11 or higher)
 try:
     ExceptionGroup
-except AttributeError:
+except NameError:
     pass
 else:
     @children.register(BaseExceptionGroup)
