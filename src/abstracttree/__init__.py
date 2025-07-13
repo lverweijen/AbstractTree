@@ -11,6 +11,8 @@ from .export import (
     to_reportlab,
 )
 from .generics import (
+    TreeLike,
+    DownTreeLike,
     children,
     parent,
     root,
