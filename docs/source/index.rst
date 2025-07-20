@@ -6,17 +6,15 @@
 Welcome to AbstractTree's documentation!
 ========================================
 
-Trees are very common data structure that represents a hierarchy of common nodes.
-This package defines abstract base classes for these data structure in order to make code reusable.
-It also provides an ``astree`` adapter in case it's not possible to inherit from any of these classes.
-Finally, it provides many exports that even work on objects that don't inherit from any of the abstract base classes.
+Trees are very common data structure to represent a hierarchy of nodes.
+This package provides a common interface to access and operate on these objects.
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
    installation
-   usage_bundled
+   usage
    api
    CHANGES
 

@@ -1,27 +1,31 @@
 from pathlib import Path
 from unittest import TestCase
 
-import tree_instances as trees
-from abstracttree import astree
+try:
+    from . import tree_instances as trees
+except ImportError:
+    import tree_instances as trees
+
+from abstracttree import as_tree
 
 
 class TestUpTree(TestCase):
     def test_parent(self):
-        path_parent = astree(Path("this/path/should/not"))
+        path_parent = as_tree(Path("this/path/should/not"))
         self.assertEqual(None, trees.SINGLETON.parent)
-        self.assertEqual(path_parent, trees.NONEXISTENTPATH.parent)
+        self.assertEqual(str(path_parent), str(trees.NONEXISTENTPATH.parent))  # Or should there be an eqv generic that does samefile?
         self.assertEqual(None, trees.INFINITE_BINARY_TREE.parent)
-        self.assertEqual(2, trees.INFINITE_BINARY_TREE_SUBTREE.parent.node)
-        self.assertEqual(4, trees.COUNTDOWN.parent.node)
+        self.assertEqual(2, trees.INFINITE_BINARY_TREE_SUBTREE.parent.value)
+        self.assertEqual(4, trees.COUNTDOWN.parent.value)
         self.assertEqual(trees.INFINITE_TREE, trees.INFINITE_TREE)
 
     def test_root(self):
-        path_root = astree(Path(""))
+        path_root = as_tree(Path(""))
         self.assertEqual(trees.SINGLETON, trees.SINGLETON.root)
-        self.assertEqual(path_root, trees.NONEXISTENTPATH.root)
-        self.assertEqual(0, trees.INFINITE_BINARY_TREE.root.node)
-        self.assertEqual(0, trees.INFINITE_BINARY_TREE_SUBTREE.root.node)
-        self.assertEqual(0, trees.COUNTDOWN.root.node)
+        self.assertEqual(str(path_root), str(trees.NONEXISTENTPATH.root))
+        self.assertEqual(0, trees.INFINITE_BINARY_TREE.root.value)
+        self.assertEqual(0, trees.INFINITE_BINARY_TREE_SUBTREE.root.value)
+        self.assertEqual(0, trees.COUNTDOWN.root.value)
 
     def test_is_root(self):
         self.assertTrue(trees.SINGLETON.is_root)

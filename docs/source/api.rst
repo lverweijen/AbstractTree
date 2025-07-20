@@ -1,22 +1,18 @@
 API
 ==================
 
-Abstract base classes
+Mixins
 ---------------------
 
-.. automodule:: abstracttree.tree
+.. automodule:: abstracttree.mixins
    :members:
    :show-inheritance:
 
-.. automodule:: abstracttree.binarytree
+Generics
+---------------------
+
+.. automodule:: abstracttree.generics
    :members:
-   :show-inheritance:
-
-Adapters
-------------------
-
-.. automodule:: abstracttree.adapters
-   :members: astree, convert_tree
    :show-inheritance:
 
 Export
@@ -32,14 +28,21 @@ Predicates
    :members:
    :show-inheritance:
 
-HeapTree
+Adapters
 ------------------
-.. automodule:: abstracttree.heaptree
-   :members: HeapTree
+
+.. automodule:: abstracttree.adapters
+   :members:
    :show-inheritance:
 
 Route
 ------------------
 .. automodule:: abstracttree.route
    :members: Route
+   :show-inheritance:
+
+Utils
+------------------
+.. automodule:: abstracttree.utils
+   :members: eqv
    :show-inheritance:

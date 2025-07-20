@@ -1,8 +1,7 @@
 import heapq
 from pathlib import Path
 
-from abstracttree import MutableDownTree, Tree, astree, HeapTree
-from abstracttree.binarytree import BinaryDownTree
+from abstracttree import BinaryDownTree, MutableDownTree, Tree, as_tree, HeapTree
 
 
 class BinaryNode(MutableDownTree, BinaryDownTree):
@@ -52,8 +51,8 @@ class InfiniteSingleton(Tree):
         return "Infinite singleton!"
 
 
-SINGLETON = astree("Singleton", children=lambda n: ())
-NONEXISTENTPATH = Tree.convert(Path("this/path/should/not/exist"))
+SINGLETON = as_tree("Singleton", children=lambda n: ())
+NONEXISTENTPATH = as_tree(Path("this/path/should/not/exist"))
 
 BINARY_TREE = BinaryNode(1)  # 2 children
 BINARY_TREE.left = BinaryNode(2)  # leaf
@@ -63,17 +62,17 @@ BINARY_TREE.right.left.right = BinaryNode(5)  # leaf
 
 BINARY_TREE_SUBTREE = BINARY_TREE.right.left.right
 
-INFINITE_BINARY_TREE = astree(0, children=lambda n: (2 * n + 1, 2 * n + 2))
+INFINITE_BINARY_TREE = as_tree(0, children=lambda n: (2 * n + 1, 2 * n + 2))
 INFINITE_BINARY_TREE_SUBTREE = INFINITE_BINARY_TREE.children[1].children[0]
 
 COUNTDOWN_MAX = 5
-COUNTDOWN = astree(
+COUNTDOWN = as_tree(
     COUNTDOWN_MAX,
     children=lambda n: [n + 1] if n < COUNTDOWN_MAX else (),
     parent=lambda n: n - 1 if n > 0 else None,
 )
 
-SEQTREE = Tree.convert([1, [2, 3], []])
+SEQTREE = as_tree([1, [2, 3], []])
 
 INFINITE_TREE = InfiniteSingleton()
 

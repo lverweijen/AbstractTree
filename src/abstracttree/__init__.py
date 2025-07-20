@@ -1,29 +1,4 @@
-__all__ = [
-    "Tree",
-    "DownTree",
-    "MutableTree",
-    "MutableDownTree",
-    "BinaryTree",
-    "BinaryDownTree",
-    "astree",
-    "print_tree",
-    "plot_tree",
-    "to_string",
-    "to_image",
-    "to_dot",
-    "to_mermaid",
-    "to_pillow",
-    "to_reportlab",
-    "to_latex",
-    "RemoveDuplicates",
-    "PreventCycles",
-    "MaxDepth",
-    "HeapTree",
-    "Route",
-]
-
-from .adapters import astree
-from .binarytree import BinaryTree, BinaryDownTree
+from .adapters import HeapTree, as_tree, convert_tree, TreeAdapter
 from .export import (
     print_tree,
     plot_tree,
@@ -35,7 +10,30 @@ from .export import (
     to_latex,
     to_reportlab,
 )
-from .heaptree import HeapTree
+from .generics import (
+    TreeLike,
+    DownTreeLike,
+    children,
+    parent,
+    root,
+    nid,
+    label,
+    parents,
+)
+from .iterators import (
+    nodes,
+    descendants,
+    preorder,
+    postorder,
+    levels,
+    levelorder,
+    levels_zigzag,
+    leaves,
+    siblings,
+    ancestors,
+    path,
+)
+from .mixins import Tree, DownTree, MutableDownTree, MutableTree, BinaryDownTree, BinaryTree
 from .predicates import RemoveDuplicates, PreventCycles, MaxDepth
 from .route import Route
-from .tree import Tree, DownTree, MutableDownTree, MutableTree
+from .utils import eqv

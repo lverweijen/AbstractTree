@@ -4,12 +4,15 @@ import itertools
 import operator
 import subprocess
 import sys
-from collections.abc import Iterable, Mapping
+from collections.abc import Iterable, Mapping, Callable
 from pathlib import Path
-from typing import Union, Callable, TypedDict, Tuple, Any, TypeVar, Optional
+from typing import Union, TypedDict, Tuple, Any, TypeVar, Optional
 
+from . import generics
+from .iterators import preorder, levels, levelorder
+from .adapters import convert_tree
+from .generics import TreeLike, DownTreeLike, label, nid
 from .predicates import PreventCycles, MaxDepth
-from .tree import DownTree, Tree
 
 __all__ = [
     "print_tree",
@@ -20,6 +23,7 @@ __all__ = [
     "to_image",
     "to_pillow",
     "to_latex",
+    "to_reportlab",
     "LiteralText",
 ]
 
@@ -69,7 +73,7 @@ def _wrap_file(f):
     return new_f
 
 
-def print_tree(tree, formatter=str, style=None, keep=None):
+def print_tree(tree, formatter=generics.label, style=None, keep=None):
     """Print this tree. Shortcut for print(to_string(tree))."""
     if sys.stdout:
         if not style:
@@ -80,17 +84,21 @@ def print_tree(tree, formatter=str, style=None, keep=None):
 
 @_wrap_file
 def to_string(
-    tree: DownTree,
-    formatter=str,
+    tree: DownTreeLike,
+    formatter: Callable[[object], str] | str | None = generics.label,
     *,
     file=None,
     style: Union[str, Style] = "square",
     keep=None,
 ):
     """Converts tree to a string in a pretty format."""
-    tree = Tree.convert(tree)
+    tree = convert_tree(tree, TreeLike)
     if isinstance(style, str):
         style = DEFAULT_STYLES[style]
+    if formatter is None:
+        formatter = generics.label
+    elif isinstance(formatter, str):
+        formatter = formatter.format
     empty_style = len(style["last"]) * " "
     lookup1 = [empty_style, style["vertical"]]
     lookup2 = [style["last"], style["branch"]]
@@ -110,11 +118,14 @@ def to_string(
 def _iterate_patterns(tree, keep):
     # Yield for each node a list of continuation indicators.
     # The continuation indicator tells us whether the branch at a certain level is continued.
+    _children = generics.children.dispatch(type(tree))
+    _parent = generics.parent.dispatch(type(tree))
+
     pattern = []
     yield pattern, tree
-    for node, item in tree.descendants.preorder(keep=keep):
+    for node, item in preorder(tree, keep=keep, include_root=False):
         del pattern[item.depth - 1 :]
-        is_continued = item.index < len(node.parent.children) - 1
+        is_continued = item.index < len(_children(_parent(node))) - 1
         pattern.append(is_continued)
         yield pattern, node
 
@@ -128,12 +139,22 @@ def _write_indent(file, pattern, lookup1, lookup2):
         file.write(lookup2[pattern[-1]])
 
 
-def plot_tree(tree: Tree, ax=None, formatter=str, keep=DEFAULT_PREDICATE, annotate_args=None):
+def plot_tree(
+    tree: DownTreeLike,
+    ax=None,
+    formatter: Callable[[DownTreeLike], str] | str = label,
+    keep=DEFAULT_PREDICATE,
+    annotate_args=None
+):
     """Plot the tree using matplotlib (if installed)."""
     # Roughly based on sklearn.tree.plot_tree()
     import matplotlib.pyplot as plt
 
-    tree = Tree.convert(tree)
+    tree = convert_tree(tree, TreeLike)
+    if isinstance(formatter, str):
+        formatter = formatter.format
+
+    _parent = generics.parent.dispatch(type(tree))
 
     if ax is None:
         ax = plt.gca()
@@ -153,8 +174,8 @@ def plot_tree(tree: Tree, ax=None, formatter=str, keep=DEFAULT_PREDICATE, annota
 
     nodes_xy = {}
 
-    tree_height = max(it.depth for _, it in tree.descendants.preorder(keep=keep))
-    for depth, level in zip(range(tree_height + 1), tree.levels):
+    tree_height = max(it.depth for _, it in preorder(tree, keep=keep, include_root=False))
+    for depth, level in zip(range(tree_height + 1), levels(tree)):
         level = list(level)
         for i, node in enumerate(level):
             x = (i + 1) / (len(level) + 1)
@@ -163,13 +184,13 @@ def plot_tree(tree: Tree, ax=None, formatter=str, keep=DEFAULT_PREDICATE, annota
             if node is tree:
                 ax.annotate(formatter(node), (x, y), **kwargs)
             else:
-                parent = nodes_xy[node.parent.nid]
-                ax.annotate(formatter(node), parent, (x, y), **kwargs)
-            nodes_xy[node.nid] = x, y
+                p_node = nodes_xy[nid(_parent(node))]
+                ax.annotate(formatter(node), p_node, (x, y), **kwargs)
+            nodes_xy[nid(node)] = x, y
     return ax
 
 
-TNode = TypeVar("TNode", bound=DownTree)
+TNode = TypeVar("TNode", bound=DownTreeLike)
 TShape = Union[Tuple[str, str], str, Callable[[TNode], Union[Tuple[str, str], str]]]
 NodeAttributes = Union[Mapping[str, Any], Callable[[TNode], Mapping[str, Any]]]
 EdgeAttributes = Union[Mapping[str, Any], Callable[[TNode, TNode], Mapping[str, Any]]]
@@ -177,7 +198,7 @@ GraphAttributes = Mapping[str, Any]
 
 
 def to_image(
-    tree: Tree,
+    tree: DownTreeLike,
     file=None,
     how="dot",
     *args,
@@ -205,7 +226,7 @@ def to_image(
         _image_mermaid(tree, Path(file), *args, **kwargs)
 
 
-def to_pillow(tree: Tree, **kwargs):
+def to_pillow(tree: DownTreeLike, **kwargs):
     """Convert tree to pillow-format (uses graphviz on the background)."""
     from PIL import Image
 
@@ -215,7 +236,7 @@ def to_pillow(tree: Tree, **kwargs):
     return Image.open(io.BytesIO(to_image(tree, file=None, how="dot", **kwargs)))
 
 
-def to_reportlab(tree: Tree, **kwargs):
+def to_reportlab(tree: DownTreeLike, **kwargs):
     """Convert tree to drawing for use with reportlab package."""
     from svglib.svglib import svg2rlg
 
@@ -228,7 +249,7 @@ def to_reportlab(tree: Tree, **kwargs):
 
 
 def _image_dot(
-    tree: Tree,
+    tree: DownTreeLike,
     file=None,
     file_format="png",
     program_path="dot",
@@ -245,7 +266,7 @@ def _image_dot(
 
 
 def _image_mermaid(
-    tree: Tree,
+    tree: DownTreeLike,
     filename,
     program_path="mmdc",
     **kwargs,
@@ -262,20 +283,22 @@ def _image_mermaid(
 
 @_wrap_file
 def to_dot(
-    tree: Tree,
+    tree: DownTreeLike,
     file=None,
     keep=DEFAULT_PREDICATE,
     node_name: Union[str, Callable[[TNode], str], None] = None,
-    node_label: Union[str, Callable[[TNode], str], None] = str,
+    node_label: Union[str, Callable[[TNode], str], None] = generics.label,
     node_shape: TShape = None,
     node_attributes: NodeAttributes = None,
     edge_attributes: EdgeAttributes = None,
     graph_attributes: GraphAttributes = None,
 ):
     """Export to `graphviz <https://graphviz.org/>`_."""
-    tree = Tree.convert(tree)
+    tree = convert_tree(tree, TreeLike)
     if node_name is None:
         node_name = _node_name_default
+
+    _parent = generics.parent.dispatch(type(tree))
 
     if node_attributes is None:
         node_attributes = dict()
@@ -307,7 +330,7 @@ def to_dot(
         file.write(f"edge{attrs};\n")
 
     nodes = []
-    for node, _ in tree.nodes.levelorder(keep=PreventCycles() & keep):
+    for node, _ in levelorder(tree, keep=PreventCycles() & keep):
         nodes.append(node)
         name = _escape_string(node_name(node), "dot")
         attrs = _handle_attributes(node_dynamic, node)
@@ -315,9 +338,9 @@ def to_dot(
     nodes = iter(nodes)
     next(nodes)
     for node in nodes:
-        parent_name = _escape_string(node_name(node.parent), "dot")
+        parent_name = _escape_string(node_name(_parent(node)), "dot")
         child_name = _escape_string(node_name(node), "dot")
-        attrs = _handle_attributes(edge_dynamic, node.parent, node)
+        attrs = _handle_attributes(edge_dynamic, _parent(node), node)
         file.write(f"{parent_name}{arrow}{child_name}{attrs};\n")
     file.write("}\n")
 
@@ -362,19 +385,21 @@ DEFAULT_SHAPES = {
 
 @_wrap_file
 def to_mermaid(
-    tree: Tree,
+    tree: DownTreeLike,
     file=None,
     keep=DEFAULT_PREDICATE,
     node_name: Union[str, Callable[[TNode], str], None] = None,
-    node_label: Union[str, Callable[[TNode], str], None] = str,
+    node_label: Union[str, Callable[[TNode], str], None] = generics.label,
     node_shape: TShape = "box",
     edge_arrow: Union[str, Callable[[TNode, TNode], str]] = "-->",
     graph_direction: str = "TD",
 ):
     """Export to `mermaid <https://mermaid.js.org/>`_."""
-    tree = Tree.convert(tree)
+    tree = convert_tree(tree, TreeLike)
     if node_name is None:
         node_name = _node_name_default
+
+    _parent = generics.parent.dispatch(type(tree))
 
     if isinstance(node_shape, str):
         node_shape = DEFAULT_SHAPES[node_shape]
@@ -384,7 +409,7 @@ def to_mermaid(
 
     # Output nodes
     nodes = []  # Stop automatic garbage collecting
-    for node, _ in tree.nodes.levelorder(keep=PreventCycles() & keep):
+    for node, _ in levelorder(tree, keep=PreventCycles() & keep):
         left, right = _get_shape(node_shape, node)
         name = node_name(node)
         if node_label:
@@ -398,18 +423,18 @@ def to_mermaid(
     nodes = iter(nodes)
     next(nodes)
     for node in nodes:
-        arrow = edge_arrow(node.parent, node) if callable(edge_arrow) else edge_arrow
-        parent = node_name(node.parent)
+        arrow = edge_arrow(_parent(node), node) if callable(edge_arrow) else edge_arrow
+        par = node_name(_parent(node))
         child = node_name(node)
-        file.write(f"{parent}{arrow}{child};\n")
+        file.write(f"{par}{arrow}{child};\n")
 
 
 @_wrap_file
 def to_latex(
-    tree,
+    tree: DownTreeLike,
     file=None,
     keep=DEFAULT_PREDICATE,
-    node_label: Union[str, Callable[[TNode], str], None] = str,
+    node_label: Union[str, Callable[[TNode], str], None] = generics.label,
     node_shape: TShape = None,
     leaf_distance: Optional[str] = "2em",
     level_distance: Optional[str] = None,
@@ -424,7 +449,6 @@ def to_latex(
     Make sure to put ``\\usepackage{tikz}`` in your preamble.
     Does not wrap output in a figure environment.
     """
-    tree = DownTree.convert(tree)
     if isinstance(indent, int):
         indent = "\t" if indent == -1 else indent * " "
 
@@ -445,12 +469,12 @@ def to_latex(
         node_options.append("draw")
 
     depth = 0
-    label = _escape_string(node_label(tree), "latex")
+    my_label = _escape_string(node_label(tree), "latex")
     file.write(rf"\begin{{tikzpicture}}{_latex_options(tree, picture_options)}")
     file.write("\n")
     options = _latex_options(tree, node_options)
-    file.write(rf"\node{options}{{{label}}} [grow={graph_direction}]")
-    for node, item in tree.descendants.preorder(keep=keep):
+    file.write(rf"\node{options}{{{my_label}}} [grow={graph_direction}]")
+    for node, item in preorder(tree, keep=keep, include_root=False):
         if item.depth > depth:
             file.write("\n")
         else:
@@ -460,9 +484,9 @@ def to_latex(
 
         depth = item.depth
         file.write(depth * indent)
-        label = _escape_string(node_label(node), "latex")
+        text = _escape_string(node_label(node), "latex")
         options = _latex_options(tree, node_options)
-        file.write(f"child {{node{options} {{{label}}}")
+        file.write(f"child {{node{options} {{{text}}}")
 
     # Close final leaf node on same line
     if depth:
@@ -498,10 +522,12 @@ def _sibling_distances(tree, stop=100):
     It assumes sibling distance is constant for each level.
     Parameter stop is used to prevent infinite recursion.
     """
+    _children = generics.children.dispatch(type(tree))
+
     level_ranks = []
-    for level, _ in zip(tree.levels, range(stop)):
+    for level, _ in zip(levels(tree), range(stop)):
         cousins = itertools.pairwise(level)
-        mid_ranks = [(len(n1.children) + len(n2.children)) / 2 for n1, n2 in cousins]
+        mid_ranks = [(len(_children(n1)) + len(_children(n2))) / 2 for n1, n2 in cousins]
         level_ranks.append(max(max(mid_ranks), 1) if mid_ranks else 1)
 
     distances = len(level_ranks) * [1]
@@ -510,8 +536,8 @@ def _sibling_distances(tree, stop=100):
     return distances
 
 
-def _node_name_default(node: DownTree):
-    return hex(node.nid)
+def _node_name_default(node: Any):
+    return hex(nid(node))
 
 
 def _get_shape(shape_factory, node):

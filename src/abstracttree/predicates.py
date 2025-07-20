@@ -1,10 +1,14 @@
 from dataclasses import dataclass
-from typing import Callable
+from typing import Callable, TypeVar
 
-from .tree import AbstractTree, NodeItem
+from .iterators import NodeItem
+from .generics import TreeLike, DownTreeLike, nid, parent
+
+T = TypeVar("T", bound=TreeLike)
+DT = TypeVar("DT", bound=DownTreeLike)
 
 
-class Predicate(Callable[[AbstractTree, NodeItem], bool]):
+class Predicate(Callable[[T, NodeItem], bool]):
     __slots__ = ()
 
     def __or__(self, other):
@@ -26,7 +30,7 @@ class PredicateUnion(Predicate):
     def __init__(self, *preds):
         self.preds = preds
 
-    def __call__(self, node: AbstractTree, item: NodeItem):
+    def __call__(self, node: DT, item: NodeItem):
         return any(pred(node, item) for pred in self.preds)
 
 
@@ -36,7 +40,7 @@ class PredicateIntersection(Predicate):
     def __init__(self, *preds):
         self.preds = preds
 
-    def __call__(self, node: AbstractTree, item: NodeItem):
+    def __call__(self, node: DT, item: NodeItem):
         return all(pred(node, item) for pred in self.preds)
 
 
@@ -48,11 +52,12 @@ class RemoveDuplicates(Predicate):
     def __init__(self):
         self.seen = set()
 
-    def __call__(self, node: AbstractTree, item):
-        if node.nid in self.seen:
+    def __call__(self, node: DT, item):
+        node_nid = nid(node)
+        if node_nid in self.seen:
             return False
         else:
-            self.seen.add(node.nid)
+            self.seen.add(node_nid)
             return True
 
 
@@ -69,13 +74,16 @@ class PreventCycles(Predicate):
         self.seen = set()
         self.duplicates = set()
 
-    def __call__(self, node: AbstractTree, item):
-        if node.parent is not None and node.parent.nid in self.duplicates and node.nid in self.seen:
+    def __call__(self, node: DT, item):
+        p = parent(node)
+        node_nid = nid(node)
+
+        if p is not None and nid(p) in self.duplicates and node_nid in self.seen:
             return False
-        if node.nid in self.seen:
-            self.duplicates.add(node.nid)
+        if node_nid in self.seen:
+            self.duplicates.add(node_nid)
         else:
-            self.seen.add(node.nid)
+            self.seen.add(node_nid)
         return True
 
 

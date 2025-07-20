@@ -2,10 +2,16 @@ import shutil
 from unittest import TestCase
 
 from abstracttree import to_string, to_mermaid, to_dot, MaxDepth, to_latex, to_image
-from tree_instances import INFINITE_TREE, BINARY_TREE
+
+try:
+    from .tree_instances import INFINITE_TREE, BINARY_TREE
+except ImportError:
+    from tree_instances import INFINITE_TREE, BINARY_TREE
 
 
 class TestExport(TestCase):
+    maxDiff = None
+
     def test_to_string(self):
         result = to_string(INFINITE_TREE, keep=MaxDepth(2))
         expected = 3 * "Infinite singleton!\n"

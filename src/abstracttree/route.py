@@ -5,9 +5,10 @@ from collections.abc import Sized, Sequence, MutableSequence
 from functools import lru_cache
 from typing import TypeVar, Optional
 
-from .tree import UpTree
+from . import iterators as _iterators
+from .generics import TreeLike, nid
 
-TNode = TypeVar("TNode", bound=UpTree)
+TNode = TypeVar("TNode", bound=TreeLike)
 
 
 class Route:
@@ -19,7 +20,7 @@ class Route:
 
     __slots__ = "_apaths", "_lca"
 
-    def __init__(self, *anchors: TNode):
+    def __init__(self, *anchors: TreeLike):
         """Create a route through a few nodes.
 
         All nodes should belong to the same tree.
@@ -31,21 +32,22 @@ class Route:
             self.add_anchor(anchor)
 
     def __repr__(self):
-        nodes_str = ", ".join([str(path[-1].identifier) for path in self._apaths])
+        nodes_str = ", ".join([repr(p[-1]) for p in self._apaths])
         return f"{self.__class__.__name__}({nodes_str})"
 
-    def add_anchor(self, anchor: TNode):
+    def add_anchor(self, anchor: TreeLike):
         """Add a node to the route.
 
         The node should belong to the same tree as any existing anchor nodes.
         """
         self._lca = None
-        path = tuple(anchor.path)
+        anchor_path = list(_iterators.path(anchor))
         apaths = self._apaths
-        if apaths and not apaths[0][0].eqv(path[0]):
-            raise ValueError("Different tree!")
+
+        if not apaths or nid(apaths[0][0]) == nid(anchor_path[0]):
+            apaths.append(anchor_path)
         else:
-            apaths.append(path)
+            raise ValueError("Different tree!")
 
     @property
     def anchors(self):
@@ -71,7 +73,7 @@ class Route:
         if i := bisect(
             indices,
             False,
-            key=lambda ind: any(not path0[ind].eqv(p[ind]) for p in paths),
+            key=lambda ind: any(nid(path0[ind]) != nid(p[ind]) for p in paths),
         ):
             lca = self._lca = path0[i - 1]
             return lca
@@ -82,7 +84,7 @@ class Route:
     def _common2(self, i, j) -> int:
         path_i, path_j = self._apaths[i], self._apaths[j]
         indices = range(min(len(path_i), len(path_j)))
-        return bisect(indices, False, key=lambda ind: not path_i[ind].eqv(path_j[ind])) - 1
+        return bisect(indices, False, key=lambda ind: nid(path_i[ind]) != nid(path_j[ind])) - 1
 
 
 class RouteView(Sized, metaclass=ABCMeta):

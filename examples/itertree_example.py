@@ -21,14 +21,9 @@ class MyTree(itertree.iTree, abstracttree.Tree):
     def children(self):
         return self
 
-    def __str__(self):
-        # Don't print subtrees
-        only_self = lambda n: n is self
-        return self.renders(filter_method=only_self)
-
-
 tree = MyTree(1)
 
+# Add some descendants
 node = tree
 for i in range(7):
     node.append(child := MyTree(i))
@@ -36,7 +31,7 @@ for i in range(7):
 
 # AbstractTree
 print("Height of tree:", tree.levels.count() - 1)
-print_tree(tree)
+print_tree(tree, "MyTree({.tag})")
 
 # iTree
 print("Height of tree:", tree.max_depth)
