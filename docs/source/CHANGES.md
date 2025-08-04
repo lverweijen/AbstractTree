@@ -1,5 +1,17 @@
 # Changelog
 
+## Version 0.2.1
+
+* Improve and simplify Route:
+  * Handle edge-cases correctly, especially when dealing with 1 of 0 anchors.
+    These used to return incorrect values for e.g. `route.count()`.
+  * Merge `Route` and `NodesView` classes.
+  * Make anchors return a `tuple` instead of an `AnchorView`.
+  * Make `reversed(route.edges)` return edges in parent-child order for consistency with `iter(route.edges)`.
+    In prior versions, `reversed(path)` would return edges in child-parent order.
+* Implement `path.edges` as well to make `path` more `routelike`.
+* Implement `path.to` as a shortcut to create a `Route` by writing `route = node.path.to(other_node)`.
+
 ## Version 0.2.0
 
 * Add generics `TreeLike` and `DownTreeLike`.

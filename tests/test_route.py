@@ -14,6 +14,8 @@ class TestRoute(unittest.TestCase):
         llrr = llr.children[1]
 
         self.tree = tree
+        self.route0 = Route()
+        self.route_solo = Route(tree)
         self.route1 = Route(tree, llrr, tree)
         self.route2 = Route(llrr, r, llrr, r)
         self.route3 = Route(r, r, tree, tree)
@@ -22,6 +24,14 @@ class TestRoute(unittest.TestCase):
         self.heap_route = Route(HEAP_TREE.children[0], HEAP_TREE.children[1])
 
     def test_anchors(self):
+        result = [node.value for node in self.route0]
+        self.assertEqual([], result)
+        self.assertEqual(0, len(self.route0.anchors))
+
+        result = [node.value for node in self.route_solo]
+        self.assertEqual([0], result)
+        self.assertEqual(1, len(self.route_solo.anchors))
+
         result = [node.value for node in self.route1.anchors]
         self.assertEqual([0, 18, 0], result)
         self.assertEqual(3, len(self.route1.anchors))
@@ -43,6 +53,14 @@ class TestRoute(unittest.TestCase):
         self.assertEqual(3, len(self.route4.anchors))
 
     def test_nodes(self):
+        result = [node.value for node in self.route0.nodes]
+        self.assertEqual([], result)
+        self.assertEqual(0, len(self.route0.nodes))
+
+        result = [node.value for node in self.route_solo.nodes]
+        self.assertEqual([0], result)
+        self.assertEqual(1, len(self.route_solo.nodes))
+
         result = [node.value for node in self.route1.nodes]
         self.assertEqual([0, 1, 3, 8, 18, 8, 3, 1, 0], result)
         self.assertEqual(9, len(self.route1.nodes))
@@ -64,36 +82,64 @@ class TestRoute(unittest.TestCase):
         self.assertEqual(3, len(self.heap_route.nodes))
 
     def test_edges(self):
+        result = [(v1.value, v2.value) for (v1, v2) in self.route0.edges]
+        expected = []
+        self.assertEqual(expected, result)
+        self.assertEqual(0, self.route0.edges.count())
+
+        result = [(v1.value, v2.value) for (v1, v2) in self.route_solo.edges]
+        expected = []
+        self.assertEqual(expected, result)
+        self.assertEqual(0, self.route_solo.edges.count())
+
         result = [(v1.value, v2.value) for (v1, v2) in self.route1.edges]
         expected = [(0, 1), (1, 3), (3, 8), (8, 18), (18, 8), (8, 3), (3, 1), (1, 0)]
         self.assertEqual(expected, result)
-        self.assertEqual(8, len(self.route1.edges))
+        self.assertEqual(8, self.route1.edges.count())
 
     def test_reversed(self):
         node_result = [node.value for node in reversed(self.route2.nodes)]
         edge_result = [(v1.value, v2.value) for (v1, v2) in reversed(self.route2.edges)]
         node_expected = [2, 0, 1, 3, 8, 18, 8, 3, 1, 0, 2, 0, 1, 3, 8, 18]
         edge_expected = [
-            (2, 0),
-            (0, 1),
-            (1, 3),
-            (3, 8),
-            (8, 18),
-            (18, 8),
-            (8, 3),
-            (3, 1),
-            (1, 0),
             (0, 2),
-            (2, 0),
-            (0, 1),
-            (1, 3),
-            (3, 8),
+            (1, 0),
+            (3, 1),
+            (8, 3),
+            (18, 8),
             (8, 18),
+            (3, 8),
+            (1, 3),
+            (0, 1),
+            (2, 0),
+            (0, 2),
+            (1, 0),
+            (3, 1),
+            (8, 3),
+            (18, 8),
         ]
         self.assertEqual(node_expected, node_result)
         self.assertEqual(edge_expected, edge_result)
 
+    def test_reversed_edge_cases(self):
+        node_result0 = [node.value for node in reversed(self.route0.nodes)]
+        edge_result0 = [(v1.value, v2.value) for (v1, v2) in reversed(self.route0.edges)]
+
+        node_result_solo = [node.value for node in reversed(self.route_solo.nodes)]
+        edge_result_solo = [(v1.value, v2.value) for (v1, v2) in reversed(self.route_solo.edges)]
+
+        node_expected0 = []
+        node_expected_solo = [0]
+        edge_expected = []
+
+        self.assertEqual(node_expected0, node_result0)
+        self.assertEqual(node_expected_solo, node_result_solo)
+        self.assertEqual(edge_expected, edge_result0)
+        self.assertEqual(edge_expected, edge_result_solo)
+
     def test_lca(self):
+        self.assertIsNone(self.route0.lca)
+        self.assertEqual(0, self.route_solo.lca.value)
         self.assertEqual(0, self.route1.lca.value)
         self.assertEqual(0, self.route2.lca.value)
         self.assertEqual(0, self.route3.lca.value)

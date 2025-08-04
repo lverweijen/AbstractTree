@@ -4,13 +4,14 @@ from collections.abc import Iterator
 from typing import Iterable, TypeVar
 
 from .. import iterators as _iterators
+from ..route import EdgesView, Route
 
 T = TypeVar("T", bound="Tree")
 
 
 class TreeView(Iterable[T], metaclass=ABCMeta):
     __slots__ = "_node"
-    itr_method = None
+    itr_method = None  # TODO Should __init_subclass__ be used instead?
 
     def __init__(self, node: T):
         self._node: T = node
@@ -52,8 +53,15 @@ class PathView(TreeView):
     def __reversed__(self):
         return _iterators.path(self._node, reverse=True)
 
+    def to(self, other: T):
+        return Route(self, other)
+
     def count(self):
         return _ilen(reversed(self))
+
+    @property
+    def edges(self):
+        return EdgesView(self)
 
 
 class NodesView(TreeView):
