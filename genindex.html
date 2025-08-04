@@ -50,7 +50,7 @@ window.addEventListener("load", () => mermaid.run());
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage_bundled.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CHANGES.html">Changelog</a></li>
 </ul>
@@ -89,6 +89,7 @@ window.addEventListener("load", () => mermaid.run());
  | <a href="#E"><strong>E</strong></a>
  | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
+ | <a href="#K"><strong>K</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
@@ -96,26 +97,17 @@ window.addEventListener("load", () => mermaid.run());
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
- | <a href="#U"><strong>U</strong></a>
+ | <a href="#V"><strong>V</strong></a>
  
 </div>
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#abstracttree.tree.AbstractTree">AbstractTree (class in abstracttree.tree)</a>
-</li>
       <li>
     abstracttree.adapters
 
       <ul>
         <li><a href="api.html#module-abstracttree.adapters">module</a>
-</li>
-      </ul></li>
-      <li>
-    abstracttree.binarytree
-
-      <ul>
-        <li><a href="api.html#module-abstracttree.binarytree">module</a>
 </li>
       </ul></li>
       <li>
@@ -126,10 +118,17 @@ window.addEventListener("load", () => mermaid.run());
 </li>
       </ul></li>
       <li>
-    abstracttree.heaptree
+    abstracttree.generics
 
       <ul>
-        <li><a href="api.html#module-abstracttree.heaptree">module</a>
+        <li><a href="api.html#module-abstracttree.generics">module</a>
+</li>
+      </ul></li>
+      <li>
+    abstracttree.mixins
+
+      <ul>
+        <li><a href="api.html#module-abstracttree.mixins">module</a>
 </li>
       </ul></li>
       <li>
@@ -149,25 +148,21 @@ window.addEventListener("load", () => mermaid.run());
 </li>
       </ul></li>
       <li>
-    abstracttree.tree
+    abstracttree.utils
 
       <ul>
-        <li><a href="api.html#module-abstracttree.tree">module</a>
+        <li><a href="api.html#module-abstracttree.utils">module</a>
 </li>
       </ul></li>
       <li><a href="api.html#abstracttree.route.Route.add_anchor">add_anchor() (abstracttree.route.Route method)</a>
 </li>
-      <li><a href="api.html#abstracttree.tree.MutableDownTree.add_child">add_child() (abstracttree.tree.MutableDownTree method)</a>
+      <li><a href="api.html#abstracttree.mixins.MutableDownTree.add_child">add_child() (abstracttree.mixins.MutableDownTree method)</a>
 </li>
-      <li><a href="api.html#abstracttree.tree.MutableDownTree.add_children">add_children() (abstracttree.tree.MutableDownTree method)</a>
-</li>
-      <li><a href="api.html#abstracttree.tree.UpTree.ancestors">ancestors (abstracttree.tree.UpTree property)</a>
-</li>
-      <li><a href="api.html#abstracttree.tree.AncestorsView">AncestorsView (class in abstracttree.tree)</a>
+      <li><a href="api.html#abstracttree.mixins.MutableDownTree.add_children">add_children() (abstracttree.mixins.MutableDownTree method)</a>
 </li>
       <li><a href="api.html#abstracttree.route.Route.anchors">anchors (abstracttree.route.Route property)</a>
 </li>
-      <li><a href="api.html#abstracttree.adapters.astree">astree() (in module abstracttree.adapters)</a>
+      <li><a href="api.html#abstracttree.adapters.as_tree">as_tree() (in module abstracttree.adapters)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -175,11 +170,11 @@ window.addEventListener("load", () => mermaid.run());
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#abstracttree.binarytree.BinaryDownTree">BinaryDownTree (class in abstracttree.binarytree)</a>
+      <li><a href="api.html#abstracttree.mixins.BinaryDownTree">BinaryDownTree (class in abstracttree.mixins)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#abstracttree.binarytree.BinaryTree">BinaryTree (class in abstracttree.binarytree)</a>
+      <li><a href="api.html#abstracttree.mixins.BinaryTree">BinaryTree (class in abstracttree.mixins)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -187,47 +182,45 @@ window.addEventListener("load", () => mermaid.run());
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#abstracttree.binarytree.BinaryDownTree.children">children (abstracttree.binarytree.BinaryDownTree property)</a>
+      <li><a href="api.html#abstracttree.adapters.TreeAdapter.child_func">child_func() (abstracttree.adapters.TreeAdapter static method)</a>
+</li>
+      <li><a href="api.html#abstracttree.adapters.HeapTree.children">children (abstracttree.adapters.HeapTree property)</a>
 
       <ul>
-        <li><a href="api.html#abstracttree.heaptree.HeapTree.children">(abstracttree.heaptree.HeapTree property)</a>
+        <li><a href="api.html#abstracttree.adapters.TreeAdapter.children">(abstracttree.adapters.TreeAdapter property)</a>
 </li>
-        <li><a href="api.html#abstracttree.tree.DownTree.children">(abstracttree.tree.DownTree property)</a>
+        <li><a href="api.html#abstracttree.mixins.BinaryDownTree.children">(abstracttree.mixins.BinaryDownTree property)</a>
+</li>
+        <li><a href="api.html#abstracttree.mixins.DownTree.children">(abstracttree.mixins.DownTree property)</a>
 </li>
       </ul></li>
-      <li><a href="api.html#abstracttree.tree.AbstractTree.convert">convert() (abstracttree.tree.AbstractTree class method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#abstracttree.generics.children">children() (in module abstracttree.generics)</a>
+</li>
       <li><a href="api.html#abstracttree.adapters.convert_tree">convert_tree() (in module abstracttree.adapters)</a>
 </li>
-      <li><a href="api.html#abstracttree.tree.PathView.count">count() (abstracttree.tree.PathView method)</a>
-
-      <ul>
-        <li><a href="api.html#abstracttree.tree.SiblingsView.count">(abstracttree.tree.SiblingsView method)</a>
+      <li><a href="api.html#abstracttree.route.Route.count">count() (abstracttree.route.Route method)</a>
 </li>
-        <li><a href="api.html#abstracttree.tree.TreeView.count">(abstracttree.tree.TreeView method)</a>
-</li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#abstracttree.tree.NodeItem.depth">depth (abstracttree.tree.NodeItem attribute)</a>
-</li>
-      <li><a href="api.html#abstracttree.binarytree.BinaryDownTree.descendants">descendants (abstracttree.binarytree.BinaryDownTree property)</a>
+      <li><a href="api.html#abstracttree.mixins.BinaryDownTree.descendants">descendants (abstracttree.mixins.BinaryDownTree property)</a>
 
       <ul>
-        <li><a href="api.html#abstracttree.tree.DownTree.descendants">(abstracttree.tree.DownTree property)</a>
+        <li><a href="api.html#abstracttree.mixins.DownTree.descendants">(abstracttree.mixins.DownTree property)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#abstracttree.tree.MutableTree.detach">detach() (abstracttree.tree.MutableTree method)</a>
+      <li><a href="api.html#abstracttree.mixins.MutableTree.detach">detach() (abstracttree.mixins.MutableTree method)</a>
 </li>
-      <li><a href="api.html#abstracttree.tree.DownTree">DownTree (class in abstracttree.tree)</a>
+      <li><a href="api.html#abstracttree.mixins.DownTree">DownTree (class in abstracttree.mixins)</a>
+</li>
+      <li><a href="api.html#abstracttree.generics.DownTreeLike">DownTreeLike (class in abstracttree.generics)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -239,19 +232,15 @@ window.addEventListener("load", () => mermaid.run());
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#abstracttree.heaptree.HeapTree.eqv">eqv() (abstracttree.heaptree.HeapTree method)</a>
-
-      <ul>
-        <li><a href="api.html#abstracttree.tree.AbstractTree.eqv">(abstracttree.tree.AbstractTree method)</a>
+      <li><a href="api.html#abstracttree.utils.eqv">eqv() (in module abstracttree.utils)</a>
 </li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="H">H</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#abstracttree.heaptree.HeapTree">HeapTree (class in abstracttree.heaptree)</a>
+      <li><a href="api.html#abstracttree.adapters.HeapTree">HeapTree (class in abstracttree.adapters)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -259,15 +248,15 @@ window.addEventListener("load", () => mermaid.run());
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#abstracttree.tree.NodeItem.index">index (abstracttree.tree.NodeItem attribute)</a>
-</li>
-      <li><a href="api.html#abstracttree.binarytree.NodesView.inorder">inorder() (abstracttree.binarytree.NodesView method)</a>
+      <li><a href="api.html#abstracttree.mixins.DownTree.is_leaf">is_leaf (abstracttree.mixins.DownTree property)</a>
 </li>
   </ul></td>
+</tr></table>
+
+<h2 id="K">K</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#abstracttree.tree.DownTree.is_leaf">is_leaf (abstracttree.tree.DownTree property)</a>
-</li>
-      <li><a href="api.html#abstracttree.tree.UpTree.is_root">is_root (abstracttree.tree.UpTree property)</a>
+      <li><a href="api.html#abstracttree.generics.MappingItem.key">key (abstracttree.generics.MappingItem attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -275,17 +264,17 @@ window.addEventListener("load", () => mermaid.run());
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#abstracttree.generics.label">label() (in module abstracttree.generics)</a>
+</li>
+      <li><a href="api.html#abstracttree.adapters.TreeAdapter.label_func">label_func() (abstracttree.adapters.TreeAdapter static method)</a>
+</li>
       <li><a href="api.html#abstracttree.route.Route.lca">lca (abstracttree.route.Route property)</a>
-</li>
-      <li><a href="api.html#abstracttree.tree.DownTree.leaves">leaves (abstracttree.tree.DownTree property)</a>
-</li>
-      <li><a href="api.html#abstracttree.tree.LeavesView">LeavesView (class in abstracttree.tree)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#abstracttree.tree.NodesView.levelorder">levelorder() (abstracttree.tree.NodesView method)</a>
+      <li><a href="api.html#abstracttree.mixins.DownTree.leaves">leaves (abstracttree.mixins.DownTree property)</a>
 </li>
-      <li><a href="api.html#abstracttree.tree.DownTree.levels">levels (abstracttree.tree.DownTree property)</a>
+      <li><a href="api.html#abstracttree.mixins.DownTree.levels">levels (abstracttree.mixins.DownTree property)</a>
 </li>
       <li><a href="api.html#abstracttree.export.LiteralText">LiteralText (class in abstracttree.export)</a>
 </li>
@@ -295,6 +284,8 @@ window.addEventListener("load", () => mermaid.run());
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#abstracttree.generics.MappingItem">MappingItem (class in abstracttree.generics)</a>
+</li>
       <li><a href="api.html#abstracttree.predicates.MaxDepth">MaxDepth (class in abstracttree.predicates)</a>
 </li>
       <li>
@@ -303,24 +294,24 @@ window.addEventListener("load", () => mermaid.run());
       <ul>
         <li><a href="api.html#module-abstracttree.adapters">abstracttree.adapters</a>
 </li>
-        <li><a href="api.html#module-abstracttree.binarytree">abstracttree.binarytree</a>
-</li>
         <li><a href="api.html#module-abstracttree.export">abstracttree.export</a>
 </li>
-        <li><a href="api.html#module-abstracttree.heaptree">abstracttree.heaptree</a>
+        <li><a href="api.html#module-abstracttree.generics">abstracttree.generics</a>
+</li>
+        <li><a href="api.html#module-abstracttree.mixins">abstracttree.mixins</a>
 </li>
         <li><a href="api.html#module-abstracttree.predicates">abstracttree.predicates</a>
 </li>
         <li><a href="api.html#module-abstracttree.route">abstracttree.route</a>
 </li>
-        <li><a href="api.html#module-abstracttree.tree">abstracttree.tree</a>
+        <li><a href="api.html#module-abstracttree.utils">abstracttree.utils</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#abstracttree.tree.MutableDownTree">MutableDownTree (class in abstracttree.tree)</a>
+      <li><a href="api.html#abstracttree.mixins.MutableDownTree">MutableDownTree (class in abstracttree.mixins)</a>
 </li>
-      <li><a href="api.html#abstracttree.tree.MutableTree">MutableTree (class in abstracttree.tree)</a>
+      <li><a href="api.html#abstracttree.mixins.MutableTree">MutableTree (class in abstracttree.mixins)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -328,28 +319,22 @@ window.addEventListener("load", () => mermaid.run());
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#abstracttree.heaptree.HeapTree.nid">nid (abstracttree.heaptree.HeapTree property)</a>
+      <li><a href="api.html#abstracttree.adapters.HeapTree.nid">nid (abstracttree.adapters.HeapTree property)</a>
 
       <ul>
-        <li><a href="api.html#abstracttree.tree.AbstractTree.nid">(abstracttree.tree.AbstractTree property)</a>
+        <li><a href="api.html#abstracttree.adapters.TreeAdapter.nid">(abstracttree.adapters.TreeAdapter property)</a>
 </li>
       </ul></li>
-      <li><a href="api.html#abstracttree.tree.NodeItem">NodeItem (class in abstracttree.tree)</a>
+      <li><a href="api.html#abstracttree.generics.nid">nid() (in module abstracttree.generics)</a>
 </li>
-      <li><a href="api.html#abstracttree.binarytree.BinaryDownTree.nodes">nodes (abstracttree.binarytree.BinaryDownTree property)</a>
-
-      <ul>
-        <li><a href="api.html#abstracttree.route.Route.nodes">(abstracttree.route.Route property)</a>
-</li>
-        <li><a href="api.html#abstracttree.tree.DownTree.nodes">(abstracttree.tree.DownTree property)</a>
-</li>
-      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#abstracttree.binarytree.NodesView">NodesView (class in abstracttree.binarytree)</a>
+      <li><a href="api.html#abstracttree.mixins.BinaryDownTree.nodes">nodes (abstracttree.mixins.BinaryDownTree property)</a>
 
       <ul>
-        <li><a href="api.html#abstracttree.tree.NodesView">(class in abstracttree.tree)</a>
+        <li><a href="api.html#abstracttree.mixins.DownTree.nodes">(abstracttree.mixins.DownTree property)</a>
+</li>
+        <li><a href="api.html#abstracttree.route.Route.nodes">(abstracttree.route.Route property)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -358,29 +343,27 @@ window.addEventListener("load", () => mermaid.run());
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#abstracttree.heaptree.HeapTree.parent">parent (abstracttree.heaptree.HeapTree property)</a>
+      <li><a href="api.html#abstracttree.adapters.HeapTree.parent">parent (abstracttree.adapters.HeapTree property)</a>
 
       <ul>
-        <li><a href="api.html#abstracttree.tree.UpTree.parent">(abstracttree.tree.UpTree property)</a>
+        <li><a href="api.html#abstracttree.adapters.TreeAdapter.parent">(abstracttree.adapters.TreeAdapter property)</a>
 </li>
       </ul></li>
-      <li><a href="api.html#abstracttree.tree.UpTree.path">path (abstracttree.tree.UpTree property)</a>
+      <li><a href="api.html#abstracttree.generics.parent">parent() (in module abstracttree.generics)</a>
 </li>
-      <li><a href="api.html#abstracttree.tree.PathView">PathView (class in abstracttree.tree)</a>
+      <li><a href="api.html#abstracttree.adapters.TreeAdapter.parent_func">parent_func() (abstracttree.adapters.TreeAdapter static method)</a>
 </li>
-      <li><a href="api.html#abstracttree.export.plot_tree">plot_tree() (in module abstracttree.export)</a>
-</li>
-      <li><a href="api.html#abstracttree.tree.NodesView.postorder">postorder() (abstracttree.tree.NodesView method)</a>
+      <li><a href="api.html#abstracttree.generics.parents">parents() (in module abstracttree.generics)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#abstracttree.export.plot_tree">plot_tree() (in module abstracttree.export)</a>
+</li>
       <li><a href="api.html#abstracttree.predicates.Predicate">Predicate (class in abstracttree.predicates)</a>
 </li>
       <li><a href="api.html#abstracttree.predicates.PredicateIntersection">PredicateIntersection (class in abstracttree.predicates)</a>
 </li>
       <li><a href="api.html#abstracttree.predicates.PredicateUnion">PredicateUnion (class in abstracttree.predicates)</a>
-</li>
-      <li><a href="api.html#abstracttree.tree.NodesView.preorder">preorder() (abstracttree.tree.NodesView method)</a>
 </li>
       <li><a href="api.html#abstracttree.predicates.PreventCycles">PreventCycles (class in abstracttree.predicates)</a>
 </li>
@@ -392,13 +375,13 @@ window.addEventListener("load", () => mermaid.run());
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#abstracttree.tree.MutableDownTree.remove_child">remove_child() (abstracttree.tree.MutableDownTree method)</a>
+      <li><a href="api.html#abstracttree.mixins.MutableDownTree.remove_child">remove_child() (abstracttree.mixins.MutableDownTree method)</a>
 </li>
       <li><a href="api.html#abstracttree.predicates.RemoveDuplicates">RemoveDuplicates (class in abstracttree.predicates)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#abstracttree.tree.UpTree.root">root (abstracttree.tree.UpTree property)</a>
+      <li><a href="api.html#abstracttree.generics.root">root() (in module abstracttree.generics)</a>
 </li>
       <li><a href="api.html#abstracttree.route.Route">Route (class in abstracttree.route)</a>
 </li>
@@ -408,11 +391,7 @@ window.addEventListener("load", () => mermaid.run());
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#abstracttree.tree.Tree.siblings">siblings (abstracttree.tree.Tree property)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#abstracttree.tree.SiblingsView">SiblingsView (class in abstracttree.tree)</a>
+      <li><a href="api.html#abstracttree.mixins.Tree.siblings">siblings (abstracttree.mixins.Tree property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -428,25 +407,29 @@ window.addEventListener("load", () => mermaid.run());
 </li>
       <li><a href="api.html#abstracttree.export.to_mermaid">to_mermaid() (in module abstracttree.export)</a>
 </li>
+      <li><a href="api.html#abstracttree.export.to_pillow">to_pillow() (in module abstracttree.export)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#abstracttree.export.to_pillow">to_pillow() (in module abstracttree.export)</a>
+      <li><a href="api.html#abstracttree.export.to_reportlab">to_reportlab() (in module abstracttree.export)</a>
 </li>
       <li><a href="api.html#abstracttree.export.to_string">to_string() (in module abstracttree.export)</a>
 </li>
-      <li><a href="api.html#abstracttree.tree.DownTree.transform">transform() (abstracttree.tree.DownTree method)</a>
+      <li><a href="api.html#abstracttree.mixins.DownTree.transform">transform() (abstracttree.mixins.DownTree method)</a>
 </li>
-      <li><a href="api.html#abstracttree.tree.Tree">Tree (class in abstracttree.tree)</a>
+      <li><a href="api.html#abstracttree.mixins.Tree">Tree (class in abstracttree.mixins)</a>
 </li>
-      <li><a href="api.html#abstracttree.tree.TreeView">TreeView (class in abstracttree.tree)</a>
+      <li><a href="api.html#abstracttree.adapters.TreeAdapter">TreeAdapter (class in abstracttree.adapters)</a>
+</li>
+      <li><a href="api.html#abstracttree.generics.TreeLike">TreeLike (class in abstracttree.generics)</a>
 </li>
   </ul></td>
 </tr></table>
 
-<h2 id="U">U</h2>
+<h2 id="V">V</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#abstracttree.tree.UpTree">UpTree (class in abstracttree.tree)</a>
+      <li><a href="api.html#abstracttree.generics.MappingItem.value">value (abstracttree.generics.MappingItem attribute)</a>
 </li>
   </ul></td>
 </tr></table>

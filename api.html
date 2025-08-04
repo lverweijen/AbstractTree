@@ -20,7 +20,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Changelog" href="CHANGES.html" />
-    <link rel="prev" title="Usage" href="usage_bundled.html" /> 
+    <link rel="prev" title="Usage" href="usage.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,88 +45,56 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage_bundled.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-abstracttree.tree">Abstract base classes</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#abstracttree.tree.AbstractTree"><code class="docutils literal notranslate"><span class="pre">AbstractTree</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.tree.AbstractTree.convert"><code class="docutils literal notranslate"><span class="pre">AbstractTree.convert()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.tree.AbstractTree.eqv"><code class="docutils literal notranslate"><span class="pre">AbstractTree.eqv()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.tree.AbstractTree.nid"><code class="docutils literal notranslate"><span class="pre">AbstractTree.nid</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-abstracttree.mixins">Mixins</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.mixins.BinaryDownTree"><code class="docutils literal notranslate"><span class="pre">BinaryDownTree</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.mixins.BinaryDownTree.children"><code class="docutils literal notranslate"><span class="pre">BinaryDownTree.children</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.mixins.BinaryDownTree.descendants"><code class="docutils literal notranslate"><span class="pre">BinaryDownTree.descendants</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.mixins.BinaryDownTree.nodes"><code class="docutils literal notranslate"><span class="pre">BinaryDownTree.nodes</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#abstracttree.tree.AncestorsView"><code class="docutils literal notranslate"><span class="pre">AncestorsView</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#abstracttree.tree.DownTree"><code class="docutils literal notranslate"><span class="pre">DownTree</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.tree.DownTree.children"><code class="docutils literal notranslate"><span class="pre">DownTree.children</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.tree.DownTree.descendants"><code class="docutils literal notranslate"><span class="pre">DownTree.descendants</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.tree.DownTree.is_leaf"><code class="docutils literal notranslate"><span class="pre">DownTree.is_leaf</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.tree.DownTree.leaves"><code class="docutils literal notranslate"><span class="pre">DownTree.leaves</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.tree.DownTree.levels"><code class="docutils literal notranslate"><span class="pre">DownTree.levels</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.tree.DownTree.nodes"><code class="docutils literal notranslate"><span class="pre">DownTree.nodes</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.tree.DownTree.transform"><code class="docutils literal notranslate"><span class="pre">DownTree.transform()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.mixins.BinaryTree"><code class="docutils literal notranslate"><span class="pre">BinaryTree</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.mixins.DownTree"><code class="docutils literal notranslate"><span class="pre">DownTree</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.mixins.DownTree.children"><code class="docutils literal notranslate"><span class="pre">DownTree.children</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.mixins.DownTree.descendants"><code class="docutils literal notranslate"><span class="pre">DownTree.descendants</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.mixins.DownTree.is_leaf"><code class="docutils literal notranslate"><span class="pre">DownTree.is_leaf</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.mixins.DownTree.leaves"><code class="docutils literal notranslate"><span class="pre">DownTree.leaves</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.mixins.DownTree.levels"><code class="docutils literal notranslate"><span class="pre">DownTree.levels</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.mixins.DownTree.nodes"><code class="docutils literal notranslate"><span class="pre">DownTree.nodes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.mixins.DownTree.transform"><code class="docutils literal notranslate"><span class="pre">DownTree.transform()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#abstracttree.tree.LeavesView"><code class="docutils literal notranslate"><span class="pre">LeavesView</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#abstracttree.tree.MutableDownTree"><code class="docutils literal notranslate"><span class="pre">MutableDownTree</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.tree.MutableDownTree.add_child"><code class="docutils literal notranslate"><span class="pre">MutableDownTree.add_child()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.tree.MutableDownTree.add_children"><code class="docutils literal notranslate"><span class="pre">MutableDownTree.add_children()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.tree.MutableDownTree.remove_child"><code class="docutils literal notranslate"><span class="pre">MutableDownTree.remove_child()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.mixins.MutableDownTree"><code class="docutils literal notranslate"><span class="pre">MutableDownTree</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.mixins.MutableDownTree.add_child"><code class="docutils literal notranslate"><span class="pre">MutableDownTree.add_child()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.mixins.MutableDownTree.add_children"><code class="docutils literal notranslate"><span class="pre">MutableDownTree.add_children()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.mixins.MutableDownTree.remove_child"><code class="docutils literal notranslate"><span class="pre">MutableDownTree.remove_child()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#abstracttree.tree.MutableTree"><code class="docutils literal notranslate"><span class="pre">MutableTree</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.tree.MutableTree.detach"><code class="docutils literal notranslate"><span class="pre">MutableTree.detach()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.mixins.MutableTree"><code class="docutils literal notranslate"><span class="pre">MutableTree</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.mixins.MutableTree.detach"><code class="docutils literal notranslate"><span class="pre">MutableTree.detach()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#abstracttree.tree.NodeItem"><code class="docutils literal notranslate"><span class="pre">NodeItem</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.tree.NodeItem.depth"><code class="docutils literal notranslate"><span class="pre">NodeItem.depth</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.tree.NodeItem.index"><code class="docutils literal notranslate"><span class="pre">NodeItem.index</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#abstracttree.tree.NodesView"><code class="docutils literal notranslate"><span class="pre">NodesView</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.tree.NodesView.levelorder"><code class="docutils literal notranslate"><span class="pre">NodesView.levelorder()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.tree.NodesView.postorder"><code class="docutils literal notranslate"><span class="pre">NodesView.postorder()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.tree.NodesView.preorder"><code class="docutils literal notranslate"><span class="pre">NodesView.preorder()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#abstracttree.tree.PathView"><code class="docutils literal notranslate"><span class="pre">PathView</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.tree.PathView.count"><code class="docutils literal notranslate"><span class="pre">PathView.count()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#abstracttree.tree.SiblingsView"><code class="docutils literal notranslate"><span class="pre">SiblingsView</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.tree.SiblingsView.count"><code class="docutils literal notranslate"><span class="pre">SiblingsView.count()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#abstracttree.tree.Tree"><code class="docutils literal notranslate"><span class="pre">Tree</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.tree.Tree.siblings"><code class="docutils literal notranslate"><span class="pre">Tree.siblings</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#abstracttree.tree.TreeView"><code class="docutils literal notranslate"><span class="pre">TreeView</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.tree.TreeView.count"><code class="docutils literal notranslate"><span class="pre">TreeView.count()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#abstracttree.tree.UpTree"><code class="docutils literal notranslate"><span class="pre">UpTree</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.tree.UpTree.ancestors"><code class="docutils literal notranslate"><span class="pre">UpTree.ancestors</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.tree.UpTree.is_root"><code class="docutils literal notranslate"><span class="pre">UpTree.is_root</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.tree.UpTree.parent"><code class="docutils literal notranslate"><span class="pre">UpTree.parent</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.tree.UpTree.path"><code class="docutils literal notranslate"><span class="pre">UpTree.path</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.tree.UpTree.root"><code class="docutils literal notranslate"><span class="pre">UpTree.root</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#abstracttree.binarytree.BinaryDownTree"><code class="docutils literal notranslate"><span class="pre">BinaryDownTree</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.binarytree.BinaryDownTree.children"><code class="docutils literal notranslate"><span class="pre">BinaryDownTree.children</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.binarytree.BinaryDownTree.descendants"><code class="docutils literal notranslate"><span class="pre">BinaryDownTree.descendants</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.binarytree.BinaryDownTree.nodes"><code class="docutils literal notranslate"><span class="pre">BinaryDownTree.nodes</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#abstracttree.binarytree.BinaryTree"><code class="docutils literal notranslate"><span class="pre">BinaryTree</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#abstracttree.binarytree.NodesView"><code class="docutils literal notranslate"><span class="pre">NodesView</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.binarytree.NodesView.inorder"><code class="docutils literal notranslate"><span class="pre">NodesView.inorder()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.mixins.Tree"><code class="docutils literal notranslate"><span class="pre">Tree</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.mixins.Tree.siblings"><code class="docutils literal notranslate"><span class="pre">Tree.siblings</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#module-abstracttree.adapters">Adapters</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#abstracttree.adapters.astree"><code class="docutils literal notranslate"><span class="pre">astree()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#abstracttree.adapters.convert_tree"><code class="docutils literal notranslate"><span class="pre">convert_tree()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-abstracttree.generics">Generics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.generics.DownTreeLike"><code class="docutils literal notranslate"><span class="pre">DownTreeLike</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.generics.MappingItem"><code class="docutils literal notranslate"><span class="pre">MappingItem</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.generics.MappingItem.key"><code class="docutils literal notranslate"><span class="pre">MappingItem.key</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.generics.MappingItem.value"><code class="docutils literal notranslate"><span class="pre">MappingItem.value</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.generics.TreeLike"><code class="docutils literal notranslate"><span class="pre">TreeLike</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.generics.children"><code class="docutils literal notranslate"><span class="pre">children()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.generics.label"><code class="docutils literal notranslate"><span class="pre">label()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.generics.nid"><code class="docutils literal notranslate"><span class="pre">nid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.generics.parent"><code class="docutils literal notranslate"><span class="pre">parent()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.generics.parents"><code class="docutils literal notranslate"><span class="pre">parents()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.generics.root"><code class="docutils literal notranslate"><span class="pre">root()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-abstracttree.export">Export</a><ul>
@@ -138,6 +106,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#abstracttree.export.to_latex"><code class="docutils literal notranslate"><span class="pre">to_latex()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#abstracttree.export.to_mermaid"><code class="docutils literal notranslate"><span class="pre">to_mermaid()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#abstracttree.export.to_pillow"><code class="docutils literal notranslate"><span class="pre">to_pillow()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.export.to_reportlab"><code class="docutils literal notranslate"><span class="pre">to_reportlab()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#abstracttree.export.to_string"><code class="docutils literal notranslate"><span class="pre">to_string()</span></code></a></li>
 </ul>
 </li>
@@ -150,25 +119,40 @@
 <li class="toctree-l3"><a class="reference internal" href="#abstracttree.predicates.RemoveDuplicates"><code class="docutils literal notranslate"><span class="pre">RemoveDuplicates</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#module-abstracttree.heaptree">HeapTree</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#abstracttree.heaptree.HeapTree"><code class="docutils literal notranslate"><span class="pre">HeapTree</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.heaptree.HeapTree.children"><code class="docutils literal notranslate"><span class="pre">HeapTree.children</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.heaptree.HeapTree.eqv"><code class="docutils literal notranslate"><span class="pre">HeapTree.eqv()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.heaptree.HeapTree.nid"><code class="docutils literal notranslate"><span class="pre">HeapTree.nid</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#abstracttree.heaptree.HeapTree.parent"><code class="docutils literal notranslate"><span class="pre">HeapTree.parent</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-abstracttree.adapters">Adapters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.adapters.HeapTree"><code class="docutils literal notranslate"><span class="pre">HeapTree</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.adapters.HeapTree.children"><code class="docutils literal notranslate"><span class="pre">HeapTree.children</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.adapters.HeapTree.nid"><code class="docutils literal notranslate"><span class="pre">HeapTree.nid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.adapters.HeapTree.parent"><code class="docutils literal notranslate"><span class="pre">HeapTree.parent</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.adapters.TreeAdapter"><code class="docutils literal notranslate"><span class="pre">TreeAdapter</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.adapters.TreeAdapter.child_func"><code class="docutils literal notranslate"><span class="pre">TreeAdapter.child_func()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.adapters.TreeAdapter.children"><code class="docutils literal notranslate"><span class="pre">TreeAdapter.children</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.adapters.TreeAdapter.label_func"><code class="docutils literal notranslate"><span class="pre">TreeAdapter.label_func()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.adapters.TreeAdapter.nid"><code class="docutils literal notranslate"><span class="pre">TreeAdapter.nid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.adapters.TreeAdapter.parent"><code class="docutils literal notranslate"><span class="pre">TreeAdapter.parent</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.adapters.TreeAdapter.parent_func"><code class="docutils literal notranslate"><span class="pre">TreeAdapter.parent_func()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.adapters.as_tree"><code class="docutils literal notranslate"><span class="pre">as_tree()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.adapters.convert_tree"><code class="docutils literal notranslate"><span class="pre">convert_tree()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-abstracttree.route">Route</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#abstracttree.route.Route"><code class="docutils literal notranslate"><span class="pre">Route</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#abstracttree.route.Route.add_anchor"><code class="docutils literal notranslate"><span class="pre">Route.add_anchor()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#abstracttree.route.Route.anchors"><code class="docutils literal notranslate"><span class="pre">Route.anchors</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#abstracttree.route.Route.count"><code class="docutils literal notranslate"><span class="pre">Route.count()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#abstracttree.route.Route.edges"><code class="docutils literal notranslate"><span class="pre">Route.edges</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#abstracttree.route.Route.lca"><code class="docutils literal notranslate"><span class="pre">Route.lca</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#abstracttree.route.Route.nodes"><code class="docutils literal notranslate"><span class="pre">Route.nodes</span></code></a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-abstracttree.utils">Utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#abstracttree.utils.eqv"><code class="docutils literal notranslate"><span class="pre">eqv()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -202,373 +186,262 @@
              
   <section id="api">
 <h1>API<a class="headerlink" href="#api" title="Permalink to this heading"></a></h1>
-<section id="module-abstracttree.tree">
-<span id="abstract-base-classes"></span><h2>Abstract base classes<a class="headerlink" href="#module-abstracttree.tree" title="Permalink to this heading"></a></h2>
+<section id="module-abstracttree.mixins">
+<span id="mixins"></span><h2>Mixins<a class="headerlink" href="#module-abstracttree.mixins" title="Permalink to this heading"></a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="abstracttree.tree.AbstractTree">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.tree.</span></span><span class="sig-name descname"><span class="pre">AbstractTree</span></span><a class="reference internal" href="_modules/abstracttree/tree.html#AbstractTree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.tree.AbstractTree" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Most abstract baseclass for everything.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="abstracttree.tree.AbstractTree.convert">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">convert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/tree.html#AbstractTree.convert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.tree.AbstractTree.convert" title="Permalink to this definition"></a></dt>
-<dd><p>Convert obj to tree-type or raise TypeError if that doesn’t work.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="abstracttree.tree.AbstractTree.eqv">
-<span class="sig-name descname"><span class="pre">eqv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/abstracttree/tree.html#AbstractTree.eqv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.tree.AbstractTree.eqv" title="Permalink to this definition"></a></dt>
-<dd><p>Check if both objects represent the same node.</p>
-<p>Should normally be operator.is, but can be overridden by delegates.</p>
-</dd></dl>
-
+<dt class="sig sig-object py" id="abstracttree.mixins.BinaryDownTree">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.mixins.</span></span><span class="sig-name descname"><span class="pre">BinaryDownTree</span></span><a class="reference internal" href="_modules/abstracttree/mixins/trees.html#BinaryDownTree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.mixins.BinaryDownTree" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#abstracttree.mixins.DownTree" title="abstracttree.mixins.trees.DownTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">DownTree</span></code></a></p>
+<p>Binary-tree with links to children.</p>
 <dl class="py property">
-<dt class="sig sig-object py" id="abstracttree.tree.AbstractTree.nid">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#abstracttree.tree.AbstractTree.nid" title="Permalink to this definition"></a></dt>
-<dd><p>Unique number that represents this node.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="abstracttree.tree.AncestorsView">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.tree.</span></span><span class="sig-name descname"><span class="pre">AncestorsView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/tree.html#AncestorsView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.tree.AncestorsView" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#abstracttree.tree.TreeView" title="abstracttree.tree.TreeView"><code class="xref py py-class docutils literal notranslate"><span class="pre">TreeView</span></code></a></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="abstracttree.tree.DownTree">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.tree.</span></span><span class="sig-name descname"><span class="pre">DownTree</span></span><a class="reference internal" href="_modules/abstracttree/tree.html#DownTree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.tree.DownTree" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#abstracttree.tree.AbstractTree" title="abstracttree.tree.AbstractTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractTree</span></code></a></p>
-<p>Abstract class for tree classes with children but no parent.</p>
-<dl class="py property">
-<dt class="sig sig-object py" id="abstracttree.tree.DownTree.children">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">children</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">TNode</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#abstracttree.tree.DownTree.children" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="abstracttree.mixins.BinaryDownTree.children">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">children</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">TNode</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#abstracttree.mixins.BinaryDownTree.children" title="Permalink to this definition"></a></dt>
 <dd><p>Children of this node.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="abstracttree.tree.DownTree.descendants">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">descendants</span></span><a class="headerlink" href="#abstracttree.tree.DownTree.descendants" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="abstracttree.mixins.BinaryDownTree.descendants">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">descendants</span></span><a class="headerlink" href="#abstracttree.mixins.BinaryDownTree.descendants" title="Permalink to this definition"></a></dt>
 <dd><p>View of descendants of this node.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="abstracttree.tree.DownTree.is_leaf">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_leaf</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#abstracttree.tree.DownTree.is_leaf" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="abstracttree.mixins.BinaryDownTree.nodes">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nodes</span></span><a class="headerlink" href="#abstracttree.mixins.BinaryDownTree.nodes" title="Permalink to this definition"></a></dt>
+<dd><p>View of this node and its descendants.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="abstracttree.mixins.BinaryTree">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.mixins.</span></span><span class="sig-name descname"><span class="pre">BinaryTree</span></span><a class="reference internal" href="_modules/abstracttree/mixins/trees.html#BinaryTree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.mixins.BinaryTree" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#abstracttree.mixins.BinaryDownTree" title="abstracttree.mixins.trees.BinaryDownTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">BinaryDownTree</span></code></a>, <a class="reference internal" href="#abstracttree.mixins.Tree" title="abstracttree.mixins.trees.Tree"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tree</span></code></a></p>
+<p>Binary-tree with links to children and to parent.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="abstracttree.mixins.DownTree">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.mixins.</span></span><span class="sig-name descname"><span class="pre">DownTree</span></span><a class="reference internal" href="_modules/abstracttree/mixins/trees.html#DownTree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.mixins.DownTree" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractTree</span></code></p>
+<p>Abstract class for tree classes with children but no parent.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="abstracttree.mixins.DownTree.children">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">children</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">TNode</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#abstracttree.mixins.DownTree.children" title="Permalink to this definition"></a></dt>
+<dd><p>Children of this node.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="abstracttree.mixins.DownTree.descendants">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">descendants</span></span><a class="headerlink" href="#abstracttree.mixins.DownTree.descendants" title="Permalink to this definition"></a></dt>
+<dd><p>View of descendants of this node.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="abstracttree.mixins.DownTree.is_leaf">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_leaf</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#abstracttree.mixins.DownTree.is_leaf" title="Permalink to this definition"></a></dt>
 <dd><p>Whether this node is a leaf (does not have children).</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="abstracttree.tree.DownTree.leaves">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">leaves</span></span><a class="headerlink" href="#abstracttree.tree.DownTree.leaves" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="abstracttree.mixins.DownTree.leaves">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">leaves</span></span><a class="headerlink" href="#abstracttree.mixins.DownTree.leaves" title="Permalink to this definition"></a></dt>
 <dd><p>View of leaves from this node.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="abstracttree.tree.DownTree.levels">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">levels</span></span><a class="headerlink" href="#abstracttree.tree.DownTree.levels" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="abstracttree.mixins.DownTree.levels">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">levels</span></span><a class="headerlink" href="#abstracttree.mixins.DownTree.levels" title="Permalink to this definition"></a></dt>
 <dd><p>View of this node and descendants by level.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="abstracttree.tree.DownTree.nodes">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nodes</span></span><a class="headerlink" href="#abstracttree.tree.DownTree.nodes" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="abstracttree.mixins.DownTree.nodes">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nodes</span></span><a class="headerlink" href="#abstracttree.mixins.DownTree.nodes" title="Permalink to this definition"></a></dt>
 <dd><p>View of this node and its descendants.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="abstracttree.tree.DownTree.transform">
-<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">TNode</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">TMutDownNode</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">TMutDownNode</span></span></span><a class="reference internal" href="_modules/abstracttree/tree.html#DownTree.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.tree.DownTree.transform" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="abstracttree.mixins.DownTree.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">TNode</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">TMutDownNode</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">TMutDownNode</span></span></span><a class="reference internal" href="_modules/abstracttree/mixins/trees.html#DownTree.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.mixins.DownTree.transform" title="Permalink to this definition"></a></dt>
 <dd><p>Create new tree where each node of self is transformed by f.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="abstracttree.tree.LeavesView">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.tree.</span></span><span class="sig-name descname"><span class="pre">LeavesView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/tree.html#LeavesView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.tree.LeavesView" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#abstracttree.tree.TreeView" title="abstracttree.tree.TreeView"><code class="xref py py-class docutils literal notranslate"><span class="pre">TreeView</span></code></a></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="abstracttree.tree.MutableDownTree">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.tree.</span></span><span class="sig-name descname"><span class="pre">MutableDownTree</span></span><a class="reference internal" href="_modules/abstracttree/tree.html#MutableDownTree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.tree.MutableDownTree" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#abstracttree.tree.DownTree" title="abstracttree.tree.DownTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">DownTree</span></code></a></p>
+<dt class="sig sig-object py" id="abstracttree.mixins.MutableDownTree">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.mixins.</span></span><span class="sig-name descname"><span class="pre">MutableDownTree</span></span><a class="reference internal" href="_modules/abstracttree/mixins/trees.html#MutableDownTree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.mixins.MutableDownTree" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#abstracttree.mixins.DownTree" title="abstracttree.mixins.trees.DownTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">DownTree</span></code></a></p>
 <p>Abstract class for mutable tree with children.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="abstracttree.tree.MutableDownTree.add_child">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">add_child</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TNode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/tree.html#MutableDownTree.add_child"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.tree.MutableDownTree.add_child" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="abstracttree.mixins.MutableDownTree.add_child">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">add_child</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TNode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/mixins/trees.html#MutableDownTree.add_child"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.mixins.MutableDownTree.add_child" title="Permalink to this definition"></a></dt>
 <dd><p>Add node to children.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="abstracttree.tree.MutableDownTree.add_children">
-<span class="sig-name descname"><span class="pre">add_children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">children</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">TNode</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/tree.html#MutableDownTree.add_children"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.tree.MutableDownTree.add_children" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="abstracttree.mixins.MutableDownTree.add_children">
+<span class="sig-name descname"><span class="pre">add_children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">children</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">TNode</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/mixins/trees.html#MutableDownTree.add_children"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.mixins.MutableDownTree.add_children" title="Permalink to this definition"></a></dt>
 <dd><p>Add multiple nodes to children.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="abstracttree.tree.MutableDownTree.remove_child">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">remove_child</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TNode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/tree.html#MutableDownTree.remove_child"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.tree.MutableDownTree.remove_child" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="abstracttree.mixins.MutableDownTree.remove_child">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">remove_child</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TNode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/mixins/trees.html#MutableDownTree.remove_child"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.mixins.MutableDownTree.remove_child" title="Permalink to this definition"></a></dt>
 <dd><p>Remove node from children.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="abstracttree.tree.MutableTree">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.tree.</span></span><span class="sig-name descname"><span class="pre">MutableTree</span></span><a class="reference internal" href="_modules/abstracttree/tree.html#MutableTree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.tree.MutableTree" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#abstracttree.tree.Tree" title="abstracttree.tree.Tree"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tree</span></code></a>, <a class="reference internal" href="#abstracttree.tree.MutableDownTree" title="abstracttree.tree.MutableDownTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">MutableDownTree</span></code></a></p>
+<dt class="sig sig-object py" id="abstracttree.mixins.MutableTree">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.mixins.</span></span><span class="sig-name descname"><span class="pre">MutableTree</span></span><a class="reference internal" href="_modules/abstracttree/mixins/trees.html#MutableTree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.mixins.MutableTree" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#abstracttree.mixins.Tree" title="abstracttree.mixins.trees.Tree"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tree</span></code></a>, <a class="reference internal" href="#abstracttree.mixins.MutableDownTree" title="abstracttree.mixins.trees.MutableDownTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">MutableDownTree</span></code></a></p>
 <p>Abstract class for mutable tree with children and parent.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="abstracttree.tree.MutableTree.detach">
-<span class="sig-name descname"><span class="pre">detach</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">TNode</span></span></span><a class="reference internal" href="_modules/abstracttree/tree.html#MutableTree.detach"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.tree.MutableTree.detach" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="abstracttree.mixins.MutableTree.detach">
+<span class="sig-name descname"><span class="pre">detach</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">TNode</span></span></span><a class="reference internal" href="_modules/abstracttree/mixins/trees.html#MutableTree.detach"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.mixins.MutableTree.detach" title="Permalink to this definition"></a></dt>
 <dd><p>Remove parent if any and return self.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="abstracttree.tree.NodeItem">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.tree.</span></span><span class="sig-name descname"><span class="pre">NodeItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#abstracttree.tree.NodeItem" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="abstracttree.tree.NodeItem.depth">
-<span class="sig-name descname"><span class="pre">depth</span></span><a class="headerlink" href="#abstracttree.tree.NodeItem.depth" title="Permalink to this definition"></a></dt>
-<dd><p>Alias for field number 1</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="abstracttree.tree.NodeItem.index">
-<span class="sig-name descname"><span class="pre">index</span></span><a class="headerlink" href="#abstracttree.tree.NodeItem.index" title="Permalink to this definition"></a></dt>
-<dd><p>Alias for field number 0</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="abstracttree.tree.NodesView">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.tree.</span></span><span class="sig-name descname"><span class="pre">NodesView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/tree.html#NodesView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.tree.NodesView" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#abstracttree.tree.TreeView" title="abstracttree.tree.TreeView"><code class="xref py py-class docutils literal notranslate"><span class="pre">TreeView</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="abstracttree.tree.NodesView.levelorder">
-<span class="sig-name descname"><span class="pre">levelorder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/tree.html#NodesView.levelorder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.tree.NodesView.levelorder" title="Permalink to this definition"></a></dt>
-<dd><p>Iterate through nodes in level-order.</p>
-<p>Only descend where keep(node).
-Returns tuples (node, item)
-Item denotes depth of iteration and index of child.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="abstracttree.tree.NodesView.postorder">
-<span class="sig-name descname"><span class="pre">postorder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/tree.html#NodesView.postorder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.tree.NodesView.postorder" title="Permalink to this definition"></a></dt>
-<dd><p>Iterate through nodes in post-order.</p>
-<p>Only descend where keep(node).
-Returns tuples (node, item)
-Item denotes depth of iteration and index of child.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="abstracttree.tree.NodesView.preorder">
-<span class="sig-name descname"><span class="pre">preorder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/tree.html#NodesView.preorder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.tree.NodesView.preorder" title="Permalink to this definition"></a></dt>
-<dd><p>Iterate through nodes in pre-order.</p>
-<p>Only descend where keep(node).
-Returns tuples (node, item)
-Item denotes depth of iteration and index of child.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="abstracttree.tree.PathView">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.tree.</span></span><span class="sig-name descname"><span class="pre">PathView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/tree.html#PathView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.tree.PathView" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#abstracttree.tree.TreeView" title="abstracttree.tree.TreeView"><code class="xref py py-class docutils literal notranslate"><span class="pre">TreeView</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="abstracttree.tree.PathView.count">
-<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/tree.html#PathView.count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.tree.PathView.count" title="Permalink to this definition"></a></dt>
-<dd><p>Count number of nodes in this view.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="abstracttree.tree.SiblingsView">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.tree.</span></span><span class="sig-name descname"><span class="pre">SiblingsView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/tree.html#SiblingsView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.tree.SiblingsView" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#abstracttree.tree.TreeView" title="abstracttree.tree.TreeView"><code class="xref py py-class docutils literal notranslate"><span class="pre">TreeView</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="abstracttree.tree.SiblingsView.count">
-<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#abstracttree.tree.SiblingsView.count" title="Permalink to this definition"></a></dt>
-<dd><p>Count number of nodes in this view.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="abstracttree.tree.Tree">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.tree.</span></span><span class="sig-name descname"><span class="pre">Tree</span></span><a class="reference internal" href="_modules/abstracttree/tree.html#Tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.tree.Tree" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#abstracttree.tree.UpTree" title="abstracttree.tree.UpTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">UpTree</span></code></a>, <a class="reference internal" href="#abstracttree.tree.DownTree" title="abstracttree.tree.DownTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">DownTree</span></code></a></p>
+<dt class="sig sig-object py" id="abstracttree.mixins.Tree">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.mixins.</span></span><span class="sig-name descname"><span class="pre">Tree</span></span><a class="reference internal" href="_modules/abstracttree/mixins/trees.html#Tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.mixins.Tree" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">UpTree</span></code>, <a class="reference internal" href="#abstracttree.mixins.DownTree" title="abstracttree.mixins.trees.DownTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">DownTree</span></code></a></p>
 <p>Abstract class for tree classes with access to children and parents.</p>
 <dl class="py property">
-<dt class="sig sig-object py" id="abstracttree.tree.Tree.siblings">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">siblings</span></span><a class="headerlink" href="#abstracttree.tree.Tree.siblings" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="abstracttree.mixins.Tree.siblings">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">siblings</span></span><a class="headerlink" href="#abstracttree.mixins.Tree.siblings" title="Permalink to this definition"></a></dt>
 <dd><p>View of siblings of this node.</p>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="abstracttree.tree.TreeView">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.tree.</span></span><span class="sig-name descname"><span class="pre">TreeView</span></span><a class="reference internal" href="_modules/abstracttree/tree.html#TreeView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.tree.TreeView" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">TNode</span></code>]</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="abstracttree.tree.TreeView.count">
-<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/abstracttree/tree.html#TreeView.count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.tree.TreeView.count" title="Permalink to this definition"></a></dt>
-<dd><p>Count number of nodes in this view.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="abstracttree.tree.UpTree">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.tree.</span></span><span class="sig-name descname"><span class="pre">UpTree</span></span><a class="reference internal" href="_modules/abstracttree/tree.html#UpTree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.tree.UpTree" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#abstracttree.tree.AbstractTree" title="abstracttree.tree.AbstractTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractTree</span></code></a></p>
-<p>Abstract class for tree classes with parent but no children.</p>
-<dl class="py property">
-<dt class="sig sig-object py" id="abstracttree.tree.UpTree.ancestors">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ancestors</span></span><a class="headerlink" href="#abstracttree.tree.UpTree.ancestors" title="Permalink to this definition"></a></dt>
-<dd><p>View of ancestors of node.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="abstracttree.tree.UpTree.is_root">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_root</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#abstracttree.tree.UpTree.is_root" title="Permalink to this definition"></a></dt>
-<dd><p>Whether this node is a root (has no parent).</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="abstracttree.tree.UpTree.parent">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parent</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">TNode</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#abstracttree.tree.UpTree.parent" title="Permalink to this definition"></a></dt>
-<dd><p>Parent of this node or None if root.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="abstracttree.tree.UpTree.path">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">path</span></span><a class="headerlink" href="#abstracttree.tree.UpTree.path" title="Permalink to this definition"></a></dt>
-<dd><p>View of path from root to node.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="abstracttree.tree.UpTree.root">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">root</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">TNode</span></em><a class="headerlink" href="#abstracttree.tree.UpTree.root" title="Permalink to this definition"></a></dt>
-<dd><p>Root of tree.</p>
-</dd></dl>
-
-</dd></dl>
-
-<span class="target" id="module-abstracttree.binarytree"></span><dl class="py class">
-<dt class="sig sig-object py" id="abstracttree.binarytree.BinaryDownTree">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.binarytree.</span></span><span class="sig-name descname"><span class="pre">BinaryDownTree</span></span><a class="reference internal" href="_modules/abstracttree/binarytree.html#BinaryDownTree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.binarytree.BinaryDownTree" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#abstracttree.tree.DownTree" title="abstracttree.tree.DownTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">DownTree</span></code></a></p>
-<p>Binary-tree with links to children.</p>
-<dl class="py property">
-<dt class="sig sig-object py" id="abstracttree.binarytree.BinaryDownTree.children">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">children</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">TNode</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#abstracttree.binarytree.BinaryDownTree.children" title="Permalink to this definition"></a></dt>
-<dd><p>Children of this node.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="abstracttree.binarytree.BinaryDownTree.descendants">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">descendants</span></span><a class="headerlink" href="#abstracttree.binarytree.BinaryDownTree.descendants" title="Permalink to this definition"></a></dt>
-<dd><p>View of descendants of this node.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="abstracttree.binarytree.BinaryDownTree.nodes">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nodes</span></span><a class="headerlink" href="#abstracttree.binarytree.BinaryDownTree.nodes" title="Permalink to this definition"></a></dt>
-<dd><p>View of this node and its descendants.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="abstracttree.binarytree.BinaryTree">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.binarytree.</span></span><span class="sig-name descname"><span class="pre">BinaryTree</span></span><a class="reference internal" href="_modules/abstracttree/binarytree.html#BinaryTree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.binarytree.BinaryTree" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#abstracttree.binarytree.BinaryDownTree" title="abstracttree.binarytree.BinaryDownTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">BinaryDownTree</span></code></a>, <a class="reference internal" href="#abstracttree.tree.Tree" title="abstracttree.tree.Tree"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tree</span></code></a></p>
-<p>Binary-tree with links to children and to parent.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="abstracttree.binarytree.NodesView">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.binarytree.</span></span><span class="sig-name descname"><span class="pre">NodesView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/binarytree.html#NodesView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.binarytree.NodesView" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#abstracttree.tree.NodesView" title="abstracttree.tree.NodesView"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodesView</span></code></a></p>
-<p>Extend NodesView to make it do inorder.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="abstracttree.binarytree.NodesView.inorder">
-<span class="sig-name descname"><span class="pre">inorder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/binarytree.html#NodesView.inorder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.binarytree.NodesView.inorder" title="Permalink to this definition"></a></dt>
-<dd><p>Iterate through nodes in inorder (traverse left, yield root, traverse right).</p>
-<p>Note:
-- <cite>item.index</cite> will be 0 for every left child
-- <cite>item.index</cite> will be 1 for every right child (even if node.left_child is None)
-This is a bit different from how <cite>preorder()</cite>, <cite>postorder()</cite> and <cite>levelorder()</cite> work,
-because those functions always give index 0 to the first child,
-regardless of whether it’s a left or right child.
-Like the other iterators, the root of a subtree always gets item.index equal to 0,
-even if it is actually a right child in a bigger tree.</p>
-</dd></dl>
-
-</dd></dl>
-
 </section>
-<section id="module-abstracttree.adapters">
-<span id="adapters"></span><h2>Adapters<a class="headerlink" href="#module-abstracttree.adapters" title="Permalink to this heading"></a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="abstracttree.adapters.astree">
-<span class="sig-prename descclassname"><span class="pre">abstracttree.adapters.</span></span><span class="sig-name descname"><span class="pre">astree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#abstracttree.tree.Tree" title="abstracttree.tree.Tree"><span class="pre">Tree</span></a></span></span><a class="reference internal" href="_modules/abstracttree/adapters.html#astree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.adapters.astree" title="Permalink to this definition"></a></dt>
-<dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">abstracttree.adapters.</span></span><span class="sig-name descname"><span class="pre">astree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TWrap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">children</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">TWrap</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">TWrap</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#abstracttree.tree.Tree" title="abstracttree.tree.Tree"><span class="pre">Tree</span></a></span></span></dt>
-<dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">abstracttree.adapters.</span></span><span class="sig-name descname"><span class="pre">astree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TWrap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">children</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">TWrap</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">TWrap</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">TWrap</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">TWrap</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#abstracttree.tree.Tree" title="abstracttree.tree.Tree"><span class="pre">Tree</span></a></span></span></dt>
-<dd><p>Convert an arbitrary object into a tree.</p>
-<p>If no children or parents are given it will try a standard conversion.
-If children and parents are given, they will be used as a function.
-If children, but no parent is given, it will create a tree that has obj as its root.</p>
+<section id="module-abstracttree.generics">
+<span id="generics"></span><h2>Generics<a class="headerlink" href="#module-abstracttree.generics" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="abstracttree.generics.DownTreeLike">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">DownTreeLike</span></span><a class="reference internal" href="_modules/abstracttree/generics.html#DownTreeLike"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.generics.DownTreeLike" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Any object that has an identifiable parent and/or identifiable children.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="abstracttree.generics.MappingItem">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">MappingItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#abstracttree.generics.MappingItem" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="abstracttree.generics.MappingItem.key">
+<span class="sig-name descname"><span class="pre">key</span></span><a class="headerlink" href="#abstracttree.generics.MappingItem.key" title="Permalink to this definition"></a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="abstracttree.generics.MappingItem.value">
+<span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#abstracttree.generics.MappingItem.value" title="Permalink to this definition"></a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="abstracttree.generics.TreeLike">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">TreeLike</span></span><a class="reference internal" href="_modules/abstracttree/generics.html#TreeLike"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.generics.TreeLike" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Any object that has an identifiable parent.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="abstracttree.adapters.convert_tree">
-<span class="sig-prename descclassname"><span class="pre">abstracttree.adapters.</span></span><span class="sig-name descname"><span class="pre">convert_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/adapters.html#convert_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.adapters.convert_tree" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="abstracttree.generics.children">
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DT</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">DT</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/abstracttree/generics.html#children"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.generics.children" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">abstracttree.adapters.</span></span><span class="sig-name descname"><span class="pre">convert_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#abstracttree.tree.Tree" title="abstracttree.tree.Tree"><span class="pre">Tree</span></a></span></em><span class="sig-paren">)</span></dt>
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coll</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Collection</span></span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">abstracttree.adapters.</span></span><span class="sig-name descname"><span class="pre">convert_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#abstracttree.tree.DownTree" title="abstracttree.tree.DownTree"><span class="pre">DownTree</span></a></span></em><span class="sig-paren">)</span></dt>
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DT</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">DT</span><span class="p"><span class="pre">]</span></span></span></span></dt>
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">abstracttree.adapters.</span></span><span class="sig-name descname"><span class="pre">convert_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PurePath</span></span></em><span class="sig-paren">)</span></dt>
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DT</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">DT</span><span class="p"><span class="pre">]</span></span></span></span></dt>
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">abstracttree.adapters.</span></span><span class="sig-name descname"><span class="pre">convert_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ZipFile</span></span></em><span class="sig-paren">)</span></dt>
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DT</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">DT</span><span class="p"><span class="pre">]</span></span></span></span></dt>
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">abstracttree.adapters.</span></span><span class="sig-name descname"><span class="pre">convert_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span></dt>
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">type</span></span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">abstracttree.adapters.</span></span><span class="sig-name descname"><span class="pre">convert_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span></span></em><span class="sig-paren">)</span></dt>
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">abstracttree.adapters.</span></span><span class="sig-name descname"><span class="pre">convert_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span></span></em><span class="sig-paren">)</span></dt>
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">abstracttree.adapters.</span></span><span class="sig-name descname"><span class="pre">convert_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span></span></em><span class="sig-paren">)</span></dt>
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AST</span></span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">abstracttree.adapters.</span></span><span class="sig-name descname"><span class="pre">convert_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span></span></em><span class="sig-paren">)</span></dt>
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Exception</span></span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">abstracttree.adapters.</span></span><span class="sig-name descname"><span class="pre">convert_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span></span></em><span class="sig-paren">)</span></dt>
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Element</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Returns children of any downtreelike-object.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="abstracttree.generics.label">
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/abstracttree/generics.html#label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.generics.label" title="Permalink to this definition"></a></dt>
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">abstracttree.adapters.</span></span><span class="sig-name descname"><span class="pre">convert_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span></dt>
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coll</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Collection</span></span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">abstracttree.adapters.</span></span><span class="sig-name descname"><span class="pre">convert_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AST</span></span></em><span class="sig-paren">)</span></dt>
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">type</span></span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">abstracttree.adapters.</span></span><span class="sig-name descname"><span class="pre">convert_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Element</span></span></em><span class="sig-paren">)</span></dt>
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">abstracttree.adapters.</span></span><span class="sig-name descname"><span class="pre">convert_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ElementTree</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Low level conversion of tree object to an abstracttree.Tree.</p>
-<p>The default implementation ducktypes on <cite>tree.parent</cite> and <cite>tree.children</cite>.
-Classes can also define a method _abstracttree_ to override their conversion.</p>
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PathLike</span></span></em><span class="sig-paren">)</span></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AST</span></span></em><span class="sig-paren">)</span></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Exception</span></span></em><span class="sig-paren">)</span></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Element</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Return a string representation of this node.</p>
+<p>This representation should always represent just the Node.
+If the node has parents or children these should be omitted.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="abstracttree.generics.nid">
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">nid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/generics.html#nid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.generics.nid" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">nid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PathLike</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Unique idenitifier for node.</p>
+<p>Usually the same as id, but can be overwritten for classes that act as delegates.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="abstracttree.generics.parent">
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">parent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">T</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/abstracttree/generics.html#parent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.generics.parent" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">parent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">parent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Returns parent of any treelike-object.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="abstracttree.generics.parents">
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">parents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/abstracttree/generics.html#parents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.generics.parents" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">parents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">type</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Like parent(tree) but return value as a sequence.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="abstracttree.generics.root">
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">root</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">T</span></span></span><a class="reference internal" href="_modules/abstracttree/generics.html#root"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.generics.root" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">root</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">type</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">type</span></span></span></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">root</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">abstracttree.generics.</span></span><span class="sig-name descname"><span class="pre">root</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Find the root of a node in a tree.</p>
 </dd></dl>
 
 </section>
@@ -582,25 +455,25 @@ Classes can also define a method _abstracttree_ to override their conversion.</p
 
 <dl class="py function">
 <dt class="sig sig-object py" id="abstracttree.export.plot_tree">
-<span class="sig-prename descclassname"><span class="pre">abstracttree.export.</span></span><span class="sig-name descname"><span class="pre">plot_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree:</span> <span class="pre">~abstracttree.tree.Tree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter=&lt;class</span> <span class="pre">'str'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep=MaxDepth(depth=5)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotate_args=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/export.html#plot_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.export.plot_tree" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">abstracttree.export.</span></span><span class="sig-name descname"><span class="pre">plot_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">tree:</span> <span class="pre">~abstracttree.generics.DownTreeLike,</span> <span class="pre">ax=None,</span> <span class="pre">formatter:</span> <span class="pre">~collections.abc.Callable[[~abstracttree.generics.DownTreeLike],</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">label&gt;,</span> <span class="pre">keep=MaxDepth(depth=5),</span> <span class="pre">annotate_args=None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/export.html#plot_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.export.plot_tree" title="Permalink to this definition"></a></dt>
 <dd><p>Plot the tree using matplotlib (if installed).</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="abstracttree.export.print_tree">
-<span class="sig-prename descclassname"><span class="pre">abstracttree.export.</span></span><span class="sig-name descname"><span class="pre">print_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter=&lt;class</span> <span class="pre">'str'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/export.html#print_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.export.print_tree" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">abstracttree.export.</span></span><span class="sig-name descname"><span class="pre">print_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter=&lt;function</span> <span class="pre">label&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/export.html#print_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.export.print_tree" title="Permalink to this definition"></a></dt>
 <dd><p>Print this tree. Shortcut for print(to_string(tree)).</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="abstracttree.export.to_dot">
-<span class="sig-prename descclassname"><span class="pre">abstracttree.export.</span></span><span class="sig-name descname"><span class="pre">to_dot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">tree:</span> <span class="pre">~abstracttree.tree.Tree,</span> <span class="pre">file=None,</span> <span class="pre">keep=MaxDepth(depth=5),</span> <span class="pre">node_name:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.Callable[[~abstracttree.export.TNode],</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">node_label:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.Callable[[~abstracttree.export.TNode],</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'str'&gt;,</span> <span class="pre">node_shape:</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.Callable[[~abstracttree.export.TNode],</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">node_attributes:</span> <span class="pre">~collections.abc.Mapping[str,</span> <span class="pre">~typing.Any]</span> <span class="pre">|</span> <span class="pre">~typing.Callable[[~abstracttree.export.TNode],</span> <span class="pre">~collections.abc.Mapping[str,</span> <span class="pre">~typing.Any]]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">edge_attributes:</span> <span class="pre">~collections.abc.Mapping[str,</span> <span class="pre">~typing.Any]</span> <span class="pre">|</span> <span class="pre">~typing.Callable[[~abstracttree.export.TNode,</span> <span class="pre">~abstracttree.export.TNode],</span> <span class="pre">~collections.abc.Mapping[str,</span> <span class="pre">~typing.Any]]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">graph_attributes:</span> <span class="pre">~collections.abc.Mapping[str,</span> <span class="pre">~typing.Any]</span> <span class="pre">=</span> <span class="pre">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/export.html#to_dot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.export.to_dot" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">abstracttree.export.</span></span><span class="sig-name descname"><span class="pre">to_dot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">tree:</span> <span class="pre">~abstracttree.generics.DownTreeLike,</span> <span class="pre">file=None,</span> <span class="pre">keep=MaxDepth(depth=5),</span> <span class="pre">node_name:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~collections.abc.Callable[[~abstracttree.export.TNode],</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">node_label:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~collections.abc.Callable[[~abstracttree.export.TNode],</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">label&gt;,</span> <span class="pre">node_shape:</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~collections.abc.Callable[[~abstracttree.export.TNode],</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">node_attributes:</span> <span class="pre">~collections.abc.Mapping[str,</span> <span class="pre">~typing.Any]</span> <span class="pre">|</span> <span class="pre">~collections.abc.Callable[[~abstracttree.export.TNode],</span> <span class="pre">~collections.abc.Mapping[str,</span> <span class="pre">~typing.Any]]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">edge_attributes:</span> <span class="pre">~collections.abc.Mapping[str,</span> <span class="pre">~typing.Any]</span> <span class="pre">|</span> <span class="pre">~collections.abc.Callable[[~abstracttree.export.TNode,</span> <span class="pre">~abstracttree.export.TNode],</span> <span class="pre">~collections.abc.Mapping[str,</span> <span class="pre">~typing.Any]]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">graph_attributes:</span> <span class="pre">~collections.abc.Mapping[str,</span> <span class="pre">~typing.Any]</span> <span class="pre">=</span> <span class="pre">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/export.html#to_dot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.export.to_dot" title="Permalink to this definition"></a></dt>
 <dd><p>Export to <a class="reference external" href="https://graphviz.org/">graphviz</a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="abstracttree.export.to_image">
-<span class="sig-prename descclassname"><span class="pre">abstracttree.export.</span></span><span class="sig-name descname"><span class="pre">to_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#abstracttree.tree.Tree" title="abstracttree.tree.Tree"><span class="pre">Tree</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">how</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dot'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/export.html#to_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.export.to_image" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">abstracttree.export.</span></span><span class="sig-name descname"><span class="pre">to_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#abstracttree.generics.DownTreeLike" title="abstracttree.generics.DownTreeLike"><span class="pre">DownTreeLike</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">how</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dot'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/export.html#to_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.export.to_image" title="Permalink to this definition"></a></dt>
 <dd><p>Export to image. Uses graphviz(dot) or mermaid.</p>
 <p>If file is str or Path, save file under given name.
 If file is None (default), return image as bytes.
@@ -609,7 +482,7 @@ If file is writable (binary), write to it.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="abstracttree.export.to_latex">
-<span class="sig-prename descclassname"><span class="pre">abstracttree.export.</span></span><span class="sig-name descname"><span class="pre">to_latex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">tree,</span> <span class="pre">file=None,</span> <span class="pre">keep=MaxDepth(depth=5),</span> <span class="pre">node_label:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.Callable[[~abstracttree.export.TNode],</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'str'&gt;,</span> <span class="pre">node_shape:</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.Callable[[~abstracttree.export.TNode],</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">leaf_distance:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">'2em',</span> <span class="pre">level_distance:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">node_options:</span> <span class="pre">~collections.abc.Iterable[str</span> <span class="pre">|</span> <span class="pre">~typing.Callable[[~abstracttree.export.TNode],</span> <span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">(),</span> <span class="pre">picture_options:</span> <span class="pre">~collections.abc.Iterable[str</span> <span class="pre">|</span> <span class="pre">~typing.Callable[[~abstracttree.export.TNode],</span> <span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">(),</span> <span class="pre">graph_direction:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'right',</span> <span class="pre">indent:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">4,</span> <span class="pre">align='center'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/export.html#to_latex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.export.to_latex" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">abstracttree.export.</span></span><span class="sig-name descname"><span class="pre">to_latex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">tree:</span> <span class="pre">~abstracttree.generics.DownTreeLike,</span> <span class="pre">file=None,</span> <span class="pre">keep=MaxDepth(depth=5),</span> <span class="pre">node_label:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~collections.abc.Callable[[~abstracttree.export.TNode],</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">label&gt;,</span> <span class="pre">node_shape:</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~collections.abc.Callable[[~abstracttree.export.TNode],</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">str]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">leaf_distance:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">'2em',</span> <span class="pre">level_distance:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">node_options:</span> <span class="pre">~collections.abc.Iterable[str</span> <span class="pre">|</span> <span class="pre">~collections.abc.Callable[[~abstracttree.export.TNode],</span> <span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">(),</span> <span class="pre">picture_options:</span> <span class="pre">~collections.abc.Iterable[str</span> <span class="pre">|</span> <span class="pre">~collections.abc.Callable[[~abstracttree.export.TNode],</span> <span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">(),</span> <span class="pre">graph_direction:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'right',</span> <span class="pre">indent:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">4,</span> <span class="pre">align='center'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/export.html#to_latex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.export.to_latex" title="Permalink to this definition"></a></dt>
 <dd><p>Export to latex (experimental).</p>
 <p>Make sure to put <code class="docutils literal notranslate"><span class="pre">\usepackage{tikz}</span></code> in your preamble.
 Does not wrap output in a figure environment.</p>
@@ -617,19 +490,25 @@ Does not wrap output in a figure environment.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="abstracttree.export.to_mermaid">
-<span class="sig-prename descclassname"><span class="pre">abstracttree.export.</span></span><span class="sig-name descname"><span class="pre">to_mermaid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">tree:</span> <span class="pre">~abstracttree.tree.Tree,</span> <span class="pre">file=None,</span> <span class="pre">keep=MaxDepth(depth=5),</span> <span class="pre">node_name:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.Callable[[~abstracttree.export.TNode],</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">node_label:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.Callable[[~abstracttree.export.TNode],</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'str'&gt;,</span> <span class="pre">node_shape:</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.Callable[[~abstracttree.export.TNode],</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">str]</span> <span class="pre">=</span> <span class="pre">'box',</span> <span class="pre">edge_arrow:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.Callable[[~abstracttree.export.TNode,</span> <span class="pre">~abstracttree.export.TNode],</span> <span class="pre">str]</span> <span class="pre">=</span> <span class="pre">'--&gt;',</span> <span class="pre">graph_direction:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'TD'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/export.html#to_mermaid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.export.to_mermaid" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">abstracttree.export.</span></span><span class="sig-name descname"><span class="pre">to_mermaid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">tree:</span> <span class="pre">~abstracttree.generics.DownTreeLike,</span> <span class="pre">file=None,</span> <span class="pre">keep=MaxDepth(depth=5),</span> <span class="pre">node_name:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~collections.abc.Callable[[~abstracttree.export.TNode],</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">node_label:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~collections.abc.Callable[[~abstracttree.export.TNode],</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">label&gt;,</span> <span class="pre">node_shape:</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~collections.abc.Callable[[~abstracttree.export.TNode],</span> <span class="pre">~typing.Tuple[str,</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">str]</span> <span class="pre">=</span> <span class="pre">'box',</span> <span class="pre">edge_arrow:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~collections.abc.Callable[[~abstracttree.export.TNode,</span> <span class="pre">~abstracttree.export.TNode],</span> <span class="pre">str]</span> <span class="pre">=</span> <span class="pre">'--&gt;',</span> <span class="pre">graph_direction:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'TD'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/export.html#to_mermaid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.export.to_mermaid" title="Permalink to this definition"></a></dt>
 <dd><p>Export to <a class="reference external" href="https://mermaid.js.org/">mermaid</a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="abstracttree.export.to_pillow">
-<span class="sig-prename descclassname"><span class="pre">abstracttree.export.</span></span><span class="sig-name descname"><span class="pre">to_pillow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#abstracttree.tree.Tree" title="abstracttree.tree.Tree"><span class="pre">Tree</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/export.html#to_pillow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.export.to_pillow" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">abstracttree.export.</span></span><span class="sig-name descname"><span class="pre">to_pillow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#abstracttree.generics.DownTreeLike" title="abstracttree.generics.DownTreeLike"><span class="pre">DownTreeLike</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/export.html#to_pillow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.export.to_pillow" title="Permalink to this definition"></a></dt>
 <dd><p>Convert tree to pillow-format (uses graphviz on the background).</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="abstracttree.export.to_reportlab">
+<span class="sig-prename descclassname"><span class="pre">abstracttree.export.</span></span><span class="sig-name descname"><span class="pre">to_reportlab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#abstracttree.generics.DownTreeLike" title="abstracttree.generics.DownTreeLike"><span class="pre">DownTreeLike</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/export.html#to_reportlab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.export.to_reportlab" title="Permalink to this definition"></a></dt>
+<dd><p>Convert tree to drawing for use with reportlab package.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="abstracttree.export.to_string">
-<span class="sig-prename descclassname"><span class="pre">abstracttree.export.</span></span><span class="sig-name descname"><span class="pre">to_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree:</span> <span class="pre">~abstracttree.tree.DownTree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter=&lt;class</span> <span class="pre">'str'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~abstracttree.export.Style</span> <span class="pre">=</span> <span class="pre">'square'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/export.html#to_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.export.to_string" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">abstracttree.export.</span></span><span class="sig-name descname"><span class="pre">to_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">tree:</span> <span class="pre">~abstracttree.generics.DownTreeLike,</span> <span class="pre">formatter:</span> <span class="pre">~collections.abc.Callable[[object],</span> <span class="pre">str]</span> <span class="pre">|</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">label&gt;,</span> <span class="pre">*,</span> <span class="pre">file=None,</span> <span class="pre">style:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~abstracttree.export.Style</span> <span class="pre">=</span> <span class="pre">'square',</span> <span class="pre">keep=None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/export.html#to_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.export.to_string" title="Permalink to this definition"></a></dt>
 <dd><p>Converts tree to a string in a pretty format.</p>
 </dd></dl>
 
@@ -651,7 +530,7 @@ Does not wrap output in a figure environment.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="abstracttree.predicates.Predicate">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.predicates.</span></span><span class="sig-name descname"><span class="pre">Predicate</span></span><a class="reference internal" href="_modules/abstracttree/predicates.html#Predicate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.predicates.Predicate" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Callable</span></code>[[<a class="reference internal" href="#abstracttree.tree.AbstractTree" title="abstracttree.tree.AbstractTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractTree</span></code></a>, <a class="reference internal" href="#abstracttree.tree.NodeItem" title="abstracttree.tree.NodeItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeItem</span></code></a>], <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Callable</span></code>[[<code class="xref py py-obj docutils literal notranslate"><span class="pre">T</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">NodeItem</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</p>
 </dd></dl>
 
 <dl class="py class">
@@ -683,12 +562,12 @@ This is mostly useful when trying to plot cyclic trees.</p>
 </dd></dl>
 
 </section>
-<section id="module-abstracttree.heaptree">
-<span id="heaptree"></span><h2>HeapTree<a class="headerlink" href="#module-abstracttree.heaptree" title="Permalink to this heading"></a></h2>
+<section id="module-abstracttree.adapters">
+<span id="adapters"></span><h2>Adapters<a class="headerlink" href="#module-abstracttree.adapters" title="Permalink to this heading"></a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="abstracttree.heaptree.HeapTree">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.heaptree.</span></span><span class="sig-name descname"><span class="pre">HeapTree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">heap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/heaptree.html#HeapTree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.heaptree.HeapTree" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#abstracttree.binarytree.BinaryTree" title="abstracttree.binarytree.BinaryTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">BinaryTree</span></code></a></p>
+<dt class="sig sig-object py" id="abstracttree.adapters.HeapTree">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.adapters.</span></span><span class="sig-name descname"><span class="pre">HeapTree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">heap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MutableSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">D</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/adapters/heaptree.html#HeapTree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.adapters.HeapTree" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#abstracttree.mixins.BinaryTree" title="abstracttree.mixins.trees.BinaryTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">BinaryTree</span></code></a></p>
 <p>Provides a tree interface to a heap.</p>
 <p>Mainly useful for visualisation purposes.
 &gt;&gt;&gt; from abstracttree import print_tree
@@ -703,30 +582,82 @@ This is mostly useful when trying to plot cyclic trees.</p>
 │  └─ 4 → 4
 └─ 2 → 3</p>
 <dl class="py property">
-<dt class="sig sig-object py" id="abstracttree.heaptree.HeapTree.children">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">children</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">TNode</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#abstracttree.heaptree.HeapTree.children" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="abstracttree.adapters.HeapTree.children">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">children</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#abstracttree.adapters.HeapTree" title="abstracttree.adapters.heaptree.HeapTree"><span class="pre">HeapTree</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#abstracttree.adapters.HeapTree.children" title="Permalink to this definition"></a></dt>
 <dd><p>Children of this node.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="abstracttree.heaptree.HeapTree.eqv">
-<span class="sig-name descname"><span class="pre">eqv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/heaptree.html#HeapTree.eqv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.heaptree.HeapTree.eqv" title="Permalink to this definition"></a></dt>
-<dd><p>Check if both objects represent the same node.</p>
-<p>Should normally be operator.is, but can be overridden by delegates.</p>
-</dd></dl>
-
 <dl class="py property">
-<dt class="sig sig-object py" id="abstracttree.heaptree.HeapTree.nid">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nid</span></span><a class="headerlink" href="#abstracttree.heaptree.HeapTree.nid" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="abstracttree.adapters.HeapTree.nid">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nid</span></span><a class="headerlink" href="#abstracttree.adapters.HeapTree.nid" title="Permalink to this definition"></a></dt>
 <dd><p>Unique number that represents this node.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="abstracttree.heaptree.HeapTree.parent">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parent</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">TNode</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#abstracttree.heaptree.HeapTree.parent" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="abstracttree.adapters.HeapTree.parent">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parent</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#abstracttree.adapters.HeapTree" title="abstracttree.adapters.heaptree.HeapTree"><span class="pre">HeapTree</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#abstracttree.adapters.HeapTree.parent" title="Permalink to this definition"></a></dt>
 <dd><p>Parent of this node or None if root.</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="abstracttree.adapters.TreeAdapter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.adapters.</span></span><span class="sig-name descname"><span class="pre">TreeAdapter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#abstracttree.generics.TreeLike" title="abstracttree.generics.TreeLike"><span class="pre">TreeLike</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">_parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/adapters/adapters.html#TreeAdapter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.adapters.TreeAdapter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#abstracttree.mixins.Tree" title="abstracttree.mixins.trees.Tree"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tree</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="abstracttree.adapters.TreeAdapter.child_func">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">child_func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DT</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">DT</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#abstracttree.adapters.TreeAdapter.child_func" title="Permalink to this definition"></a></dt>
+<dd><p>Returns children of any downtreelike-object.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="abstracttree.adapters.TreeAdapter.children">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">children</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#abstracttree.adapters.TreeAdapter.children" title="Permalink to this definition"></a></dt>
+<dd><p>Children of this node.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="abstracttree.adapters.TreeAdapter.label_func">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">label_func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#abstracttree.adapters.TreeAdapter.label_func" title="Permalink to this definition"></a></dt>
+<dd><p>Return a string representation of this node.</p>
+<p>This representation should always represent just the Node.
+If the node has parents or children these should be omitted.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="abstracttree.adapters.TreeAdapter.nid">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#abstracttree.adapters.TreeAdapter.nid" title="Permalink to this definition"></a></dt>
+<dd><p>Unique number that represents this node.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="abstracttree.adapters.TreeAdapter.parent">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parent</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">T</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#abstracttree.adapters.TreeAdapter.parent" title="Permalink to this definition"></a></dt>
+<dd><p>Parent of this node or None if root.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="abstracttree.adapters.TreeAdapter.parent_func">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parent_func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">T</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#abstracttree.adapters.TreeAdapter.parent_func" title="Permalink to this definition"></a></dt>
+<dd><p>Returns parent of any treelike-object.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="abstracttree.adapters.as_tree">
+<span class="sig-prename descclassname"><span class="pre">abstracttree.adapters.</span></span><span class="sig-name descname"><span class="pre">as_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">children</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">T</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#abstracttree.adapters.TreeAdapter" title="abstracttree.adapters.adapters.TreeAdapter"><span class="pre">TreeAdapter</span></a></span></span><a class="reference internal" href="_modules/abstracttree/adapters/adapters.html#as_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.adapters.as_tree" title="Permalink to this definition"></a></dt>
+<dd><p>Convert any object to a tree.</p>
+<p>Functions can be passed to control how the conversion should be done.
+The original object can be accessed by using the value attribute.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="abstracttree.adapters.convert_tree">
+<span class="sig-prename descclassname"><span class="pre">abstracttree.adapters.</span></span><span class="sig-name descname"><span class="pre">convert_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#abstracttree.generics.DownTreeLike" title="abstracttree.generics.DownTreeLike"><span class="pre">DownTreeLike</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">required_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">typing.Type[~T]</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">T</span></span></span><a class="reference internal" href="_modules/abstracttree/adapters/adapters.html#convert_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.adapters.convert_tree" title="Permalink to this definition"></a></dt>
+<dd><p>Convert a TreeLike to a powerful Tree.</p>
+<p>If needed, it uses a TreeAdapter.</p>
 </dd></dl>
 
 </section>
@@ -734,22 +665,28 @@ This is mostly useful when trying to plot cyclic trees.</p>
 <span id="route"></span><h2>Route<a class="headerlink" href="#module-abstracttree.route" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="abstracttree.route.Route">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.route.</span></span><span class="sig-name descname"><span class="pre">Route</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">anchors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TNode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/route.html#Route"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.route.Route" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">abstracttree.route.</span></span><span class="sig-name descname"><span class="pre">Route</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">anchors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/route.html#Route"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.route.Route" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">T</span></code>]</p>
 <p>Representation of a route trough adjacent nodes in the tree.</p>
 <p>Two nodes are adjacent if they have a parent-child relationship.
 The route will be as short as possible, but it will visit the anchor points in order.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="abstracttree.route.Route.add_anchor">
-<span class="sig-name descname"><span class="pre">add_anchor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">anchor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TNode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/route.html#Route.add_anchor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.route.Route.add_anchor" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">add_anchor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">anchor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/abstracttree/route.html#Route.add_anchor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.route.Route.add_anchor" title="Permalink to this definition"></a></dt>
 <dd><p>Add a node to the route.</p>
 <p>The node should belong to the same tree as any existing anchor nodes.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="abstracttree.route.Route.anchors">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">anchors</span></span><a class="headerlink" href="#abstracttree.route.Route.anchors" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">anchors</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#abstracttree.route.Route.anchors" title="Permalink to this definition"></a></dt>
 <dd><p>View of the anchor nodes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="abstracttree.route.Route.count">
+<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#abstracttree.route.Route.count" title="Permalink to this definition"></a></dt>
+<dd><p>How many nodes are on route?</p>
 </dd></dl>
 
 <dl class="py property">
@@ -760,8 +697,8 @@ The route will be as short as possible, but it will visit the anchor points in o
 
 <dl class="py property">
 <dt class="sig sig-object py" id="abstracttree.route.Route.lca">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lca</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">TNode</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#abstracttree.route.Route.lca" title="Permalink to this definition"></a></dt>
-<dd><p>The least common ancestor of all anchor nodes.</p>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lca</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">T</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#abstracttree.route.Route.lca" title="Permalink to this definition"></a></dt>
+<dd><p>Find node that is the common ancestor of nodes on path.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -773,13 +710,24 @@ The route will be as short as possible, but it will visit the anchor points in o
 </dd></dl>
 
 </section>
+<section id="module-abstracttree.utils">
+<span id="utils"></span><h2>Utils<a class="headerlink" href="#module-abstracttree.utils" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="abstracttree.utils.eqv">
+<span class="sig-prename descclassname"><span class="pre">abstracttree.utils.</span></span><span class="sig-name descname"><span class="pre">eqv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DT</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DT</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/abstracttree/utils.html#eqv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#abstracttree.utils.eqv" title="Permalink to this definition"></a></dt>
+<dd><p>Whether two nodes are equivalent.</p>
+<p>For nodes to be equivalent, they need to have the same nid and be of the same type.
+The result is almost the same as <code class="docutils literal notranslate"><span class="pre">n1</span> <span class="pre">is</span> <span class="pre">n2</span></code>, but can be overridden for adapters, symlinks etc.</p>
+</dd></dl>
+
+</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="usage_bundled.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="CHANGES.html" class="btn btn-neutral float-right" title="Changelog" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

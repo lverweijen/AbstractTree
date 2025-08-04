@@ -50,7 +50,7 @@ window.addEventListener("load", () => mermaid.run());
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../usage_bundled.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CHANGES.html">Changelog</a></li>
 </ul>
@@ -86,12 +86,15 @@ window.addEventListener("load", () => mermaid.run());
 <span class="kn">import</span> <span class="nn">operator</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Callable</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">TypedDict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">TypedDict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Optional</span>
 
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">generics</span>
+<span class="kn">from</span> <span class="nn">.iterators</span> <span class="kn">import</span> <span class="n">preorder</span><span class="p">,</span> <span class="n">levels</span><span class="p">,</span> <span class="n">levelorder</span>
+<span class="kn">from</span> <span class="nn">.adapters</span> <span class="kn">import</span> <span class="n">convert_tree</span>
+<span class="kn">from</span> <span class="nn">.generics</span> <span class="kn">import</span> <span class="n">TreeLike</span><span class="p">,</span> <span class="n">DownTreeLike</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">nid</span>
 <span class="kn">from</span> <span class="nn">.predicates</span> <span class="kn">import</span> <span class="n">PreventCycles</span><span class="p">,</span> <span class="n">MaxDepth</span>
-<span class="kn">from</span> <span class="nn">.tree</span> <span class="kn">import</span> <span class="n">DownTree</span><span class="p">,</span> <span class="n">Tree</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;print_tree&quot;</span><span class="p">,</span>
@@ -102,6 +105,7 @@ window.addEventListener("load", () => mermaid.run());
     <span class="s2">&quot;to_image&quot;</span><span class="p">,</span>
     <span class="s2">&quot;to_pillow&quot;</span><span class="p">,</span>
     <span class="s2">&quot;to_latex&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;to_reportlab&quot;</span><span class="p">,</span>
     <span class="s2">&quot;LiteralText&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
@@ -151,7 +155,7 @@ window.addEventListener("load", () => mermaid.run());
     <span class="k">return</span> <span class="n">new_f</span>
 
 
-<div class="viewcode-block" id="print_tree"><a class="viewcode-back" href="../../api.html#abstracttree.export.print_tree">[docs]</a><span class="k">def</span> <span class="nf">print_tree</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">formatter</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="print_tree"><a class="viewcode-back" href="../../api.html#abstracttree.export.print_tree">[docs]</a><span class="k">def</span> <span class="nf">print_tree</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">formatter</span><span class="o">=</span><span class="n">generics</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Print this tree. Shortcut for print(to_string(tree)).&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">style</span><span class="p">:</span>
@@ -162,17 +166,21 @@ window.addEventListener("load", () => mermaid.run());
 
 <div class="viewcode-block" id="to_string"><a class="viewcode-back" href="../../api.html#abstracttree.export.to_string">[docs]</a><span class="nd">@_wrap_file</span>
 <span class="k">def</span> <span class="nf">to_string</span><span class="p">(</span>
-    <span class="n">tree</span><span class="p">:</span> <span class="n">DownTree</span><span class="p">,</span>
-    <span class="n">formatter</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+    <span class="n">tree</span><span class="p">:</span> <span class="n">DownTreeLike</span><span class="p">,</span>
+    <span class="n">formatter</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">object</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">generics</span><span class="o">.</span><span class="n">label</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">style</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Style</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;square&quot;</span><span class="p">,</span>
     <span class="n">keep</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Converts tree to a string in a pretty format.&quot;&quot;&quot;</span>
-    <span class="n">tree</span> <span class="o">=</span> <span class="n">Tree</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">convert_tree</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">TreeLike</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">style</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">style</span> <span class="o">=</span> <span class="n">DEFAULT_STYLES</span><span class="p">[</span><span class="n">style</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">formatter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">formatter</span> <span class="o">=</span> <span class="n">generics</span><span class="o">.</span><span class="n">label</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">formatter</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">formatter</span> <span class="o">=</span> <span class="n">formatter</span><span class="o">.</span><span class="n">format</span>
     <span class="n">empty_style</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">style</span><span class="p">[</span><span class="s2">&quot;last&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="s2">&quot; &quot;</span>
     <span class="n">lookup1</span> <span class="o">=</span> <span class="p">[</span><span class="n">empty_style</span><span class="p">,</span> <span class="n">style</span><span class="p">[</span><span class="s2">&quot;vertical&quot;</span><span class="p">]]</span>
     <span class="n">lookup2</span> <span class="o">=</span> <span class="p">[</span><span class="n">style</span><span class="p">[</span><span class="s2">&quot;last&quot;</span><span class="p">],</span> <span class="n">style</span><span class="p">[</span><span class="s2">&quot;branch&quot;</span><span class="p">]]</span>
@@ -192,11 +200,14 @@ window.addEventListener("load", () => mermaid.run());
 <span class="k">def</span> <span class="nf">_iterate_patterns</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">keep</span><span class="p">):</span>
     <span class="c1"># Yield for each node a list of continuation indicators.</span>
     <span class="c1"># The continuation indicator tells us whether the branch at a certain level is continued.</span>
+    <span class="n">_children</span> <span class="o">=</span> <span class="n">generics</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">tree</span><span class="p">))</span>
+    <span class="n">_parent</span> <span class="o">=</span> <span class="n">generics</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">tree</span><span class="p">))</span>
+
     <span class="n">pattern</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">yield</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">tree</span>
-    <span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">descendants</span><span class="o">.</span><span class="n">preorder</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="n">keep</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">preorder</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="n">keep</span><span class="p">,</span> <span class="n">include_root</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="k">del</span> <span class="n">pattern</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">depth</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">:]</span>
-        <span class="n">is_continued</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">children</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">is_continued</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">_children</span><span class="p">(</span><span class="n">_parent</span><span class="p">(</span><span class="n">node</span><span class="p">)))</span> <span class="o">-</span> <span class="mi">1</span>
         <span class="n">pattern</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">is_continued</span><span class="p">)</span>
         <span class="k">yield</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">node</span>
 
@@ -210,12 +221,22 @@ window.addEventListener("load", () => mermaid.run());
         <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">lookup2</span><span class="p">[</span><span class="n">pattern</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
 
 
-<div class="viewcode-block" id="plot_tree"><a class="viewcode-back" href="../../api.html#abstracttree.export.plot_tree">[docs]</a><span class="k">def</span> <span class="nf">plot_tree</span><span class="p">(</span><span class="n">tree</span><span class="p">:</span> <span class="n">Tree</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">formatter</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="n">DEFAULT_PREDICATE</span><span class="p">,</span> <span class="n">annotate_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="plot_tree"><a class="viewcode-back" href="../../api.html#abstracttree.export.plot_tree">[docs]</a><span class="k">def</span> <span class="nf">plot_tree</span><span class="p">(</span>
+    <span class="n">tree</span><span class="p">:</span> <span class="n">DownTreeLike</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">formatter</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">DownTreeLike</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">label</span><span class="p">,</span>
+    <span class="n">keep</span><span class="o">=</span><span class="n">DEFAULT_PREDICATE</span><span class="p">,</span>
+    <span class="n">annotate_args</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot the tree using matplotlib (if installed).&quot;&quot;&quot;</span>
     <span class="c1"># Roughly based on sklearn.tree.plot_tree()</span>
     <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
-    <span class="n">tree</span> <span class="o">=</span> <span class="n">Tree</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">convert_tree</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">TreeLike</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">formatter</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">formatter</span> <span class="o">=</span> <span class="n">formatter</span><span class="o">.</span><span class="n">format</span>
+
+    <span class="n">_parent</span> <span class="o">=</span> <span class="n">generics</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">tree</span><span class="p">))</span>
 
     <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
@@ -235,8 +256,8 @@ window.addEventListener("load", () => mermaid.run());
 
     <span class="n">nodes_xy</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="n">tree_height</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">it</span><span class="o">.</span><span class="n">depth</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">descendants</span><span class="o">.</span><span class="n">preorder</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="n">keep</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">depth</span><span class="p">,</span> <span class="n">level</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">tree_height</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">tree</span><span class="o">.</span><span class="n">levels</span><span class="p">):</span>
+    <span class="n">tree_height</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">it</span><span class="o">.</span><span class="n">depth</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">preorder</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="n">keep</span><span class="p">,</span> <span class="n">include_root</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">depth</span><span class="p">,</span> <span class="n">level</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">tree_height</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">levels</span><span class="p">(</span><span class="n">tree</span><span class="p">)):</span>
         <span class="n">level</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">level</span><span class="p">):</span>
             <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">level</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
@@ -245,13 +266,13 @@ window.addEventListener("load", () => mermaid.run());
             <span class="k">if</span> <span class="n">node</span> <span class="ow">is</span> <span class="n">tree</span><span class="p">:</span>
                 <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">formatter</span><span class="p">(</span><span class="n">node</span><span class="p">),</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">parent</span> <span class="o">=</span> <span class="n">nodes_xy</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">nid</span><span class="p">]</span>
-                <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">formatter</span><span class="p">(</span><span class="n">node</span><span class="p">),</span> <span class="n">parent</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="n">nodes_xy</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">nid</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+                <span class="n">p_node</span> <span class="o">=</span> <span class="n">nodes_xy</span><span class="p">[</span><span class="n">nid</span><span class="p">(</span><span class="n">_parent</span><span class="p">(</span><span class="n">node</span><span class="p">))]</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">formatter</span><span class="p">(</span><span class="n">node</span><span class="p">),</span> <span class="n">p_node</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">nodes_xy</span><span class="p">[</span><span class="n">nid</span><span class="p">(</span><span class="n">node</span><span class="p">)]</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
     <span class="k">return</span> <span class="n">ax</span></div>
 
 
-<span class="n">TNode</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;TNode&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">DownTree</span><span class="p">)</span>
+<span class="n">TNode</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;TNode&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">DownTreeLike</span><span class="p">)</span>
 <span class="n">TShape</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">TNode</span><span class="p">],</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]]</span>
 <span class="n">NodeAttributes</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">TNode</span><span class="p">],</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span>
 <span class="n">EdgeAttributes</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">TNode</span><span class="p">,</span> <span class="n">TNode</span><span class="p">],</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span>
@@ -259,7 +280,7 @@ window.addEventListener("load", () => mermaid.run());
 
 
 <div class="viewcode-block" id="to_image"><a class="viewcode-back" href="../../api.html#abstracttree.export.to_image">[docs]</a><span class="k">def</span> <span class="nf">to_image</span><span class="p">(</span>
-    <span class="n">tree</span><span class="p">:</span> <span class="n">Tree</span><span class="p">,</span>
+    <span class="n">tree</span><span class="p">:</span> <span class="n">DownTreeLike</span><span class="p">,</span>
     <span class="n">file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">how</span><span class="o">=</span><span class="s2">&quot;dot&quot;</span><span class="p">,</span>
     <span class="o">*</span><span class="n">args</span><span class="p">,</span>
@@ -287,7 +308,7 @@ window.addEventListener("load", () => mermaid.run());
         <span class="n">_image_mermaid</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="n">file</span><span class="p">),</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="to_pillow"><a class="viewcode-back" href="../../api.html#abstracttree.export.to_pillow">[docs]</a><span class="k">def</span> <span class="nf">to_pillow</span><span class="p">(</span><span class="n">tree</span><span class="p">:</span> <span class="n">Tree</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="to_pillow"><a class="viewcode-back" href="../../api.html#abstracttree.export.to_pillow">[docs]</a><span class="k">def</span> <span class="nf">to_pillow</span><span class="p">(</span><span class="n">tree</span><span class="p">:</span> <span class="n">DownTreeLike</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert tree to pillow-format (uses graphviz on the background).&quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 
@@ -297,7 +318,7 @@ window.addEventListener("load", () => mermaid.run());
     <span class="k">return</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">to_image</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;dot&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)))</span></div>
 
 
-<span class="k">def</span> <span class="nf">to_reportlab</span><span class="p">(</span><span class="n">tree</span><span class="p">:</span> <span class="n">Tree</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="to_reportlab"><a class="viewcode-back" href="../../api.html#abstracttree.export.to_reportlab">[docs]</a><span class="k">def</span> <span class="nf">to_reportlab</span><span class="p">(</span><span class="n">tree</span><span class="p">:</span> <span class="n">DownTreeLike</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert tree to drawing for use with reportlab package.&quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">svglib.svglib</span> <span class="kn">import</span> <span class="n">svg2rlg</span>
 
@@ -306,11 +327,11 @@ window.addEventListener("load", () => mermaid.run());
         <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;file_format&quot;</span><span class="p">,</span> <span class="s2">&quot;svg&quot;</span><span class="p">)</span>
     <span class="n">svg_bytes</span> <span class="o">=</span> <span class="n">to_image</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="n">drawing</span> <span class="o">=</span> <span class="n">svg2rlg</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">svg_bytes</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">drawing</span>
+    <span class="k">return</span> <span class="n">drawing</span></div>
 
 
 <span class="k">def</span> <span class="nf">_image_dot</span><span class="p">(</span>
-    <span class="n">tree</span><span class="p">:</span> <span class="n">Tree</span><span class="p">,</span>
+    <span class="n">tree</span><span class="p">:</span> <span class="n">DownTreeLike</span><span class="p">,</span>
     <span class="n">file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">file_format</span><span class="o">=</span><span class="s2">&quot;png&quot;</span><span class="p">,</span>
     <span class="n">program_path</span><span class="o">=</span><span class="s2">&quot;dot&quot;</span><span class="p">,</span>
@@ -327,7 +348,7 @@ window.addEventListener("load", () => mermaid.run());
 
 
 <span class="k">def</span> <span class="nf">_image_mermaid</span><span class="p">(</span>
-    <span class="n">tree</span><span class="p">:</span> <span class="n">Tree</span><span class="p">,</span>
+    <span class="n">tree</span><span class="p">:</span> <span class="n">DownTreeLike</span><span class="p">,</span>
     <span class="n">filename</span><span class="p">,</span>
     <span class="n">program_path</span><span class="o">=</span><span class="s2">&quot;mmdc&quot;</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
@@ -344,20 +365,22 @@ window.addEventListener("load", () => mermaid.run());
 
 <div class="viewcode-block" id="to_dot"><a class="viewcode-back" href="../../api.html#abstracttree.export.to_dot">[docs]</a><span class="nd">@_wrap_file</span>
 <span class="k">def</span> <span class="nf">to_dot</span><span class="p">(</span>
-    <span class="n">tree</span><span class="p">:</span> <span class="n">Tree</span><span class="p">,</span>
+    <span class="n">tree</span><span class="p">:</span> <span class="n">DownTreeLike</span><span class="p">,</span>
     <span class="n">file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">keep</span><span class="o">=</span><span class="n">DEFAULT_PREDICATE</span><span class="p">,</span>
     <span class="n">node_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">TNode</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">node_label</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">TNode</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">node_label</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">TNode</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">generics</span><span class="o">.</span><span class="n">label</span><span class="p">,</span>
     <span class="n">node_shape</span><span class="p">:</span> <span class="n">TShape</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">node_attributes</span><span class="p">:</span> <span class="n">NodeAttributes</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">edge_attributes</span><span class="p">:</span> <span class="n">EdgeAttributes</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">graph_attributes</span><span class="p">:</span> <span class="n">GraphAttributes</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Export to `graphviz &lt;https://graphviz.org/&gt;`_.&quot;&quot;&quot;</span>
-    <span class="n">tree</span> <span class="o">=</span> <span class="n">Tree</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">convert_tree</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">TreeLike</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">node_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">node_name</span> <span class="o">=</span> <span class="n">_node_name_default</span>
+
+    <span class="n">_parent</span> <span class="o">=</span> <span class="n">generics</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">tree</span><span class="p">))</span>
 
     <span class="k">if</span> <span class="n">node_attributes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">node_attributes</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
@@ -389,7 +412,7 @@ window.addEventListener("load", () => mermaid.run());
         <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;edge</span><span class="si">{</span><span class="n">attrs</span><span class="si">}</span><span class="s2">;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="n">nodes</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">levelorder</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="n">PreventCycles</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">keep</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">levelorder</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="n">PreventCycles</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">keep</span><span class="p">):</span>
         <span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">_escape_string</span><span class="p">(</span><span class="n">node_name</span><span class="p">(</span><span class="n">node</span><span class="p">),</span> <span class="s2">&quot;dot&quot;</span><span class="p">)</span>
         <span class="n">attrs</span> <span class="o">=</span> <span class="n">_handle_attributes</span><span class="p">(</span><span class="n">node_dynamic</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
@@ -397,9 +420,9 @@ window.addEventListener("load", () => mermaid.run());
     <span class="n">nodes</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
     <span class="nb">next</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
-        <span class="n">parent_name</span> <span class="o">=</span> <span class="n">_escape_string</span><span class="p">(</span><span class="n">node_name</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="p">),</span> <span class="s2">&quot;dot&quot;</span><span class="p">)</span>
+        <span class="n">parent_name</span> <span class="o">=</span> <span class="n">_escape_string</span><span class="p">(</span><span class="n">node_name</span><span class="p">(</span><span class="n">_parent</span><span class="p">(</span><span class="n">node</span><span class="p">)),</span> <span class="s2">&quot;dot&quot;</span><span class="p">)</span>
         <span class="n">child_name</span> <span class="o">=</span> <span class="n">_escape_string</span><span class="p">(</span><span class="n">node_name</span><span class="p">(</span><span class="n">node</span><span class="p">),</span> <span class="s2">&quot;dot&quot;</span><span class="p">)</span>
-        <span class="n">attrs</span> <span class="o">=</span> <span class="n">_handle_attributes</span><span class="p">(</span><span class="n">edge_dynamic</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+        <span class="n">attrs</span> <span class="o">=</span> <span class="n">_handle_attributes</span><span class="p">(</span><span class="n">edge_dynamic</span><span class="p">,</span> <span class="n">_parent</span><span class="p">(</span><span class="n">node</span><span class="p">),</span> <span class="n">node</span><span class="p">)</span>
         <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">parent_name</span><span class="si">}{</span><span class="n">arrow</span><span class="si">}{</span><span class="n">child_name</span><span class="si">}{</span><span class="n">attrs</span><span class="si">}</span><span class="s2">;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
@@ -444,19 +467,21 @@ window.addEventListener("load", () => mermaid.run());
 
 <div class="viewcode-block" id="to_mermaid"><a class="viewcode-back" href="../../api.html#abstracttree.export.to_mermaid">[docs]</a><span class="nd">@_wrap_file</span>
 <span class="k">def</span> <span class="nf">to_mermaid</span><span class="p">(</span>
-    <span class="n">tree</span><span class="p">:</span> <span class="n">Tree</span><span class="p">,</span>
+    <span class="n">tree</span><span class="p">:</span> <span class="n">DownTreeLike</span><span class="p">,</span>
     <span class="n">file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">keep</span><span class="o">=</span><span class="n">DEFAULT_PREDICATE</span><span class="p">,</span>
     <span class="n">node_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">TNode</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">node_label</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">TNode</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">node_label</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">TNode</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">generics</span><span class="o">.</span><span class="n">label</span><span class="p">,</span>
     <span class="n">node_shape</span><span class="p">:</span> <span class="n">TShape</span> <span class="o">=</span> <span class="s2">&quot;box&quot;</span><span class="p">,</span>
     <span class="n">edge_arrow</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">TNode</span><span class="p">,</span> <span class="n">TNode</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;--&gt;&quot;</span><span class="p">,</span>
     <span class="n">graph_direction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;TD&quot;</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Export to `mermaid &lt;https://mermaid.js.org/&gt;`_.&quot;&quot;&quot;</span>
-    <span class="n">tree</span> <span class="o">=</span> <span class="n">Tree</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">convert_tree</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">TreeLike</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">node_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">node_name</span> <span class="o">=</span> <span class="n">_node_name_default</span>
+
+    <span class="n">_parent</span> <span class="o">=</span> <span class="n">generics</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">tree</span><span class="p">))</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node_shape</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">node_shape</span> <span class="o">=</span> <span class="n">DEFAULT_SHAPES</span><span class="p">[</span><span class="n">node_shape</span><span class="p">]</span>
@@ -466,7 +491,7 @@ window.addEventListener("load", () => mermaid.run());
 
     <span class="c1"># Output nodes</span>
     <span class="n">nodes</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Stop automatic garbage collecting</span>
-    <span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">levelorder</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="n">PreventCycles</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">keep</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">levelorder</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="n">PreventCycles</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">keep</span><span class="p">):</span>
         <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">_get_shape</span><span class="p">(</span><span class="n">node_shape</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">node_name</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">node_label</span><span class="p">:</span>
@@ -480,18 +505,18 @@ window.addEventListener("load", () => mermaid.run());
     <span class="n">nodes</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
     <span class="nb">next</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
-        <span class="n">arrow</span> <span class="o">=</span> <span class="n">edge_arrow</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span> <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">edge_arrow</span><span class="p">)</span> <span class="k">else</span> <span class="n">edge_arrow</span>
-        <span class="n">parent</span> <span class="o">=</span> <span class="n">node_name</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
+        <span class="n">arrow</span> <span class="o">=</span> <span class="n">edge_arrow</span><span class="p">(</span><span class="n">_parent</span><span class="p">(</span><span class="n">node</span><span class="p">),</span> <span class="n">node</span><span class="p">)</span> <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">edge_arrow</span><span class="p">)</span> <span class="k">else</span> <span class="n">edge_arrow</span>
+        <span class="n">par</span> <span class="o">=</span> <span class="n">node_name</span><span class="p">(</span><span class="n">_parent</span><span class="p">(</span><span class="n">node</span><span class="p">))</span>
         <span class="n">child</span> <span class="o">=</span> <span class="n">node_name</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
-        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">parent</span><span class="si">}{</span><span class="n">arrow</span><span class="si">}{</span><span class="n">child</span><span class="si">}</span><span class="s2">;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">par</span><span class="si">}{</span><span class="n">arrow</span><span class="si">}{</span><span class="n">child</span><span class="si">}</span><span class="s2">;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="to_latex"><a class="viewcode-back" href="../../api.html#abstracttree.export.to_latex">[docs]</a><span class="nd">@_wrap_file</span>
 <span class="k">def</span> <span class="nf">to_latex</span><span class="p">(</span>
-    <span class="n">tree</span><span class="p">,</span>
+    <span class="n">tree</span><span class="p">:</span> <span class="n">DownTreeLike</span><span class="p">,</span>
     <span class="n">file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">keep</span><span class="o">=</span><span class="n">DEFAULT_PREDICATE</span><span class="p">,</span>
-    <span class="n">node_label</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">TNode</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">node_label</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">TNode</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">generics</span><span class="o">.</span><span class="n">label</span><span class="p">,</span>
     <span class="n">node_shape</span><span class="p">:</span> <span class="n">TShape</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">leaf_distance</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;2em&quot;</span><span class="p">,</span>
     <span class="n">level_distance</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -506,7 +531,6 @@ window.addEventListener("load", () => mermaid.run());
 <span class="sd">    Make sure to put ``\\usepackage{tikz}`` in your preamble.</span>
 <span class="sd">    Does not wrap output in a figure environment.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">tree</span> <span class="o">=</span> <span class="n">DownTree</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">indent</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
         <span class="n">indent</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">indent</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="n">indent</span> <span class="o">*</span> <span class="s2">&quot; &quot;</span>
 
@@ -527,12 +551,12 @@ window.addEventListener("load", () => mermaid.run());
         <span class="n">node_options</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;draw&quot;</span><span class="p">)</span>
 
     <span class="n">depth</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">label</span> <span class="o">=</span> <span class="n">_escape_string</span><span class="p">(</span><span class="n">node_label</span><span class="p">(</span><span class="n">tree</span><span class="p">),</span> <span class="s2">&quot;latex&quot;</span><span class="p">)</span>
+    <span class="n">my_label</span> <span class="o">=</span> <span class="n">_escape_string</span><span class="p">(</span><span class="n">node_label</span><span class="p">(</span><span class="n">tree</span><span class="p">),</span> <span class="s2">&quot;latex&quot;</span><span class="p">)</span>
     <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">rf</span><span class="s2">&quot;\begin</span><span class="se">{{</span><span class="s2">tikzpicture</span><span class="se">}}</span><span class="si">{</span><span class="n">_latex_options</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span><span class="w"> </span><span class="n">picture_options</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">options</span> <span class="o">=</span> <span class="n">_latex_options</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">node_options</span><span class="p">)</span>
-    <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">rf</span><span class="s2">&quot;\node</span><span class="si">{</span><span class="n">options</span><span class="si">}</span><span class="se">{{</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="se">}}</span><span class="s2"> [grow=</span><span class="si">{</span><span class="n">graph_direction</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">descendants</span><span class="o">.</span><span class="n">preorder</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="n">keep</span><span class="p">):</span>
+    <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">rf</span><span class="s2">&quot;\node</span><span class="si">{</span><span class="n">options</span><span class="si">}</span><span class="se">{{</span><span class="si">{</span><span class="n">my_label</span><span class="si">}</span><span class="se">}}</span><span class="s2"> [grow=</span><span class="si">{</span><span class="n">graph_direction</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">preorder</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="n">keep</span><span class="p">,</span> <span class="n">include_root</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">depth</span> <span class="o">&gt;</span> <span class="n">depth</span><span class="p">:</span>
             <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -542,9 +566,9 @@ window.addEventListener("load", () => mermaid.run());
 
         <span class="n">depth</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">depth</span>
         <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">depth</span> <span class="o">*</span> <span class="n">indent</span><span class="p">)</span>
-        <span class="n">label</span> <span class="o">=</span> <span class="n">_escape_string</span><span class="p">(</span><span class="n">node_label</span><span class="p">(</span><span class="n">node</span><span class="p">),</span> <span class="s2">&quot;latex&quot;</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">_escape_string</span><span class="p">(</span><span class="n">node_label</span><span class="p">(</span><span class="n">node</span><span class="p">),</span> <span class="s2">&quot;latex&quot;</span><span class="p">)</span>
         <span class="n">options</span> <span class="o">=</span> <span class="n">_latex_options</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">node_options</span><span class="p">)</span>
-        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;child </span><span class="se">{{</span><span class="s2">node</span><span class="si">{</span><span class="n">options</span><span class="si">}</span><span class="s2"> </span><span class="se">{{</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;child </span><span class="se">{{</span><span class="s2">node</span><span class="si">{</span><span class="n">options</span><span class="si">}</span><span class="s2"> </span><span class="se">{{</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="c1"># Close final leaf node on same line</span>
     <span class="k">if</span> <span class="n">depth</span><span class="p">:</span>
@@ -580,10 +604,12 @@ window.addEventListener("load", () => mermaid.run());
 <span class="sd">    It assumes sibling distance is constant for each level.</span>
 <span class="sd">    Parameter stop is used to prevent infinite recursion.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_children</span> <span class="o">=</span> <span class="n">generics</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">tree</span><span class="p">))</span>
+
     <span class="n">level_ranks</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">level</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">levels</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">stop</span><span class="p">)):</span>
+    <span class="k">for</span> <span class="n">level</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">tree</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="n">stop</span><span class="p">)):</span>
         <span class="n">cousins</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">pairwise</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
-        <span class="n">mid_ranks</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">len</span><span class="p">(</span><span class="n">n1</span><span class="o">.</span><span class="n">children</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">n2</span><span class="o">.</span><span class="n">children</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span> <span class="ow">in</span> <span class="n">cousins</span><span class="p">]</span>
+        <span class="n">mid_ranks</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">len</span><span class="p">(</span><span class="n">_children</span><span class="p">(</span><span class="n">n1</span><span class="p">))</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">_children</span><span class="p">(</span><span class="n">n2</span><span class="p">)))</span> <span class="o">/</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span> <span class="ow">in</span> <span class="n">cousins</span><span class="p">]</span>
         <span class="n">level_ranks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">mid_ranks</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">mid_ranks</span> <span class="k">else</span> <span class="mi">1</span><span class="p">)</span>
 
     <span class="n">distances</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">level_ranks</span><span class="p">)</span> <span class="o">*</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -592,8 +618,8 @@ window.addEventListener("load", () => mermaid.run());
     <span class="k">return</span> <span class="n">distances</span>
 
 
-<span class="k">def</span> <span class="nf">_node_name_default</span><span class="p">(</span><span class="n">node</span><span class="p">:</span> <span class="n">DownTree</span><span class="p">):</span>
-    <span class="k">return</span> <span class="nb">hex</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">nid</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_node_name_default</span><span class="p">(</span><span class="n">node</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">hex</span><span class="p">(</span><span class="n">nid</span><span class="p">(</span><span class="n">node</span><span class="p">))</span>
 
 
 <span class="k">def</span> <span class="nf">_get_shape</span><span class="p">(</span><span class="n">shape_factory</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>

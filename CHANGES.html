@@ -44,9 +44,11 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage_bundled.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-2-1">Version 0.2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-2-0">Version 0.2.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-0-1-1">Version 0.1.1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-0-1-0">Version 0.1.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-0-0-5">Version 0.0.5</a></li>
@@ -80,6 +82,40 @@
              
   <section id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this heading"></a></h1>
+<section id="version-0-2-1">
+<h2>Version 0.2.1<a class="headerlink" href="#version-0-2-1" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Improve and simplify Route:</p>
+<ul>
+<li><p>Handle edge-cases correctly, especially when dealing with 1 of 0 anchors.
+These used to return incorrect values for e.g. <code class="docutils literal notranslate"><span class="pre">route.count()</span></code>.</p></li>
+<li><p>Merge <code class="docutils literal notranslate"><span class="pre">Route</span></code> and <code class="docutils literal notranslate"><span class="pre">NodesView</span></code> classes.</p></li>
+<li><p>Make anchors return a <code class="docutils literal notranslate"><span class="pre">tuple</span></code> instead of an <code class="docutils literal notranslate"><span class="pre">AnchorView</span></code>.</p></li>
+<li><p>Make <code class="docutils literal notranslate"><span class="pre">reversed(route.edges)</span></code> return edges in parent-child order for consistency with <code class="docutils literal notranslate"><span class="pre">iter(route.edges)</span></code>.
+In prior versions, <code class="docutils literal notranslate"><span class="pre">reversed(path)</span></code> would return edges in child-parent order.</p></li>
+</ul>
+</li>
+<li><p>Implement <code class="docutils literal notranslate"><span class="pre">path.edges</span></code> as well to make <code class="docutils literal notranslate"><span class="pre">path</span></code> more <code class="docutils literal notranslate"><span class="pre">routelike</span></code>.</p></li>
+<li><p>Implement <code class="docutils literal notranslate"><span class="pre">path.to</span></code> as a shortcut to create a <code class="docutils literal notranslate"><span class="pre">Route</span></code> by writing <code class="docutils literal notranslate"><span class="pre">route</span> <span class="pre">=</span> <span class="pre">node.path.to(other_node)</span></code>.</p></li>
+</ul>
+</section>
+<section id="version-0-2-0">
+<h2>Version 0.2.0<a class="headerlink" href="#version-0-2-0" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Add generics <code class="docutils literal notranslate"><span class="pre">TreeLike</span></code> and <code class="docutils literal notranslate"><span class="pre">DownTreeLike</span></code>.</p></li>
+<li><p>Add many new functions that accept above generics as parameter.</p></li>
+<li><p>Change many existing functions to accept above generics above as parameter.</p></li>
+<li><p>Rename <code class="docutils literal notranslate"><span class="pre">astree(x)</span></code> to <code class="docutils literal notranslate"><span class="pre">as_tree(x)</span></code>. Also <code class="docutils literal notranslate"><span class="pre">as_tree</span></code> will now always return a <code class="docutils literal notranslate"><span class="pre">TreeView</span></code>.</p></li>
+<li><p>Remove <code class="docutils literal notranslate"><span class="pre">convert_tree.register</span></code>, but add granular methods <code class="docutils literal notranslate"><span class="pre">children.register</span></code>, <code class="docutils literal notranslate"><span class="pre">parent.register</span></code>.</p></li>
+<li><p>Iteration methods on <code class="docutils literal notranslate"><span class="pre">tree.nodes</span></code> and <code class="docutils literal notranslate"><span class="pre">tree.descendants</span></code> now use <code class="docutils literal notranslate"><span class="pre">None</span></code> as index for root (instead of 0).</p></li>
+<li><p>Change how <code class="docutils literal notranslate"><span class="pre">Mapping</span></code> is converted to Tree. <code class="docutils literal notranslate"><span class="pre">children(mapping)</span></code> is mostly similar to <code class="docutils literal notranslate"><span class="pre">mapping.items()</span></code>. This works well on jsonlike-data.</p></li>
+<li><p>Replace <code class="docutils literal notranslate"><span class="pre">x.eqv(y)</span></code> method by <code class="docutils literal notranslate"><span class="pre">eqv(x,</span> <span class="pre">y)</span></code> function.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TreeAdapter</span></code> remains, but some alternative adapters have been removed.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TreeAdapter</span></code> is hashable if the underlying object is hashable.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TreeAdapter.node</span></code> has been renamed to <code class="docutils literal notranslate"><span class="pre">TreeAdapter.value</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HeapTree</span></code> has become immutable and hashable (by id(heap) and index). The heap itself may remain mutable without a problem.</p></li>
+</ul>
+</section>
 <section id="version-0-1-1">
 <h2>Version 0.1.1<a class="headerlink" href="#version-0-1-1" title="Permalink to this heading"></a></h2>
 <ul class="simple">
