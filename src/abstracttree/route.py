@@ -1,7 +1,7 @@
 import itertools
 from bisect import bisect
-from collections.abc import Sequence, MutableSequence
-from typing import TypeVar, Optional, Generic
+from collections.abc import Sequence, MutableSequence, Iterable, Collection
+from typing import TypeVar, Optional, Iterator
 
 from abstracttree import iterators as _iterators
 from abstracttree.generics import TreeLike, nid
@@ -9,7 +9,7 @@ from abstracttree.generics import TreeLike, nid
 T = TypeVar("T", bound=TreeLike)
 
 
-class Route(Generic[T]):
+class Route(Iterable[T]):
     """Representation of a route trough adjacent nodes in the tree.
 
     Two nodes are adjacent if they have a parent-child relationship.
@@ -48,8 +48,10 @@ class Route(Generic[T]):
             self._ancestor_levels.append(_common2(last_path, anchor_path))
 
         self._anchor_paths.append(anchor_path)
+        assert len(self._anchor_paths) == len(self._ancestor_levels) + 1
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[T]:
+        """Iterate over nodes on route."""
         if len(self._anchor_paths) < 2:
             yield from self.anchors
         path_j = None
@@ -59,7 +61,8 @@ class Route(Generic[T]):
         if path_j is not None:
             yield path_j[-1]
 
-    def __reversed__(self):
+    def __reversed__(self) -> Iterator[T]:
+        """Reversed iterator over nodes."""
         if len(self._anchor_paths) < 2:
             yield from self.anchors
         path_j = None
@@ -70,7 +73,11 @@ class Route(Generic[T]):
         if path_j is not None:
             yield path_j[-1]
 
+    def __bool__(self):
+        return bool(self._anchor_paths)
+
     def __len__(self) -> int:
+        """How many nodes are on route?"""
         p, l = self._anchor_paths, self._ancestor_levels
         if len(p) < 2:
             return len(p)
@@ -79,7 +86,7 @@ class Route(Generic[T]):
     count = __len__
 
     @property
-    def anchors(self):
+    def anchors(self) -> Collection[T]:
         """View of the anchor nodes."""
         return [path[-1] for path in self._anchor_paths]
 
@@ -95,16 +102,21 @@ class Route(Generic[T]):
 
     @property
     def lca(self) -> Optional[T]:
+        """Find node that is the common ancestor of nodes on path."""
         try:
             i = min(self._ancestor_levels, default=0)
             return self._anchor_paths[0][i]
         except (IndexError, ValueError):
+            # TODO Raise exception or return None?
             return None  # Perhaps this is a bit dirty
 
 
-class EdgesView:
+class EdgesView(Iterable[tuple[T, T]]):
     """View of edges of this route."""
-    def __init__(self, route: Route):
+    __slots__ = "_route"
+
+    def __init__(self, route):
+        # Note: route can be either Route or mixins.views.Path
         self._route = route
 
     def __iter__(self):
@@ -113,15 +125,14 @@ class EdgesView:
     def __reversed__(self):
         return ((x, y) for (y, x) in itertools.pairwise(reversed(self._route)))
 
-    def __len__(self) -> int:
-        n = len(self._route)
-        if n > 0:
+    def count(self) -> int:
+        if n := self._route.count():
             return n - 1
         else:
             return 0
 
-    count = __len__
 
 def _common2(path_i, path_j) -> int:
+    # TODO Maybe call this method prefix_length
     indices = range(min(len(path_i), len(path_j)))
     return bisect(indices, False, key=lambda ind: nid(path_i[ind]) != nid(path_j[ind])) - 1
