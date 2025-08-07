@@ -6,7 +6,7 @@ import subprocess
 import sys
 from collections.abc import Iterable, Mapping, Callable
 from pathlib import Path
-from typing import Union, TypedDict, Tuple, Any, TypeVar, Optional
+from typing import TypedDict, Any, TypeVar, Optional
 
 from . import generics
 from .iterators import preorder, levels, levelorder
@@ -44,6 +44,8 @@ DEFAULT_STYLES = {
     "ascii": Style(branch="|--", last="`--", vertical="|  "),
     "ascii-arrow": Style(branch="|->", last="`->", vertical="|  "),
     "list": Style(branch="-", last="-", vertical=" "),
+    "indent": Style(branch="  ", last="  ", vertical="  "),
+    "indent-4": Style(branch="   ", last="   ", vertical="   "),
 }
 
 # By default, all exporters are limited to a depth of 5.
@@ -73,7 +75,7 @@ def _wrap_file(f):
     return new_f
 
 
-def print_tree(tree, formatter=generics.label, style=None, keep=None):
+def print_tree(tree, formatter=generics.label, *, style: str | Style = None, keep=None):
     """Print this tree. Shortcut for print(to_string(tree))."""
     if sys.stdout:
         if not style:
@@ -88,13 +90,19 @@ def to_string(
     formatter: Callable[[object], str] | str | None = generics.label,
     *,
     file=None,
-    style: Union[str, Style] = "square",
+    style: str | Style = "square",
     keep=None,
 ):
     """Converts tree to a string in a pretty format."""
     tree = convert_tree(tree, TreeLike)
     if isinstance(style, str):
-        style = DEFAULT_STYLES[style]
+        try:
+            style = DEFAULT_STYLES[style]
+        except KeyError:
+            available_styles = ", ".join(map(repr, DEFAULT_STYLES))
+            error_msg = (f"Style {style!r} is not available. "
+                         f"The following styles are available: {available_styles}.")
+            raise ValueError(error_msg) from None
     if formatter is None:
         formatter = generics.label
     elif isinstance(formatter, str):
@@ -191,9 +199,9 @@ def plot_tree(
 
 
 TNode = TypeVar("TNode", bound=DownTreeLike)
-TShape = Union[Tuple[str, str], str, Callable[[TNode], Union[Tuple[str, str], str]]]
-NodeAttributes = Union[Mapping[str, Any], Callable[[TNode], Mapping[str, Any]]]
-EdgeAttributes = Union[Mapping[str, Any], Callable[[TNode, TNode], Mapping[str, Any]]]
+TShape = str | tuple[str, str] | Callable[[TNode], str | tuple[str, str]]
+NodeAttributes = Mapping[str, Any] | Callable[[TNode], Mapping[str, Any]]
+EdgeAttributes = Mapping[str, Any] | Callable[[TNode, TNode], Mapping[str, Any]]
 GraphAttributes = Mapping[str, Any]
 
 
@@ -286,8 +294,8 @@ def to_dot(
     tree: DownTreeLike,
     file=None,
     keep=DEFAULT_PREDICATE,
-    node_name: Union[str, Callable[[TNode], str], None] = None,
-    node_label: Union[str, Callable[[TNode], str], None] = generics.label,
+    node_name: Optional[str | Callable[[TNode], str]] = None,
+    node_label: Optional[str | Callable[[TNode], str]] = generics.label,
     node_shape: TShape = None,
     node_attributes: NodeAttributes = None,
     edge_attributes: EdgeAttributes = None,
@@ -345,7 +353,7 @@ def to_dot(
     file.write("}\n")
 
 
-def _split_attributes(attributes: Union[NodeAttributes, EdgeAttributes]):
+def _split_attributes(attributes: NodeAttributes | EdgeAttributes):
     static = {k: v for (k, v) in attributes.items() if not callable(v)}
     dynamic = {k: v for (k, v) in attributes.items() if callable(v)}
     return static, dynamic
@@ -388,10 +396,10 @@ def to_mermaid(
     tree: DownTreeLike,
     file=None,
     keep=DEFAULT_PREDICATE,
-    node_name: Union[str, Callable[[TNode], str], None] = None,
-    node_label: Union[str, Callable[[TNode], str], None] = generics.label,
+    node_name: Optional[str | Callable[[TNode], str]] = None,
+    node_label: Optional[str | Callable[[TNode], str]] = generics.label,
     node_shape: TShape = "box",
-    edge_arrow: Union[str, Callable[[TNode, TNode], str]] = "-->",
+    edge_arrow: str | Callable[[TNode, TNode], str] = "-->",
     graph_direction: str = "TD",
 ):
     """Export to `mermaid <https://mermaid.js.org/>`_."""
@@ -434,14 +442,14 @@ def to_latex(
     tree: DownTreeLike,
     file=None,
     keep=DEFAULT_PREDICATE,
-    node_label: Union[str, Callable[[TNode], str], None] = generics.label,
+    node_label: Optional[str | Callable[[TNode], str]] = generics.label,
     node_shape: TShape = None,
     leaf_distance: Optional[str] = "2em",
     level_distance: Optional[str] = None,
-    node_options: Iterable[Union[str, Callable[[TNode], str]]] = (),
-    picture_options: Iterable[Union[str, Callable[[TNode], str]]] = (),
+    node_options: Iterable[str | Callable[[TNode], str]] = (),
+    picture_options: Iterable[str | Callable[[TNode], str]] = (),
     graph_direction: str = "right",
-    indent: Union[str, int] = 4,
+    indent: str | int = 4,
     align="center",
 ):
     """Export to latex (experimental).

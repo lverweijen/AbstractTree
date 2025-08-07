@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.2.2
+
+* Add new styles for `print_tree`: "indent" and "indent-4".
+* Improve error message when an unknown style is used in `print_tree`.
+
 ## Version 0.2.1
 
 * Improve and simplify Route:
