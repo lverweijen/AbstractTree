@@ -1,6 +1,6 @@
 [project]
 name = "abstracttree"
-version = "0.2.0"
+version = "0.2.2"
 authors = [
     {name = "lverweijen", email = "lauwerund@gmail.com"}
 ]
@@ -46,7 +46,7 @@ Changelog = "https://lverweijen.github.io/AbstractTree/CHANGES.html"
 [tool.ruff]
 line-length = 100
 indent-width = 4
-target-version = "py39"
+target-version = "py310"
 src = ["src"]
 
 [tool.ruff.format]
